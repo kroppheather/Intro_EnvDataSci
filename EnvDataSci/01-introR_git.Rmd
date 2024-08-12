@@ -1,0 +1,231 @@
+---
+title: 'Tutorial 1: Intro to R and Git Software'
+author: "Heather Kropp"
+output: 
+  html_document:
+    theme: yeti
+    highlight: pygments
+---
+#### _ENVST 325: Environmental Data Science, Hamilton College_
+
+
+## Learning objectives
+
+#### 1. Learn about version control with GitHub
+
+#### 2. Introduction to R & Rstudio
+
+#### 3. Learn to start a version controlled project
+
+#### 4. Learn the basics of R statistical programming
+
+```{r warning=FALSE,echo=FALSE, message=FALSE}
+library(imager)
+```
+
+```{r include=FALSE}
+knitr::opts_chunk$set(comment = NA, class.output="bg-info" )
+```
+## First some terms:
+
+**R**: a statistical programming software that can be used to analyze data
+
+**RStudio**: a user friendly interface for running R
+
+
+**Repository**: a collection of files that are version controlled 
+
+**Script**: a text based file containing code that can be run in a programming language. R scripts have a .R extension.
+
+
+
+## Setting up version control in GitHub
+
+### _Create a repository_
+
+Click on the `Repositories` tab and click the `New` green button (shown in red). Create a repository for this activity. 
+
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/git_new.png)
+</center>
+
+You can name it _ENVST325_activity1_ or anything that you want. You should avoid spaces in repository names. Make it public and make sure the README box is checked as shown below. Should you wish your repository to be kept private, please talk to me about setting it up for grading.
+
+### _Create a personal token for Rstudio Cloud_
+
+For each new Rstudio Cloud assignment, you will need to create a token that gives RStudio Cloud permission to post to your GitHub. You can access the token through `Settings`. Click on your profile tab in the upper right corner:
+
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/Settings.png){width=15%}
+</center>
+
+Once you are in settings click on the menu option `Developer settings`:
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/token.png){width=15%}
+</center>
+
+Click the `Personal access token` option and select `Generate new token`:
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/PAT.png){width=75%}
+</center>
+
+You will be prompted to re-enter your GitHub password.
+
+You will create a new token for each new project. We will use a different project for each homework. It is good to include something like A1 in the description so you can keep track of your tokens.
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/token_setting.png){width=50%}
+</center>
+
+A token with a clipboard will be displayed below this message. It will have a lot of numbers and letters. Copy your token and make sure that you do not lose it from your clipboard. **Do not post this token, copy  it in your Rscript, or share it publicly. Leave this tab open until the end of the tutorial.**
+
+Below is what the page will look like. I have cut off my token in the image so that it is not visible.
+
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/message.png){width=75%}
+</center>
+
+Open up GitHub in a new tab. Click on the repository you just made. You can find the url of the repository by clicking the green button with the label code. Copy it to your clipboard.
+
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/url.png){width=50%}
+</center>
+
+Now let's head over to RStudio Cloud to link the repository to a project.
+
+## Start a project with version control in Rstudio Cloud
+
+RStudio Cloud helps create a standardized computing environment for us as a class that is specifically meant to support working in R. This means that you can access the same computing environment and you only need to run a web browser on a personal or Hamilton computer. This will allow coursework to be readily completed from any computer whether you are on or off campus. It also means that you don't have to worry about installing R or storing data on your own personal computer.
+
+You will have received an invitation to join the ENVST325-SP22 **workspace** on RStudio Cloud through your Hamilton email. Once you have joined the workspace, you can access the projects section. A **project** is a collection of related R files and data. 
+
+### _Start a project linked with a repository_
+
+Click the `New Project` button and choose `New Project from Git Repository`:
+
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/new_proj.png){width=50%}
+</center>
+Copy your GitHub repository URL into the box:
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/prj_git.png){width=50%}
+</center>
+
+
+
+
+### _Rstudio interface_
+
+R is essentially a fancy calculator with many options for making plots and built in functions for math and statistics. The Rstudio interface has 4 main components: **1. script window, 2. console, 3. environment, 4. information tabs**
+
+When you first open RStudio Cloud, you may have to start a new script file to see the interface with all four sections.
+
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/Rstudio_env.png){width=75%}
+</center>
+
+ The **console** runs your R code. It's the calculator! You can type code into the console and it will run. However, you won't be able to access that code later, just like many calculators. That's why we use **scripts**. 
+
+R scripts allow you to save code in a text file to run in R. R scripts all have a .r extension. By itself, the script will do nothing. You need to actually tell R to run your code in the console. When you first open up Rstudio, there is often a blank work space with just the console. You can tell you are looking at the console by checking the tabs, and you will see information about your R version at the start.
+
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/console_open.png){width=100%}
+</center>
+
+
+New scripts can be created by going to _New File_ and clicking on Rscript. If you wanted to open an existing Rscript, you can go to _Open File_. 
+
+
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/newscript1.png){width=50%}
+</center>
+
+Clicking a new script will prompt you to save into the file system created in our project computer:
+
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/save_screen.png){width=50%}
+</center>
+
+You will see that saving your script will create a new file in the Files tab in the bottom right corner. This tab will be important when we start working with more data files.
+
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/file system.png){width=25%}
+</center>
+
+The script opens up above the console and is ready for you to code!
+
+Try typing in and saving:
+```{r eval=FALSE}
+# this is an R script 
+```
+
+
+### _Version control_
+Let's document the creation of your R script and make sure everything is properly linked with GitHub.
+
+
+You will want to make sure that you set up your user credentials so that they match GitHub. Go to the terminal tab next to the console:
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/terminal_tab.png){width=50%}
+</center>
+
+The **terminal** is a way to send commands directly to programs and the computer that your Rstudio session is running on. You can send commands to **git** (the program the computer uses to talk to GitHub) using the terminal.
+
+You will type in the following lines of code in the terminal tab:
+
+```{r eval=FALSE}
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+
+```
+
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/terminal_user.png){width=50%}
+</center>
+
+
+
+### _Commit your first changes to GitHub_
+
+Do this step after you change your user info and have made changes to the project: 
+
+In the terminal:
+
+#### 1. Type `git add -A`. This will tell git to add changes to all files for tracking.
+#### 2. Type `git commit -m "description of changes"`. This command helps label all of your changes.
+#### 3. Type `git push`. This command sends the changes to github.
+
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/git_code.png){width=50%}
+</center>    
+    
+When you run `git push` for the first time, you will prompted to enter your username and and then your password here. **Your password is your personal access token NOT your GitHub password**. I know this is confusing. This set up is a part of improving security measures.
+
+Your personal access token is acting just like your password. Do NOT share it or post it anywhere. Close your tab. GitHub will not let you view this token again for security. Remember you can always generate a new token if needed.
+
+It won't look like much happened. However, if you go to your github repository online, you will see your changes appear. You should now see your script file appear:
+
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/git_update.png){width=50%}
+</center>
+
+**With your code visible online, you should never put passwords, username info, or sensitive information in a script.**
+
+If you click on the file name, you will see the text I wrote show up in the file. 
+
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/git_view.png){width=75%}
+</center>
+
+If you make more changes, going through the commit steps= will no longer give you an user prompt. Instead you will get see a bunch of text that let's you know it was successful:
+
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/git_push_norm.png){width=50%}
+</center>
+
+If you go back to your repository in GitHub, you can compare your changes by clicking on the commit id next to the clock. You will see a side by side change next to the previous version and your description that you included:
+
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/git_comp.png){width=75%}
+</center>
+
+**Congratulations! You are ready for reproducible coding with version control!**

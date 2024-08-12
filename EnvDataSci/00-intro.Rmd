@@ -1,0 +1,41 @@
+---
+output: 
+  html_document:
+    theme: yeti
+    highlight: pygments
+---
+# Introduction
+
+<center>
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/sat.png){width=85%}
+</center>
+
+Environmental Data Science focuses on using data to describe the environment and make predictions related to environmental issues and the future environment. Vast amounts of data related to the environment are collected via sensors, satellites, and aircraft daily. Learning to organize, visualize, analyze, and make predictions from data are a fundamental part of environmental data science. This book will provide an introduction to the tools that support advanced programming workflows for large data, coding-based workflows for spatial data, and analysis of environmental data. The book will explore topics related to climate change, land cover, water security, and remote sensing.
+
+You will work with real world data and problems. You will gain experience on the following types of data:
+
+* flooding and stream gauge measurements
+* greenhouse gas fluxes and carbon emissions
+* weather data
+* remotely-sensed evapotranspiration in agricultural fields 
+* remote sensing of vegetation & pest outbreaks
+* land cover 
+* drone remote sensing
+
+<center>
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/weather.jpg){width=50%}
+
+_Weather and soil micrometereological measurements are collected every 15 minutes from sensors. An abundance of data used to address environmental issues and research necessitates coding-based, reproducible tools._  
+</center>
+
+## Course Learning objectives
+
+1. Understand environmental data applications and limitations 
+2. Understand core concepts related to making predictions and inferences for environmental data
+3. Use code-based, reproducible statistical programming tools throughout the data life cycle
+
+## License
+
+_Introduction to Environmental Data Science_ ![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/640px-Copyright.svg.png){width=2%} Heather Kropp. _Introduction to Environmental Data Science_ is licensed under a [Creative Commons Attribution-NoDerivs](https://creativecommons.org/licenses/by-nd/4.0/) license CC BY-ND.
+
+
