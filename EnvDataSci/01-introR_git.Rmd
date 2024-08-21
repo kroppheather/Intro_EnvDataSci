@@ -121,7 +121,7 @@ R is essentially a fancy calculator with many options for making plots and built
 When you first open RStudio Cloud, you may have to start a new script file to see the interface with all four sections.
 
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/Rstudio_env.png){width=75%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/Rstudio_env.png){width=75%}
 </center>
 
  The **console** runs your R code. It's the calculator! You can type code into the console and it will run. However, you won't be able to access that code later, just like many calculators. That's why we use **scripts**. 
@@ -129,7 +129,7 @@ When you first open RStudio Cloud, you may have to start a new script file to se
 R scripts allow you to save code in a text file to run in R. R scripts all have a .r extension. By itself, the script will do nothing. You need to actually tell R to run your code in the console. When you first open up Rstudio, there is often a blank work space with just the console. You can tell you are looking at the console by checking the tabs, and you will see information about your R version at the start.
 
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/console_open.png){width=100%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/console_open.png){width=100%}
 </center>
 
 
@@ -137,7 +137,7 @@ New scripts can be created by going to _New File_ and clicking on Rscript. If yo
 
 
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/newscript1.png){width=50%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/newscript1.png){width=50%}
 </center>
 
 Clicking a new script will prompt you to save into the file system created in our project computer:
