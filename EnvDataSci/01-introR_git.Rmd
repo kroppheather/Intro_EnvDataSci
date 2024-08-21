@@ -13,7 +13,7 @@ output:
 
 #### 1. Learn about version control with GitHub
 
-#### 2. Introduction to R & Rstudio
+#### 2. Introduction to R, Rstudio, Posit Cloud
 
 #### 3. Learn to start a version controlled project
 
@@ -32,6 +32,7 @@ knitr::opts_chunk$set(comment = NA, class.output="bg-info" )
 
 **RStudio**: a user friendly interface for running R
 
+**Posit Cloud**: a cloud computing environment for running R & RStudio
 
 **Repository**: a collection of files that are version controlled 
 
@@ -39,41 +40,41 @@ knitr::opts_chunk$set(comment = NA, class.output="bg-info" )
 
 
 
-## Setting up version control in GitHub
+## Setting up a Repository in GitHub
 
 ### _Create a repository_
 
-Click on the `Repositories` tab and click the `New` green button (shown in red). Create a repository for this activity. 
+Log into GitHub and click on the `Repositories` tab and click the `New` green button (shown in red circle). Create a repository for this activity. 
 
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/git_new.png)
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/git_new.png)
 </center>
 
 You can name it _ENVST325_activity1_ or anything that you want. You should avoid spaces in repository names. Make it public and make sure the README box is checked as shown below. Should you wish your repository to be kept private, please talk to me about setting it up for grading.
 
 ### _Create a personal token for Rstudio Cloud_
 
-For each new Rstudio Cloud assignment, you will need to create a token that gives RStudio Cloud permission to post to your GitHub. You can access the token through `Settings`. Click on your profile tab in the upper right corner:
+For each new Rstudio Cloud assignment, you will need to create a token that gives Posit Cloud permission to post to your GitHub. You can access the token through `Settings`. Click on your profile tab in the upper right corner:
 
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/Settings.png){width=15%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/Settings.png){width=15%}
 </center>
 
 Once you are in settings click on the menu option `Developer settings`:
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/token.png){width=15%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/token.png){width=15%}
 </center>
 
-Click the `Personal access token` option and select `Generate new token`:
+Click the `Personal access token` option and select the `Tokens (classic)` option and click the `Generate new token` button:
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/PAT.png){width=75%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/tokens.png){width=75%}
 </center>
 
-You will be prompted to re-enter your GitHub password.
+You will be prompted to re-enter your GitHub password/two factor.
 
 You will create a new token for each new project. We will use a different project for each homework. It is good to include something like A1 in the description so you can keep track of your tokens.
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/token_setting.png){width=50%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/token_setting.png){width=50%}
 </center>
 
 A token with a clipboard will be displayed below this message. It will have a lot of numbers and letters. Copy your token and make sure that you do not lose it from your clipboard. **Do not post this token, copy  it in your Rscript, or share it publicly. Leave this tab open until the end of the tutorial.**
@@ -81,13 +82,13 @@ A token with a clipboard will be displayed below this message. It will have a lo
 Below is what the page will look like. I have cut off my token in the image so that it is not visible.
 
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/message.png){width=75%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/message.png){width=75%}
 </center>
 
 Open up GitHub in a new tab. Click on the repository you just made. You can find the url of the repository by clicking the green button with the label code. Copy it to your clipboard.
 
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/url.png){width=50%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/url.png){width=50%}
 </center>
 
 Now let's head over to RStudio Cloud to link the repository to a project.
@@ -103,11 +104,11 @@ You will have received an invitation to join the ENVST325-SP22 **workspace** on 
 Click the `New Project` button and choose `New Project from Git Repository`:
 
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/new_proj.png){width=50%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/new_proj2.png){width=50%}
 </center>
 Copy your GitHub repository URL into the box:
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/prj_git.png){width=50%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/prj_git.png){width=50%}
 </center>
 
 
