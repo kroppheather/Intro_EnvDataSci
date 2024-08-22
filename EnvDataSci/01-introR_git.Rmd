@@ -1,30 +1,41 @@
 ---
-title: 'Tutorial 1: Intro to R and Git Software'
-author: "Heather Kropp"
 output: 
   html_document:
     theme: yeti
-    highlight: pygments
 ---
-#### _ENVST 325: Environmental Data Science, Hamilton College_
+# Introduction to R Statistical Software and Git
+
+_by Heather Kropp_
+_for ENVST 325: Introduction to Environmental Data Science_
+_Hamilton College_
+
+
+```{css, echo=FALSE}
+.book .book-body .page-wrapper .page-inner section.normal pre.colout {
+  background-color: #D9EDF7;
+}
+```
 
 
 ## Learning objectives
 
-#### 1. Learn about version control with GitHub
+1. Learn about version control with GitHub
 
-#### 2. Introduction to R, Rstudio, Posit Cloud
+2. Introduction to R, Rstudio, Posit Cloud
 
-#### 3. Learn to start a version controlled project
+3. Learn to start a version controlled project
 
-#### 4. Learn the basics of R statistical programming
+4. Learn the basics of R statistical programming
+
+## New functions & syntax
+`git push`, `git add`, `git push`, `#`,`<-`, `c`, `[]`, `data.frame`
 
 ```{r warning=FALSE,echo=FALSE, message=FALSE}
 library(imager)
 ```
 
 ```{r include=FALSE}
-knitr::opts_chunk$set(comment = NA, class.output="bg-info" )
+knitr::opts_chunk$set(comment = NA, class.output="bg-info",class.output = "colout" )
 ```
 ## First some terms:
 
@@ -143,19 +154,19 @@ New scripts can be created by going to _New File_ and clicking on Rscript. If yo
 Clicking a new script will prompt you to save into the file system created in our project computer:
 
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/save_screen.png){width=50%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/save_screen.png){width=50%}
 </center>
 
 You will see that saving your script will create a new file in the Files tab in the bottom right corner. This tab will be important when we start working with more data files.
 
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/file system.png){width=25%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/file system.png){width=25%}
 </center>
 
 The script opens up above the console and is ready for you to code!
 
 Try typing in and saving:
-```{r eval=FALSE}
+```{r eval=FALSE, class.source="out"}
 # this is an R script 
 ```
 
@@ -166,7 +177,7 @@ Let's document the creation of your R script and make sure everything is properl
 
 You will want to make sure that you set up your user credentials so that they match GitHub. Go to the terminal tab next to the console:
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/terminal_tab.png){width=50%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/terminal_tab.png){width=50%}
 </center>
 
 The **terminal** is a way to send commands directly to programs and the computer that your Rstudio session is running on. You can send commands to **git** (the program the computer uses to talk to GitHub) using the terminal.
@@ -180,7 +191,7 @@ git config --global user.name "Your Name"
 ```
 
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/terminal_user.png){width=50%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/terminal_user.png){width=50%}
 </center>
 
 
@@ -191,12 +202,12 @@ Do this step after you change your user info and have made changes to the projec
 
 In the terminal:
 
-#### 1. Type `git add -A`. This will tell git to add changes to all files for tracking.
-#### 2. Type `git commit -m "description of changes"`. This command helps label all of your changes.
-#### 3. Type `git push`. This command sends the changes to github.
+1. Type `git add -A`. This will tell git to add changes to all files for tracking.
+2. Type `git commit -m "description of changes"`. This command helps label all of your changes.
+3. Type `git push`. This command sends the changes to github.
 
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/git_code.png){width=50%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/git_code.png){width=50%}
 </center>    
     
 When you run `git push` for the first time, you will prompted to enter your username and and then your password here. **Your password is your personal access token NOT your GitHub password**. I know this is confusing. This set up is a part of improving security measures.
@@ -206,7 +217,7 @@ Your personal access token is acting just like your password. Do NOT share it or
 It won't look like much happened. However, if you go to your github repository online, you will see your changes appear. You should now see your script file appear:
 
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/git_update.png){width=50%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/git_update.png){width=50%}
 </center>
 
 **With your code visible online, you should never put passwords, username info, or sensitive information in a script.**
@@ -214,19 +225,132 @@ It won't look like much happened. However, if you go to your github repository o
 If you click on the file name, you will see the text I wrote show up in the file. 
 
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/git_view.png){width=75%}
+![](ter>
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/git_view.png){width=75%}
 </center>
 
 If you make more changes, going through the commit steps= will no longer give you an user prompt. Instead you will get see a bunch of text that let's you know it was successful:
 
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/git_push_norm.png){width=50%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/git_push_norm.png){width=50%}
 </center>
 
 If you go back to your repository in GitHub, you can compare your changes by clicking on the commit id next to the clock. You will see a side by side change next to the previous version and your description that you included:
 
 <center>
-![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial01/pics/git_comp.png){width=75%}
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/git_comp.png){width=75%}
 </center>
 
-**Congratulations! You are ready for reproducible coding with version control!**
+## Intro/Refresher on R
+
+R is essentially a fancy calculator. One of R's core functions is calculating numerical operations. Many basic numerical operations in R follow typical mathematical notation used on keyboards and calculators. You can see some examples below. Note I've included both the code (grey boxes) and outputs (blue boxes) here for an example. You can run your code by clicking in the line or highlighting lines and click the _Run_ button.
+
+```{r echo=TRUE,   }
+# remember this is a comment so it won't do anything. R just ignores it.
+# you need to use these to document code and write notes
+# 6 raised to the 6 power
+6^6
+# 5 plus 210
+5+210
+# 3 minus 10
+3-10
+```
+
+Any text preceded by a `#` is called a **comment**. Comments help document and organize your code. They are useful for remembering why you did something or serving as a reminder for how code functions. R ignores these lines.
+
+## Variables
+
+Typing in calculations can quickly become redundant and difficult when you have many observations. Creating a **variable** allows you to refer to the same object by typing its name. You can create a variable by first typing a name, then typing the assigner `<-` (`=` also works, but is not R convention). Anything to the right of the assigner will be refered to with the name you give. Below is an example where I know I will want to use the number 244435600 many times so I will give it a shorter, easier to remember name.
+
+```{r echo=TRUE}
+# name my number
+aNumber <- 244435600
+# multiply my number by 5
+5*aNumber
+# divide my number by 2
+aNumber/2
+```
+
+
+### _Vectors_
+
+A vector is a one dimensional array of data. You can make a vector in R using the function `c()`. `c` stands for combine values into a vector where each value is separated by a comma. For example, here's a vector with the elevation of the three highest peaks in the Adirondacks. 
+
+```{r echo=TRUE}
+# make a vector of numbers
+# elevation in ft
+peaks <- c(5344,5114,4960)
+```
+
+The function `c` involved text followed by parentheses. This is a detail to pay attention to for the R **syntax**. Syntax refers to the rules and structure of a coding language. What you learned about `#` and `<-`  are  examples of R syntax since these symbols have a specific meaning. The format of text followed by parenthesis (_e.g._ `anyName()`) indicates that the object is a **function**. Functions are a key part of R. They expect certain inputs called **arguments** (like our numbers in the _c_ function used to create peaks vector). Functions will also perform a task that reduces the need for extra coding. 
+
+When `peaks` is run in R, there is no output shown in the console. The variable peaks was simply created.`peaks` shows up in the global environment. It is a data type **numeric** and it has 3 total objects. Numeric data are all numbers and can include numbers on both sides of the decimal. Monitor the environment section frequently to check that your code is working as expected.
+
+<center>
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/environment.png){width=50%}
+</center>
+
+You can now do calculations on each object in your vector. For example, if you want to convert the peak elevation to meters, you simply need to type in one calculation. You'll notice, this calculation was not assigned as a named variable, and a vector of output is returned but not stored in the environment. 
+
+```{r echo=TRUE}
+# convert to meters
+peaks/3.281
+```
+
+You can also apply vector operations on vectors that are the same length and a calculation for the element in each vector makes sense. For example, I can make a vector of the prominence (height from the base) and calculate the difference to find the difference between the elevation of the mountain and the prominence. 
+
+```{r echo=TRUE}
+# prominence in ft
+prom <- c(4914,2100,840)
+# difference between height and prominence
+peaks - prom
+
+```
+ 
+You can also make vectors with other types of data beyond numeric.  R supports data types such as dates, character strings, and integers. A **character** is any mixture of letters, numbers, and symbols. You can't apply mathematical calculations to character. You can set up a vector of the mountain names by using quotes around each character element in the vector:
+
+```{r echo=TRUE}
+# quotes denote a character data type
+peakNames <- c("Mount Marcy", "Algonquin Peak", "Mount Haystack")
+```
+
+You can **subset** a vector using `[]` syntax. If you want to refer to just the first item in a vector, you can subset as follows:
+
+```{r echo=TRUE}
+# elevation of first peak
+peaks[1]
+```
+
+
+### _Data frames_
+
+The final basic type of data that will be useful to keep in mind is a data frame. **Data frames** are a matrix with column names and sometimes row names. All observations in a row are associated. Each column must have the same type of data ( _e.g._ integer or character). Make a data frame with all of the high peaks information using the `data.frame` function. For the `data.frame` arguments, you specify each vector to include as a column and the name of the column (left side of each equal sign).
+
+```{r echo=TRUE}
+# make a data frame
+# you must include the column name = data vector
+# separating multiple columns with commas
+highPeaks <- data.frame(elev = peaks,
+                        prom = prom,
+                        name = peakNames)
+```
+
+A helpful way to check that your code ran as expected is to track the objects in your global environment. Vectors show up under _values_ and data frames are shown under _data_. If you click the blue arrow button you will get a preview of the data frame. 
+
+You can subset a data frame using the `[]` syntax, but you need to account for the two dimensional nature of data frames. The two dimensional format of a data frame is references rows and columns in the following order: `[rows,columns]`
+
+```{r echo=TRUE}
+# subset 2 row in highPeaks
+highPeaks[2,]
+# view only the names column
+highPeaks[,3]
+# look at elevation for 3rd highest mountain
+highPeaks[1,3]
+```
+
+
+<center>
+
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/peaks2.png){width=40%}
+
+<center>

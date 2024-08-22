@@ -1,8 +1,7 @@
 ---
 output: 
   html_document:
-    theme: yeti
-    highlight: pygments
+    theme: flatly
 ---
 # Introduction
 
