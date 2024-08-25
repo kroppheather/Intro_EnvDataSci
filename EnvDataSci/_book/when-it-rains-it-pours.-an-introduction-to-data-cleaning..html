@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 When it rains, it pours. An introduction to data cleaning. | Introduction to Environmental Data Science</title>
+  <meta name="description" content="“ENVST 325: Environmental Data Science, Hamilton College”" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 When it rains, it pours. An introduction to data cleaning. | Introduction to Environmental Data Science" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="“ENVST 325: Environmental Data Science, Hamilton College”" />
+  <meta name="github-repo" content="kroppheather/Intro_EnvDataSci" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 When it rains, it pours. An introduction to data cleaning. | Introduction to Environmental Data Science" />
+  
+  <meta name="twitter:description" content="“ENVST 325: Environmental Data Science, Hamilton College”" />
+  
+
+<meta name="author" content="Heather Kropp" />
+
+
+<meta name="date" content="2024-01-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="data-visualization-in-r.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#course-learning-objectives"><i class="fa fa-check"></i><b>1.1</b> Course Learning objectives</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#license"><i class="fa fa-check"></i><b>1.2</b> License</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html"><i class="fa fa-check"></i><b>2</b> Introduction to R Statistical Software and Git</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#learning-objectives"><i class="fa fa-check"></i><b>2.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="2.2" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#new-functions-syntax"><i class="fa fa-check"></i><b>2.2</b> New functions &amp; syntax</a></li>
+<li class="chapter" data-level="2.3" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#first-some-terms"><i class="fa fa-check"></i><b>2.3</b> First some terms:</a></li>
+<li class="chapter" data-level="2.4" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#setting-up-a-repository-in-github"><i class="fa fa-check"></i><b>2.4</b> Setting up a Repository in GitHub</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#create-a-repository"><i class="fa fa-check"></i><b>2.4.1</b> <em>Create a repository</em></a></li>
+<li class="chapter" data-level="2.4.2" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#create-a-personal-token-for-rstudio-cloud"><i class="fa fa-check"></i><b>2.4.2</b> <em>Create a personal token for Rstudio Cloud</em></a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#start-a-project-with-version-control-in-rstudio-cloud"><i class="fa fa-check"></i><b>2.5</b> Start a project with version control in Rstudio Cloud</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#start-a-project-linked-with-a-repository"><i class="fa fa-check"></i><b>2.5.1</b> <em>Start a project linked with a repository</em></a></li>
+<li class="chapter" data-level="2.5.2" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#rstudio-interface"><i class="fa fa-check"></i><b>2.5.2</b> <em>Rstudio interface</em></a></li>
+<li class="chapter" data-level="2.5.3" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#version-control"><i class="fa fa-check"></i><b>2.5.3</b> <em>Version control</em></a></li>
+<li class="chapter" data-level="2.5.4" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#commit-your-first-changes-to-github"><i class="fa fa-check"></i><b>2.5.4</b> <em>Commit your first changes to GitHub</em></a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#introrefresher-on-r"><i class="fa fa-check"></i><b>2.6</b> Intro/Refresher on R</a></li>
+<li class="chapter" data-level="2.7" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#variables"><i class="fa fa-check"></i><b>2.7</b> Variables</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#vectors"><i class="fa fa-check"></i><b>2.7.1</b> <em>Vectors</em></a></li>
+<li class="chapter" data-level="2.7.2" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#data-frames"><i class="fa fa-check"></i><b>2.7.2</b> <em>Data frames</em></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html"><i class="fa fa-check"></i><b>3</b> The data deluge: data wrangling in R</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#learning-objectives-1"><i class="fa fa-check"></i><b>3.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="3.2" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#new-functions-syntax-1"><i class="fa fa-check"></i><b>3.2</b> New functions &amp; syntax</a></li>
+<li class="chapter" data-level="3.3" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#the-problem"><i class="fa fa-check"></i><b>3.3</b> The problem:</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#flooding-and-natural-disasters"><i class="fa fa-check"></i><b>3.3.1</b> <em>Flooding and natural disasters</em></a></li>
+<li class="chapter" data-level="3.3.2" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#the-data-flood-stage-stream-guage-height"><i class="fa fa-check"></i><b>3.3.2</b> <em>The data: flood stage &amp; stream guage height</em></a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#the-approach-packages-in-r"><i class="fa fa-check"></i><b>3.4</b> The approach: packages in R</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#installing-packages"><i class="fa fa-check"></i><b>3.4.1</b> <em>Installing packages</em></a></li>
+<li class="chapter" data-level="3.4.2" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#loading-packages"><i class="fa fa-check"></i><b>3.4.2</b> <em>Loading packages</em></a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#the-approach-data-wrangling"><i class="fa fa-check"></i><b>3.5</b> The approach: data wrangling</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#reading-in-data"><i class="fa fa-check"></i><b>3.5.1</b> <em>Reading in data</em></a></li>
+<li class="chapter" data-level="3.5.2" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#parsing-datetime"><i class="fa fa-check"></i><b>3.5.2</b> <em>Parsing date/time</em></a></li>
+<li class="chapter" data-level="3.5.3" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#extracting-information-from-dates"><i class="fa fa-check"></i><b>3.5.3</b> <em>Extracting information from dates</em></a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#basic-subsetting"><i class="fa fa-check"></i><b>3.6</b> <em>Basic subsetting</em></a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#basic-plotting"><i class="fa fa-check"></i><b>3.6.1</b> <em>Basic plotting</em></a></li>
+<li class="chapter" data-level="3.6.2" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#joining-data-tables-with-a-common-feature"><i class="fa fa-check"></i><b>3.6.2</b> <em>Joining data tables with a common feature</em></a></li>
+<li class="chapter" data-level="3.6.3" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#aggregating-data-chaining-functions"><i class="fa fa-check"></i><b>3.6.3</b> <em>Aggregating data &amp; chaining functions</em></a></li>
+<li class="chapter" data-level="3.6.4" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#filtering-data"><i class="fa fa-check"></i><b>3.6.4</b> <em>Filtering data</em></a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#citations"><i class="fa fa-check"></i><b>3.7</b> Citations</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html"><i class="fa fa-check"></i><b>4</b> Data visualization in R</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#learning-objectives-2"><i class="fa fa-check"></i><b>4.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="4.2" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#new-functions-syntax-2"><i class="fa fa-check"></i><b>4.2</b> New functions &amp; syntax</a></li>
+<li class="chapter" data-level="4.3" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#the-problem-1"><i class="fa fa-check"></i><b>4.3</b> The problem:</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#communicating-about-climate-change"><i class="fa fa-check"></i><b>4.3.1</b> <em>Communicating about climate change</em></a></li>
+<li class="chapter" data-level="4.3.2" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#the-data"><i class="fa fa-check"></i><b>4.3.2</b> <em>The data</em></a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#fundamentals-of-plotting-data"><i class="fa fa-check"></i><b>4.4</b> Fundamentals of plotting data</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#representation-of-data"><i class="fa fa-check"></i><b>4.4.1</b> <em>1. Representation of data</em></a></li>
+<li class="chapter" data-level="4.4.2" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#layout"><i class="fa fa-check"></i><b>4.4.2</b> <em>2. Layout</em></a></li>
+<li class="chapter" data-level="4.4.3" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#encoding"><i class="fa fa-check"></i><b>4.4.3</b> <em>3. Encoding</em></a></li>
+<li class="chapter" data-level="4.4.4" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#simplicity"><i class="fa fa-check"></i><b>4.4.4</b> <em>4. Simplicity</em></a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#plotting-data-in-base-r"><i class="fa fa-check"></i><b>4.5</b> Plotting data in base R</a></li>
+<li class="chapter" data-level="4.6" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#plotting-in-ggplot2"><i class="fa fa-check"></i><b>4.6</b> Plotting in ggplot2</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#intro-to-ggplot"><i class="fa fa-check"></i><b>4.6.1</b> <em>Intro to ggplot</em></a></li>
+<li class="chapter" data-level="4.6.2" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#changing-colors"><i class="fa fa-check"></i><b>4.6.2</b> <em>Changing colors</em></a></li>
+<li class="chapter" data-level="4.6.3" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#exploring-different-visualizations-in-ggplot2"><i class="fa fa-check"></i><b>4.6.3</b> Exploring different visualizations in ggplot2</a></li>
+<li class="chapter" data-level="4.6.4" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#violin-and-box-plots"><i class="fa fa-check"></i><b>4.6.4</b> <em>Violin and box plots</em></a></li>
+<li class="chapter" data-level="4.6.5" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#area-and-ribbon-plots"><i class="fa fa-check"></i><b>4.6.5</b> <em>Area and ribbon plots</em></a></li>
+<li class="chapter" data-level="4.6.6" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#labels"><i class="fa fa-check"></i><b>4.6.6</b> <em>Labels</em></a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#conclusions"><i class="fa fa-check"></i><b>4.7</b> Conclusions</a></li>
+<li class="chapter" data-level="4.8" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#citations-1"><i class="fa fa-check"></i><b>4.8</b> Citations</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><i class="fa fa-check"></i><b>5</b> When it rains, it pours. An introduction to data cleaning.</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#learning-objectives-3"><i class="fa fa-check"></i><b>5.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="5.2" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#new-functions-syntax-3"><i class="fa fa-check"></i><b>5.2</b> New functions &amp; syntax</a></li>
+<li class="chapter" data-level="5.3" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#the-problem-ensuring-reliable-data"><i class="fa fa-check"></i><b>5.3</b> The problem: ensuring reliable data</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#sensors-for-weather-and-microclimate"><i class="fa fa-check"></i><b>5.3.1</b> <em>Sensors for weather and microclimate</em></a></li>
+<li class="chapter" data-level="5.3.2" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#problematic-data"><i class="fa fa-check"></i><b>5.3.2</b> <em>Problematic data</em></a></li>
+<li class="chapter" data-level="5.3.3" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#the-data-1"><i class="fa fa-check"></i><b>5.3.3</b> <em>The data</em></a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cleaning-data"><i class="fa fa-check"></i><b>5.4</b> Cleaning data</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#removing-unreliable-data"><i class="fa fa-check"></i><b>5.4.1</b> <em>Removing unreliable data</em></a></li>
+<li class="chapter" data-level="5.4.2" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#creating-flags"><i class="fa fa-check"></i><b>5.4.2</b> <em>Creating flags</em></a></li>
+<li class="chapter" data-level="5.4.3" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#creating-functions-to-check-data"><i class="fa fa-check"></i><b>5.4.3</b> <em>Creating functions to check data</em></a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#conclusion"><i class="fa fa-check"></i><b>5.5</b> Conclusion</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to Environmental Data Science</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="when-it-rains-it-pours.-an-introduction-to-data-cleaning." class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> When it rains, it pours. An introduction to data cleaning.<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#when-it-rains-it-pours.-an-introduction-to-data-cleaning." class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><em>by Heather Kropp</em>
+<em>for ENVST 325: Introduction to Environmental Data Science</em>
+<em>Hamilton College</em></p>
+<style type="text/css">
+.book .book-body .page-wrapper .page-inner section.normal pre.colout {
+  background-color: #D9EDF7;
+}
+</style>
+<div id="learning-objectives-3" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Learning objectives<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#learning-objectives-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Flag and identify problematic data</li>
+<li>Create protocols to check data and generate error messages</li>
+<li>Work with automated weather data</li>
+</ol>
+</div>
+<div id="new-functions-syntax-3" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> New functions &amp; syntax<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#new-functions-syntax-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>ifelse</code>, <code>function</code>, <code>%--%</code>, <code>int_length</code></p>
+</div>
+<div id="the-problem-ensuring-reliable-data" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> The problem: ensuring reliable data<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#the-problem-ensuring-reliable-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="sensors-for-weather-and-microclimate" class="section level3 hasAnchor" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> <em>Sensors for weather and microclimate</em><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#sensors-for-weather-and-microclimate" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Sensors collect a wide array of observations about the environment. There are two many types of sensors to cover throughout this course designed to measure soils, oceans, surface conditions, and the atmosphere. Weather observations are critical for generating warnings in advance of extreme weather events, forecasting future conditions, and understanding the influence of weather on plant growth for agricultural and natural ecosystems. Governmental organizations like the National Weather Service and National Oceanic and Atmospheric Administration manage weather stations throughout the country to make observations available to both experts and the general public.</p>
+<center>
+<p><img src="photos/tutorial04/NOAA_weather.png" style="width:66.0%" /></p>
+<p><em>An automated weather observing system for a municple airport. Source: NOAA</em></p>
+</center>
+<p>There are two main components to sensor data collection:</p>
+<div id="sensor-relates-an-electrical-or-chemical-property-to-the-conditions-of-the-physical-environment-e.g.-change-in-voltage-or-resistance." class="section level5 hasAnchor" number="5.3.1.0.1">
+<h5><span class="header-section-number">5.3.1.0.1</span> 1. <strong>sensor:</strong> relates an electrical or chemical property to the conditions of the physical environment (<em>e.g.</em> change in voltage or resistance).<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#sensor-relates-an-electrical-or-chemical-property-to-the-conditions-of-the-physical-environment-e.g.-change-in-voltage-or-resistance." class="anchor-section" aria-label="Anchor link to header"></a></h5>
+</div>
+<div id="datalogger-records-and-stores-the-data.-programs-adjust-the-interval-of-data-records-and-the-nature-of-each-record-e.g.-averaged-over-interval-versus-value-at-time-of-observation." class="section level5 hasAnchor" number="5.3.1.0.2">
+<h5><span class="header-section-number">5.3.1.0.2</span> 2. <strong>datalogger:</strong> records and stores the data. Programs adjust the interval of data records and the nature of each record (<em>e.g.</em> averaged over interval versus value at time of observation).<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#datalogger-records-and-stores-the-data.-programs-adjust-the-interval-of-data-records-and-the-nature-of-each-record-e.g.-averaged-over-interval-versus-value-at-time-of-observation." class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>The large observing stations from organizations like NOAA (pictured above) produce highly accurate data necessary for meteorological observations, but are costly to maintain. This means that observations can be many miles apart and miss critical conditions that vary from the location of observation. The <strong>microclimate</strong> refers to the climate of a specific area that differs from the surrounding area. This means that the air temperature, humidity, precipitation, and solar radiation can all differ from the surrounding area. Microclimate is influenced by topography, vegetation, soil, human infrastructure, and surface water. For example, if you walk across campus on a hot, summer day you will notice a drop in temperature and sunlight as you go from the sidewalks onto the glen path. This is due to the canopy shading and evapotranspiration of the trees and creeks in the glen compared to the lawns and build surfaces of the main campus. The concept of microclimate is increasingly becoming important for ventures like precision agriculture where farmers try to customize irrigation and fertilization based on the needs of the field. Microclimate is also critical for understanding diversity and ecosystem function. Small, inexpensive sensors enable measurements of microclimate that will not be characterized by weather stations miles away. The microclimate weather station on campus will help evaluate the meterological conditions for the planted trees and support a number of student research projects. However, these less accurate sensors require users to maintain good data practices and may not always be able to capture all meteorological conditions. Each sensor will depend on the specifications outlined by the manufacturer. Below is an example of an all-in-one weather station. These stations are easy to install and maintain, but sensors like precipitation, air temperature, and solar radiation can be subject to measurement issues that affect reliability.</p>
+<center>
+<p><img src="photos/tutorial04/hamilton.png" style="width:33.0%" /></p>
+<p><em>An low-moderate accuracy all-in-one weather station installed on a reforestation plot on the Hamilton campus </em></p>
+</center>
+</div>
+</div>
+<div id="problematic-data" class="section level3 hasAnchor" number="5.3.2">
+<h3><span class="header-section-number">5.3.2</span> <em>Problematic data</em><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#problematic-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Sensors and dataloggers can break or experience quality issues related to malfunction or environmental conditions outside of their capacity. <strong>Quality assurance and quality control (QA/QC)</strong> are measures to ensure the reliability and accuracy of data. A large part of <strong>quality assurance</strong> involves checking the sensors that collect data and considering the conditions for operation outlined by the sensor manufacturer. <strong>Quality control</strong> encompasses the measures taken to ensure quality and remove problematic data. For large organizations like NOAA, QA/QC is conducted before data sharing. However, not all data providers may conduct QA/QC or you may be part of the initial data collection. <strong>Data cleaning</strong> refers to the measures taken to remove unreliable, corrupted, or incorrect data.</p>
+</div>
+<div id="the-data-1" class="section level3 hasAnchor" number="5.3.3">
+<h3><span class="header-section-number">5.3.3</span> <em>The data</em><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#the-data-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>You will work with the data collected from the reforestation weather station at Hamilton College. The all-in-one station (ATMOS 41 made by Meter Environment) is an affordable, easy to maintain system. A full manual can be found for the <a href="http://library.metergroup.com/Manuals/20635_ATMOS41_Manual_Web.pdf">ATMOS 41</a>. Note that there are some quality control measures built into the data logger described by the manual. There are 3 data files: <code>campus_weather.csv</code> contains the data observations. The METER data logger will automatically flag missing or problematic observations filtered by the data logger with a <code>#N/A</code>. It is not uncommon for data loggers to have their own form of <code>NA</code>. You can use the <code>na.strings</code> argument to specify how NAs are formatted in the data and R will automatically convert them to a <code>NA</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb1-1" tabindex="-1"></a>weather <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;/cloud/project/activity04/campus_weather.csv&quot;</span>,</span>
+<span id="cb1-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb1-2" tabindex="-1"></a>                    <span class="at">na.strings =</span> <span class="st">&quot;#N/A&quot;</span>)</span></code></pre></div>
+<pre class="colout"><code>            Date SolRad Precip LightningAct LightningDist WindDir WindSpeed
+1 12/11/20 14:30   98.2      0            0             0      88      1.07
+2 12/11/20 14:45  106.9      0            0             0     131      0.86
+3 12/11/20 15:00  109.4      0            0             0     110      0.77
+4 12/11/20 15:15   77.3      0            0             0      15      1.24
+5 12/11/20 15:30   55.0      0            0             0       8      1.28
+6 12/11/20 15:45   47.2      0            0             0       2      0.92
+  GustSpeed AirTemp VaporPr AtmosPr XLevel YLevel MaxPrecip RHSensorTemp  VPD
+1      3.39    10.5   0.626   98.31   -1.2    0.8         0         12.0 0.64
+2      2.65    10.3   0.641   98.32   -1.3    0.7         0         11.3 0.61
+3      2.64    10.4   0.654   98.33   -1.4    0.8         0         10.9 0.61
+4      3.76    10.5   0.663   98.35   -1.4    0.7         0         10.8 0.60
+5      3.15    10.1   0.660   98.38   -1.3    0.8         0         10.4 0.57
+6      2.24     9.6   0.661   98.39   -1.3    0.8         0          9.9 0.53
+  BatPct BatVolt RefPr LogTemp
+1     99    7798 98.27    14.6
+2     99    7797 98.26    12.6
+3     99    7797 98.26    11.7
+4    100    7801 98.27    11.2
+5     99    7798 98.30    10.4
+6     99    7798 98.31     9.6</code></pre>
+<p>The <code>meter_weather_metadata.csv</code> file has units and description for each column name in <code>weather_station</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb3-1" tabindex="-1"></a>metaDat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;/cloud/project/activity04/meter_weather_metadata.csv&quot;</span>,</span>
+<span id="cb3-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb3-2" tabindex="-1"></a>                    <span class="at">na.strings =</span> <span class="st">&quot;#N/A&quot;</span>)</span></code></pre></div>
+<pre class="colout"><code>           name        description            units
+1          Date          date/time MM/DD/YYYY HH:MM
+2        SolRad    solar radiation            W/m^2
+3        Precip      precipitation               mm
+4  LightningAct  lightning strikes             &lt;NA&gt;
+5 LightningDist lightning distance               km
+6       WindDir     wind direction           degree</code></pre>
+<p>The <code>Sensor log.csv</code> file has notable issues around the installation and maintenance of the weather station. A long gap occurred during a time when a student worker regularly checked on the station from Feb-May, but had no issues to note.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb5-1" tabindex="-1"></a>sensorLog <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;/cloud/project/activity04/Sensor log.csv&quot;</span>,</span>
+<span id="cb5-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb5-2" tabindex="-1"></a>                    <span class="at">na.strings =</span> <span class="st">&quot;#N/A&quot;</span>)</span></code></pre></div>
+<pre class="colout"><code>      Date
+1 12/11/20
+2 12/12/20
+3 12/19/20
+4   7/1/20
+                                                                                                                                                                      Notes
+1                                                                                                                                                                 Installed
+2                                                                                                            Fixed station mounting and got more level and fixed direction.
+3                                                                                                                                    Realized station was unplugged. Fixed.
+4 It has become clear that the delay in bird spike shipping has resulted in accumulation of excrement in the bucket of the rain sensor. Sensor was taken down for cleaning.</code></pre>
+<p>You will also want to load <code>dplyr</code>, <code>lubridate</code>, and <code>ggplot2</code> to your project:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb7-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;dplyr&quot;</span>,<span class="st">&quot;ggplot2&quot;</span>,<span class="st">&quot;lubridate&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb8-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb8-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb8-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb8-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb8-3" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span></code></pre></div>
+<p>There are a few downsides to the current system that can affect the data:</p>
+<div id="there-is-no-heated-precipitation-sensor.-this-means-that-frozen-precipitation-will-not-be-accurately-measured-and-accumulation-can-prevent-liquid-precipitation-from-being-measured-until-melt." class="section level5 hasAnchor" number="5.3.3.0.1">
+<h5><span class="header-section-number">5.3.3.0.1</span> 1. There is no heated precipitation sensor. This means that frozen precipitation will not be accurately measured and accumulation can prevent liquid precipitation from being measured until melt.<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#there-is-no-heated-precipitation-sensor.-this-means-that-frozen-precipitation-will-not-be-accurately-measured-and-accumulation-can-prevent-liquid-precipitation-from-being-measured-until-melt." class="anchor-section" aria-label="Anchor link to header"></a></h5>
+</div>
+<div id="air-temperature-in-an-all-in-one-does-have-the-traditional-solar-radiation-shield-of-louvered-plates-that-allow-for-air-circulation.-high-accuracy-air-temperature-measurements-will-also-use-a-fan-to-aspirate-the-air-around-the-sensor.-corrections-are-automatically-applied-to-account-for-the-sensor-lacking-these-features-based-on-wind-and-solar-radiation." class="section level5 hasAnchor" number="5.3.3.0.2">
+<h5><span class="header-section-number">5.3.3.0.2</span> 2. Air temperature in an all-in-one does have the traditional solar radiation shield of louvered plates that allow for air circulation. High accuracy air temperature measurements will also use a fan to aspirate the air around the sensor. Corrections are automatically applied to account for the sensor lacking these features based on wind and solar radiation.<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#air-temperature-in-an-all-in-one-does-have-the-traditional-solar-radiation-shield-of-louvered-plates-that-allow-for-air-circulation.-high-accuracy-air-temperature-measurements-will-also-use-a-fan-to-aspirate-the-air-around-the-sensor.-corrections-are-automatically-applied-to-account-for-the-sensor-lacking-these-features-based-on-wind-and-solar-radiation." class="anchor-section" aria-label="Anchor link to header"></a></h5>
+</div>
+<div id="accumulation-of-snow-or-ice-on-the-side-of-the-sensor-can-impact-wind-measurements." class="section level5 hasAnchor" number="5.3.3.0.3">
+<h5><span class="header-section-number">5.3.3.0.3</span> 3. Accumulation of snow or ice on the side of the sensor can impact wind measurements.<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#accumulation-of-snow-or-ice-on-the-side-of-the-sensor-can-impact-wind-measurements." class="anchor-section" aria-label="Anchor link to header"></a></h5>
+</div>
+<div id="the-installation-location-experiences-late-afternoon-shading-by-nearby-trees.-while-it-accurately-describes-the-solar-radiation-of-the-reforestation-plot-it-does-not-reflect-broader-levels-of-solar-radiation-experienced-outside-of-that-location." class="section level5 hasAnchor" number="5.3.3.0.4">
+<h5><span class="header-section-number">5.3.3.0.4</span> 4. The installation location experiences late afternoon shading by nearby trees. While it accurately describes the solar radiation of the reforestation plot, it does not reflect broader levels of solar radiation experienced outside of that location.<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#the-installation-location-experiences-late-afternoon-shading-by-nearby-trees.-while-it-accurately-describes-the-solar-radiation-of-the-reforestation-plot-it-does-not-reflect-broader-levels-of-solar-radiation-experienced-outside-of-that-location." class="anchor-section" aria-label="Anchor link to header"></a></h5>
+</div>
+<div id="covid-supply-chain-issues-delayed-the-shipping-of-bird-spike-until-late-june.-bird-activity-was-minimal-in-the-winter-but-in-may-or-june-it-was-clear-that-bird-interference-was-high." class="section level5 hasAnchor" number="5.3.3.0.5">
+<h5><span class="header-section-number">5.3.3.0.5</span> 5. COVID supply chain issues delayed the shipping of bird spike until late June. Bird activity was minimal in the winter, but in May or June it was clear that bird interference was high.<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#covid-supply-chain-issues-delayed-the-shipping-of-bird-spike-until-late-june.-bird-activity-was-minimal-in-the-winter-but-in-may-or-june-it-was-clear-that-bird-interference-was-high." class="anchor-section" aria-label="Anchor link to header"></a></h5>
+</div>
+</div>
+</div>
+<div id="cleaning-data" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Cleaning data<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cleaning-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="removing-unreliable-data" class="section level3 hasAnchor" number="5.4.1">
+<h3><span class="header-section-number">5.4.1</span> <em>Removing unreliable data</em><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#removing-unreliable-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Some data may be considered so unreliable that it cannot be used. The best option for this type of situation is to convert the data to a NA.</p>
+<p>Let’s look at an example with the clogging of the precipitation sensor by bird excrement. It would be best to use another nearby weather station to verify that rainfall was not accurately measured. Unfortunately the closest weather station is in Rome NY which can get slightly different weather systems. A simple visual check can verify if the data looks abnormal. Let’s parse the date create a day of year column (<code>doy</code>) so that you can make a plot of just the warm season around this issue:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-1" tabindex="-1"></a><span class="co"># parse date</span></span>
+<span id="cb9-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-2" tabindex="-1"></a>weather<span class="sc">$</span>dateF <span class="ot">&lt;-</span> <span class="fu">mdy_hm</span>(weather<span class="sc">$</span>Date)</span>
+<span id="cb9-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-3" tabindex="-1"></a><span class="co"># create a month column</span></span>
+<span id="cb9-4"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-4" tabindex="-1"></a>weather<span class="sc">$</span>doy <span class="ot">&lt;-</span> <span class="fu">yday</span>(weather<span class="sc">$</span>dateF)</span>
+<span id="cb9-5"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-5" tabindex="-1"></a><span class="co"># create a year column</span></span>
+<span id="cb9-6"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-6" tabindex="-1"></a>weather<span class="sc">$</span>year <span class="ot">&lt;-</span> <span class="fu">year</span>(weather<span class="sc">$</span>dateF)</span>
+<span id="cb9-7"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-7" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-8" tabindex="-1"></a><span class="co"># examine precipitation using a bar plot</span></span>
+<span id="cb9-9"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-9" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>weather[weather<span class="sc">$</span>doy <span class="sc">&gt;</span> <span class="dv">121</span> <span class="sc">&amp;</span> weather<span class="sc">$</span>doy <span class="sc">&lt;</span> <span class="dv">274</span> ,],</span>
+<span id="cb9-10"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-10" tabindex="-1"></a>                       <span class="fu">aes</span>(<span class="at">x=</span>dateF,</span>
+<span id="cb9-11"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-11" tabindex="-1"></a>                         <span class="at">y=</span>Precip))<span class="sc">+</span></span>
+<span id="cb9-12"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-12" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">color=</span><span class="st">&quot;royalblue4&quot;</span>)<span class="sc">+</span></span>
+<span id="cb9-13"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-13" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
+<pre><code>Warning: Removed 479 rows containing missing values or values outside the scale range
+(`geom_col()`).</code></pre>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>This doesn’t look reassuring. Between the visual assessment of the sensor (I will spare you the picture) and the fact that we don’t see very large (&gt; 3 mm) or trace events in the graph, there is compelling information that the precipitation data was not reliable throughout May and June.</p>
+<p>Let’s look at converting the data to an NA with <code>ifelse</code>. function. There are 3 main arguments: the first is the statement to evaluate, the second is the value if true, and the third is the value if the statement false.</p>
+<p>Let’s convert the precipitation in May and June to NA. May 1st may be going further back before the problem, but it was also the last time that a student checked on the weather station and verified everything was running properly.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb11-1" tabindex="-1"></a><span class="co"># add a column to weather:</span></span>
+<span id="cb11-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb11-2" tabindex="-1"></a>weather<span class="sc">$</span>precip.QC <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(weather<span class="sc">$</span>doy <span class="sc">&gt;=</span> <span class="dv">121</span> <span class="sc">&amp;</span> weather<span class="sc">$</span>doy <span class="sc">&lt;=</span> <span class="dv">188</span> <span class="sc">&amp;</span> weather<span class="sc">$</span>year <span class="sc">==</span> <span class="dv">2021</span>, </span>
+<span id="cb11-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb11-3" tabindex="-1"></a>                            <span class="co"># evaluate if the doy is between May 1 and July 7 2021</span></span>
+<span id="cb11-4"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb11-4" tabindex="-1"></a>                            <span class="cn">NA</span>, <span class="co"># value if true</span></span>
+<span id="cb11-5"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb11-5" tabindex="-1"></a>                            weather<span class="sc">$</span>Precip) <span class="co"># value if false: uses original precipitation observation</span></span></code></pre></div>
+</div>
+<div id="creating-flags" class="section level3 hasAnchor" number="5.4.2">
+<h3><span class="header-section-number">5.4.2</span> <em>Creating flags</em><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#creating-flags" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Flags provide additional clauses or information about the quality of an observations without removing it. They often indicate to a user that caution should be used in comparison with other data or the user should do additional checks for issues. They are often specific character or number codes that the user can find in metadata.</p>
+<p>Let’s look at creating a flag for frozen precipitation using <code>ifelse</code>. A numerical flag would be a good option with 0 indicating no issue and 1 indicating the potential for freezing precipitation. Let’s flag all observations where the air temperature is at freezing for a start:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb12-1" tabindex="-1"></a>weather<span class="sc">$</span>FreezeFlag <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(weather<span class="sc">$</span>AirTemp <span class="sc">&lt;=</span> <span class="dv">0</span>, <span class="co"># check if at or below zero</span></span>
+<span id="cb12-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb12-2" tabindex="-1"></a>                             <span class="dv">1</span>, <span class="co"># if true: set flag to 1</span></span>
+<span id="cb12-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb12-3" tabindex="-1"></a>                             <span class="dv">0</span>) <span class="co"># if false: set flag to zero</span></span></code></pre></div>
+</div>
+<div id="creating-functions-to-check-data" class="section level3 hasAnchor" number="5.4.3">
+<h3><span class="header-section-number">5.4.3</span> <em>Creating functions to check data</em><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#creating-functions-to-check-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Whether you are a data producer or user, it is always a good idea to have proper data protocols for checking that the data is as you expect. It is often helpful to develop your own functions for checking data. You can then refer back to these functions without having to rewrite code. We’ll learn to make a function by doing a routine check of date/time intervals.</p>
+<p>One of the fundamental indicators of issues with data can be seen in the regular intervals of date/time data. The campus weather station records data every 15 minutes. An irregularity in the interval can indicate many problems: daylight savings issues, battery power issues, drift in the data logger clock. A good first test of data is to check for regularity in intervals. You can set up a type of data called a <strong>time interval</strong> using the lubridate syntax <code>%--%</code>. The <code>int_length</code> function then uses an interval data format to calculate the interval length in seconds.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb13-1" tabindex="-1"></a><span class="co">#interval data: look at first 2 observations as interval</span></span>
+<span id="cb13-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb13-2" tabindex="-1"></a><span class="co"># Time 1 %--% Time 2</span></span>
+<span id="cb13-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb13-3" tabindex="-1"></a>weather<span class="sc">$</span>dateF[<span class="dv">1</span>] <span class="sc">%--%</span> weather<span class="sc">$</span>dateF[<span class="dv">2</span>]</span></code></pre></div>
+<pre class="colout"><code>[1] 2020-12-11 14:30:00 UTC--2020-12-11 14:45:00 UTC</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb15-1" tabindex="-1"></a><span class="co"># look at the interval length from the first to the second observation:</span></span>
+<span id="cb15-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb15-2" tabindex="-1"></a><span class="fu">int_length</span>(weather<span class="sc">$</span>dateF[<span class="dv">1</span>] <span class="sc">%--%</span> weather<span class="sc">$</span>dateF[<span class="dv">2</span>])</span></code></pre></div>
+<pre class="colout"><code>[1] 900</code></pre>
+<p>You can see the length is 900 seconds (15 mins * 60 seconds).</p>
+<p>However, you will want to check that this is consistent for the entire data. We know that an interval compares 2 time periods so we can only have a total of number of rows minus one intervals. In R, you can remove specific rows by using the - sign and the usual bracket notation. For this comparison, the ending observation in the date column can’t be compared to a second later date and the starting row has no prior date. The <code>length</code> function is useful because it gives you the total number of observations in a vector. We will want to remove them in setting up the intervals:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb17-1" tabindex="-1"></a><span class="co"># set up intervals</span></span>
+<span id="cb17-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb17-2" tabindex="-1"></a>intervals <span class="ot">&lt;-</span> weather<span class="sc">$</span>dateF[<span class="sc">-</span><span class="fu">length</span>(weather<span class="sc">$</span>dateF)] <span class="sc">%--%</span> weather<span class="sc">$</span>dateF[<span class="sc">-</span><span class="dv">1</span>] <span class="co"># start date %--% end date</span></span>
+<span id="cb17-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb17-3" tabindex="-1"></a><span class="co"># interval starts with row 1, and row 2</span></span>
+<span id="cb17-4"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb17-4" tabindex="-1"></a><span class="co"># and ends on second to last row and final row</span></span></code></pre></div>
+<p>You can then check all interval lengths that aren’t equal to 900:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb18-1" tabindex="-1"></a><span class="co"># calculate interval times</span></span>
+<span id="cb18-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb18-2" tabindex="-1"></a>interval_times <span class="ot">&lt;-</span> <span class="fu">int_length</span>(intervals)</span>
+<span id="cb18-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb18-3" tabindex="-1"></a><span class="co"># check interval times</span></span>
+<span id="cb18-4"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb18-4" tabindex="-1"></a>intervals[interval_times <span class="sc">!=</span> <span class="dv">900</span>]</span></code></pre></div>
+<pre class="colout"><code> [1] 2021-03-14 05:15:00 UTC--2021-03-14 06:30:00 UTC
+ [2] 2021-07-06 14:15:00 UTC--2021-07-06 14:45:00 UTC
+ [3] 2021-07-15 00:15:00 UTC--2021-07-15 00:15:00 UTC
+ [4] 2021-08-19 00:15:00 UTC--2021-08-19 00:15:00 UTC
+ [5] 2021-09-22 09:15:00 UTC--2021-09-22 10:15:00 UTC
+ [6] 2021-10-23 00:00:00 UTC--2021-10-23 05:15:00 UTC
+ [7] 2021-10-23 09:15:00 UTC--2021-10-23 10:30:00 UTC
+ [8] 2021-10-23 12:15:00 UTC--2021-10-23 13:15:00 UTC
+ [9] 2021-10-23 16:15:00 UTC--2021-10-24 08:15:00 UTC
+[10] 2021-10-24 09:30:00 UTC--2021-10-24 10:45:00 UTC
+[11] 2021-10-24 11:00:00 UTC--2021-10-24 11:30:00 UTC
+[12] 2021-10-24 11:30:00 UTC--2021-11-02 15:45:00 UTC
+[13] 2021-11-07 03:30:00 UTC--2021-11-07 02:45:00 UTC</code></pre>
+<p><strong>!! There are a few issues here!!</strong> It looks like something happens on daylight savings. There are also some large gaps in areas of maintainence or battery voltage issues. We also didn’t specify that the timezone and it is assuming that the data is in the UTC timezone. This is not accurate for this sensor and we will explore these issues further in class and homework.</p>
+<p>You would like to automate this function so you can use it for other data and when you get new weather station data. <code>function</code> allows you to create your new function. Anything on the left of the arrow is the name of your function. Arguments that will be specified by the user are given in paranthesis. Anything in the curly brackets <code>{}</code> is calculated in the function. The arguements need to used as written in the paranthesis.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-1" tabindex="-1"></a><span class="co">#create function for checking for irregular intervals that</span></span>
+<span id="cb20-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-2" tabindex="-1"></a><span class="co"># deviate from 900 seconds</span></span>
+<span id="cb20-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-3" tabindex="-1"></a><span class="co"># only argument is x, a vector of POSIXct formatted dates to be checked</span></span>
+<span id="cb20-4"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-4" tabindex="-1"></a><span class="co"># with an expected interval of 900 seconds</span></span>
+<span id="cb20-5"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-5" tabindex="-1"></a><span class="co"># the output is all observations that deviate from 900 seconds</span></span>
+<span id="cb20-6"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-6" tabindex="-1"></a>timeCheck900 <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb20-7"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-7" tabindex="-1"></a>  intervals <span class="ot">&lt;-</span> x[<span class="sc">-</span><span class="fu">length</span>(x)] <span class="sc">%--%</span> x[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb20-8"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-8" tabindex="-1"></a>  interval_times <span class="ot">&lt;-</span> <span class="fu">int_length</span>(intervals)</span>
+<span id="cb20-9"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-9" tabindex="-1"></a>  intervals[interval_times <span class="sc">!=</span> <span class="dv">900</span>]</span>
+<span id="cb20-10"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-10" tabindex="-1"></a>  </span>
+<span id="cb20-11"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-11" tabindex="-1"></a>}</span>
+<span id="cb20-12"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-12" tabindex="-1"></a><span class="co"># run on weather data</span></span>
+<span id="cb20-13"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-13" tabindex="-1"></a><span class="fu">timeCheck900</span>(weather<span class="sc">$</span>dateF)</span></code></pre></div>
+<pre class="colout"><code> [1] 2021-03-14 05:15:00 UTC--2021-03-14 06:30:00 UTC
+ [2] 2021-07-06 14:15:00 UTC--2021-07-06 14:45:00 UTC
+ [3] 2021-07-15 00:15:00 UTC--2021-07-15 00:15:00 UTC
+ [4] 2021-08-19 00:15:00 UTC--2021-08-19 00:15:00 UTC
+ [5] 2021-09-22 09:15:00 UTC--2021-09-22 10:15:00 UTC
+ [6] 2021-10-23 00:00:00 UTC--2021-10-23 05:15:00 UTC
+ [7] 2021-10-23 09:15:00 UTC--2021-10-23 10:30:00 UTC
+ [8] 2021-10-23 12:15:00 UTC--2021-10-23 13:15:00 UTC
+ [9] 2021-10-23 16:15:00 UTC--2021-10-24 08:15:00 UTC
+[10] 2021-10-24 09:30:00 UTC--2021-10-24 10:45:00 UTC
+[11] 2021-10-24 11:00:00 UTC--2021-10-24 11:30:00 UTC
+[12] 2021-10-24 11:30:00 UTC--2021-11-02 15:45:00 UTC
+[13] 2021-11-07 03:30:00 UTC--2021-11-07 02:45:00 UTC</code></pre>
+</div>
+</div>
+<div id="conclusion" class="section level2 hasAnchor" number="5.5">
+<h2><span class="header-section-number">5.5</span> Conclusion<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#conclusion" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Data cleaning is an important step for data producers and users. As a data user, it is important to check that the data meets your expectations. In addition to the functions you learned here, data cleaning often uses similar functions to data wrangling. The main difference is that you are ensuring the reliability of data for analysis and sharing not just organizing or formatting.</p>
+<p>The homework will continue to explore the data cleaning process using the Hamilton weather station. You can see from the data overview section that there are a number of quality issues to check.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data-visualization-in-r.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

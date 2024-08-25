@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 The data deluge: data wrangling in R | Introduction to Environmental Data Science</title>
+  <meta name="description" content="“ENVST 325: Environmental Data Science, Hamilton College”" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 The data deluge: data wrangling in R | Introduction to Environmental Data Science" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="“ENVST 325: Environmental Data Science, Hamilton College”" />
+  <meta name="github-repo" content="kroppheather/Intro_EnvDataSci" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 The data deluge: data wrangling in R | Introduction to Environmental Data Science" />
+  
+  <meta name="twitter:description" content="“ENVST 325: Environmental Data Science, Hamilton College”" />
+  
+
+<meta name="author" content="Heather Kropp" />
+
+
+<meta name="date" content="2024-01-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction-to-r-statistical-software-and-git.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#course-learning-objectives"><i class="fa fa-check"></i><b>1.1</b> Course Learning objectives</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#license"><i class="fa fa-check"></i><b>1.2</b> License</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html"><i class="fa fa-check"></i><b>2</b> Introduction to R Statistical Software and Git</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#learning-objectives"><i class="fa fa-check"></i><b>2.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="2.2" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#new-functions-syntax"><i class="fa fa-check"></i><b>2.2</b> New functions &amp; syntax</a></li>
+<li class="chapter" data-level="2.3" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#first-some-terms"><i class="fa fa-check"></i><b>2.3</b> First some terms:</a></li>
+<li class="chapter" data-level="2.4" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#setting-up-a-repository-in-github"><i class="fa fa-check"></i><b>2.4</b> Setting up a Repository in GitHub</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#create-a-repository"><i class="fa fa-check"></i><b>2.4.1</b> <em>Create a repository</em></a></li>
+<li class="chapter" data-level="2.4.2" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#create-a-personal-token-for-rstudio-cloud"><i class="fa fa-check"></i><b>2.4.2</b> <em>Create a personal token for Rstudio Cloud</em></a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#start-a-project-with-version-control-in-rstudio-cloud"><i class="fa fa-check"></i><b>2.5</b> Start a project with version control in Rstudio Cloud</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#start-a-project-linked-with-a-repository"><i class="fa fa-check"></i><b>2.5.1</b> <em>Start a project linked with a repository</em></a></li>
+<li class="chapter" data-level="2.5.2" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#rstudio-interface"><i class="fa fa-check"></i><b>2.5.2</b> <em>Rstudio interface</em></a></li>
+<li class="chapter" data-level="2.5.3" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#version-control"><i class="fa fa-check"></i><b>2.5.3</b> <em>Version control</em></a></li>
+<li class="chapter" data-level="2.5.4" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#commit-your-first-changes-to-github"><i class="fa fa-check"></i><b>2.5.4</b> <em>Commit your first changes to GitHub</em></a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#introrefresher-on-r"><i class="fa fa-check"></i><b>2.6</b> Intro/Refresher on R</a></li>
+<li class="chapter" data-level="2.7" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#variables"><i class="fa fa-check"></i><b>2.7</b> Variables</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#vectors"><i class="fa fa-check"></i><b>2.7.1</b> <em>Vectors</em></a></li>
+<li class="chapter" data-level="2.7.2" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#data-frames"><i class="fa fa-check"></i><b>2.7.2</b> <em>Data frames</em></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html"><i class="fa fa-check"></i><b>3</b> The data deluge: data wrangling in R</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#learning-objectives-1"><i class="fa fa-check"></i><b>3.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="3.2" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#new-functions-syntax-1"><i class="fa fa-check"></i><b>3.2</b> New functions &amp; syntax</a></li>
+<li class="chapter" data-level="3.3" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#the-problem"><i class="fa fa-check"></i><b>3.3</b> The problem:</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#flooding-and-natural-disasters"><i class="fa fa-check"></i><b>3.3.1</b> <em>Flooding and natural disasters</em></a></li>
+<li class="chapter" data-level="3.3.2" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#the-data-flood-stage-stream-guage-height"><i class="fa fa-check"></i><b>3.3.2</b> <em>The data: flood stage &amp; stream guage height</em></a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#the-approach-packages-in-r"><i class="fa fa-check"></i><b>3.4</b> The approach: packages in R</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#installing-packages"><i class="fa fa-check"></i><b>3.4.1</b> <em>Installing packages</em></a></li>
+<li class="chapter" data-level="3.4.2" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#loading-packages"><i class="fa fa-check"></i><b>3.4.2</b> <em>Loading packages</em></a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#the-approach-data-wrangling"><i class="fa fa-check"></i><b>3.5</b> The approach: data wrangling</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#reading-in-data"><i class="fa fa-check"></i><b>3.5.1</b> <em>Reading in data</em></a></li>
+<li class="chapter" data-level="3.5.2" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#parsing-datetime"><i class="fa fa-check"></i><b>3.5.2</b> <em>Parsing date/time</em></a></li>
+<li class="chapter" data-level="3.5.3" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#extracting-information-from-dates"><i class="fa fa-check"></i><b>3.5.3</b> <em>Extracting information from dates</em></a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#basic-subsetting"><i class="fa fa-check"></i><b>3.6</b> <em>Basic subsetting</em></a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#basic-plotting"><i class="fa fa-check"></i><b>3.6.1</b> <em>Basic plotting</em></a></li>
+<li class="chapter" data-level="3.6.2" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#joining-data-tables-with-a-common-feature"><i class="fa fa-check"></i><b>3.6.2</b> <em>Joining data tables with a common feature</em></a></li>
+<li class="chapter" data-level="3.6.3" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#aggregating-data-chaining-functions"><i class="fa fa-check"></i><b>3.6.3</b> <em>Aggregating data &amp; chaining functions</em></a></li>
+<li class="chapter" data-level="3.6.4" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#filtering-data"><i class="fa fa-check"></i><b>3.6.4</b> <em>Filtering data</em></a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#citations"><i class="fa fa-check"></i><b>3.7</b> Citations</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to Environmental Data Science</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="the-data-deluge-data-wrangling-in-r" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> The data deluge: data wrangling in R<a href="the-data-deluge-data-wrangling-in-r.html#the-data-deluge-data-wrangling-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><em>by Heather Kropp</em>
+<em>for ENVST 325: Introduction to Environmental Data Science</em>
+<em>Hamilton College</em></p>
+<style type="text/css">
+.book .book-body .page-wrapper .page-inner section.normal pre.colout {
+  background-color: #D9EDF7;
+}
+</style>
+<div id="learning-objectives-1" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Learning objectives<a href="the-data-deluge-data-wrangling-in-r.html#learning-objectives-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li><p>Learn about data for flood monitoring and prediction</p></li>
+<li><p>Read data into R</p></li>
+<li><p>Subset data that meets specific criteria</p></li>
+<li><p>Aggregate and sumarize data</p></li>
+</ol>
+</div>
+<div id="new-functions-syntax-1" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> New functions &amp; syntax<a href="the-data-deluge-data-wrangling-in-r.html#new-functions-syntax-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>$</code>, <code>==</code>,<code>&amp;</code>,<code>&lt; &gt;</code>,<code>|</code>,<code>plot</code>,<code>full_join</code>, <code>mean</code>,<code>max</code>,<code>sd</code>, <code>%&gt;%</code>, <code>sumarise</code>, <code>filter</code>, <code>n</code></p>
+</div>
+<div id="the-problem" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> The problem:<a href="the-data-deluge-data-wrangling-in-r.html#the-problem" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="flooding-and-natural-disasters" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> <em>Flooding and natural disasters</em><a href="the-data-deluge-data-wrangling-in-r.html#flooding-and-natural-disasters" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Increases in flooding are expected under climate change as precipitation regimes and extreme weather events increase. Hurricanes are major source of flooding in the eastern United States throughout the mid-late summer and early fall. Globally, tropical cyclone activity is increasing, and continued increases in sea level and temperature are expected to bring more severe hurricanes. In recent years, major hurricanes like Katrina, Ida, and Irma have tragically resulted in the loss of human life, billions of dollars of damage, and drastic changes to ecosystems and infrastructure.</p>
+<center>
+<p><img src="photos/tutorial02/irma_flood.jpg" style="width:50.0%" /></p>
+<em>Source: Flooding from Hurricane Irma, Florida National Gaurd, CC2</em>
+</center>
+<p>Many damages are associated with flooding that comes with high intensity rainfall and storm surges. Tracking patterns in historical flooding around hurricanes can help enable predictions for future scenarios and evaluate impacts. Real time tracking of stream and river levels is a critical part of the National Weather Service flood predictions and warning system. In this exercise, you will get more familiar with the data that helps track flooding. You will look at data in the days around Hurricane Irma in 2017. Hurricane Irma made landfall over Florida on September 10 and is estimated to have caused $50 billion dollars of damage.</p>
+<center>
+<p><img src="photos/tutorial02/hurricane_irma.gif" style="width:66.0%" /></p>
+<em>Source: Path, rainfall, and flood stage of Hurricane Irma.USGS</em>
+</center>
+</div>
+<div id="the-data-flood-stage-stream-guage-height" class="section level3 hasAnchor" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> <em>The data: flood stage &amp; stream guage height</em><a href="the-data-deluge-data-wrangling-in-r.html#the-data-flood-stage-stream-guage-height" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The United States Geological Survey maintains a network of stream measurements that measure the flow and height for rivers and other surface water features to monitor for flood conditions. These sensors monitor conditions in 15 minute increments and data is transmitted back to the USGS for relatively real time monitoring of conditions.</p>
+<center>
+<p><img src="photos/tutorial02/stream_monitorlocs.png" style="width:75.0%" /></p>
+<p><em>A map of real time stream flow data and (left) example of a sensor set up. Source: <a href="https://waterdata.usgs.gov/nwis">USGS water data</a></em></p>
+</center>
+<p>The <strong>stream stage</strong> is the height of the water surface in a stream, river, body of water. The reference point is commonly referred to as the datum. There are many automated ways to measure stream stage. An example of an analog approach is shown below. The USGS default is to measure stream stage in feet.</p>
+<center>
+<p><img src="photos/tutorial02/stream-gauge-old.jpg" style="width:33.0%" /></p>
+<p><em>Height Gauge. Source: Grzegorz W. Tężycki CC3</em></p>
+</center>
+<p>The United States Geological Survey measures stream stage and <strong>discharge</strong> in 15 minute increments at thousands of locations around the country. More information from the <a href="https://www.usgs.gov/special-topics/water-science-school/science/how-streamflow-measured">USGS water school</a>. Discharge can be an key part of modeling flooding and understanding issues associated with water cycling in a watershed. The default USGS measurement is in cubic feet per second.</p>
+<center>
+<p><img src="photos/tutorial02/streamgage-graphics%20-%20Copy.jpg" /></p>
+<em>Sources/Usage: Public Domain. (Credit: S.A. Olson and J.M. Norris, USGS)</em>
+</center>
+<p>The diagram above demonstrates the relationship between discharge and height. While discharge is a key variable in watershed modeling and hydrology, stream stage is often more intuitive for non-hydrologists to understand and can be used for decisions around recreational activities. The National Weather Services uses stream stage to characterize flood stage. Each station has designated heights that mark a different flooding level. The flooding heights depend on the depth of the body of water and the characteristics of the watershed.</p>
+<center>
+<p><img src="photos/tutorial02/flood%20categories.png" style="width:25.0%" /></p>
+<em>Sources/Usage: An example of flood categories for a location on the Mohawk Rivers NWS</em>
+</center>
+<p>You can find definitions for category here: <a href="https://www.weather.gov/aprfc/terminology" class="uri">https://www.weather.gov/aprfc/terminology</a>.</p>
+<center>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-5-1.png" width="768" /></p>
+</center>
+</div>
+</div>
+<div id="the-approach-packages-in-r" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> The approach: packages in R<a href="the-data-deluge-data-wrangling-in-r.html#the-approach-packages-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In chapter 1, <strong>functions</strong> like <code>c</code> and <code>data.frame</code> were used to create new data objects. These functions were a part of what is called <strong>base R</strong>. The functions that are available when you install R.</p>
+<p><strong>Packages</strong> add additional functions that are not located in the base functions in R. R is an open-source ecosystem that gets contributions from a wide array of software developers. There are more than 21,000 packages currently available on CRAN that expand the functions available in R. These packages help reduce the volume of code that people need to different operations that have a broader relevance for different applications. If you were to automatically have all of these packages and their functions loaded in R, it would take up space and too many functions would have the same name. I tend to take the philosophy that it is good practice to load only the packages needed to run the code in your script in an R session to keep track the different functions active in your session. Some packages may not be widely supported and become obsolete if developers do not actively update them.</p>
+<p>For data wrangling, functions from the <code>dplyr</code> package are useful. <code>dplyr</code> has functions for handling data and some functions are more efficient at working with large data frames than base R. The <a href="https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf">dplyr cheatsheet</a> gives an overview of the different functions in the package.</p>
+<p>Dates can be a tricky data format to work in. The package <code>lubridate</code> helps ease formatting and extracting information from dates. The <a href="https://rawgit.com/rstudio/cheatsheets/main/lubridate.pdf">lubridate cheatsheet</a> gives an overview of the different functions in the package.</p>
+<div id="installing-packages" class="section level3 hasAnchor" number="3.4.1">
+<h3><span class="header-section-number">3.4.1</span> <em>Installing packages</em><a href="the-data-deluge-data-wrangling-in-r.html#installing-packages" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The first step in using a package, is to install it to your local computer using the <code>install.packages</code> function. <strong>You only need to do run this once for a project in RStudio Cloud.</strong> A prompt will ask what mirror to download from. I typically choose any mirror in the United States.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;dplyr&quot;</span>, <span class="st">&quot;lubridate&quot;</span>))</span></code></pre></div>
+</div>
+<div id="loading-packages" class="section level3 hasAnchor" number="3.4.2">
+<h3><span class="header-section-number">3.4.2</span> <em>Loading packages</em><a href="the-data-deluge-data-wrangling-in-r.html#loading-packages" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Once the package is installed, you will need to load the package into your current session using the <strong>library</strong> function. <strong>You will run this every time you start a new R session.</strong> Note the package names are not in quotes here.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb2-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-2"><a href="the-data-deluge-data-wrangling-in-r.html#cb2-2" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span></code></pre></div>
+</div>
+</div>
+<div id="the-approach-data-wrangling" class="section level2 hasAnchor" number="3.5">
+<h2><span class="header-section-number">3.5</span> The approach: data wrangling<a href="the-data-deluge-data-wrangling-in-r.html#the-approach-data-wrangling" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Data wrangling is one of the most fundamental aspects to data science. Rarely will your data be perfectly formatted and ready for visualization, statistics, or modeling. You will will often need to merge different types of data, subset data to a narrower focus, and aggregate observations using functions like the average, min, or max. In this section, you will learn the basics of data wrangling in R to look at patterns in flooding.</p>
+<p>Once you start a new project from GitHub, you can upload data using the <code>upload button</code>. Download the Activity 2 zip file from the tutorials folder. You can upload the zip folder directly into RStudio Cloud from the upload button:</p>
+<center>
+<p><img src="photos/tutorial02/upload_data.png" style="width:25.0%" /></p>
+<em>Sources/Usage: NWS</em>
+</center>
+<div id="reading-in-data" class="section level3 hasAnchor" number="3.5.1">
+<h3><span class="header-section-number">3.5.1</span> <em>Reading in data</em><a href="the-data-deluge-data-wrangling-in-r.html#reading-in-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>You will read in data using the <code>read.csv</code> function. A csv file (comma separated values) contains the text version of an excel spreadsheet where the values for each cell are included in the file and the designation of a new cell starts with a comma. You can always resave an .xlsx file as a .csv. You can save any excel or sheets file as a .csv file when you click save as. Let’s read in a file I’ve already formatted for you.</p>
+<p>There is one critical argument in <code>read.csv</code>, the <strong>file path</strong> including the name of the file. A file path tells R where to find the file within the computer file system. You will be able to see the file in the Files tab. The file system for RStudio cloud will always start with <em>Cloud</em>.</p>
+<p>The stream gauge csv contains the 15 minute observations of stream stage before and after Irma. The column <code>gheight.ft</code> has the stream stage in feet, <code>datetime</code> has the date and time of collection, <code>siteID</code> is an unique numerical identifier USGS uses, and <code>agency</code> contains the administrative information for the management of the sensors. There are 4 total sample locations from Florida in the streamH and siteInfo data.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb3-1" tabindex="-1"></a>streamH <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;/cloud/project/activity02/stream_gauge.csv&quot;</span>)</span></code></pre></div>
+<pre class="colout"><code>  agency  siteID         datetime gheight.ft
+1   USGS 2256500 2017-09-08 00:00       5.68
+2   USGS 2256500 2017-09-08 00:15       5.68
+3   USGS 2256500 2017-09-08 00:30       5.68
+4   USGS 2256500 2017-09-08 00:45       5.68
+5   USGS 2256500 2017-09-08 01:00       5.69
+6   USGS 2256500 2017-09-08 01:15       5.69</code></pre>
+<p>The site_info table contains a the <code>siteID</code>, geographical name (<code>names</code>), and the National Weather Service information for flood stages (<code>action.ft</code>, <code>flood.ft</code>, <code>moderate.ft</code>, <code>major.ft</code>).</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb5-1" tabindex="-1"></a>siteInfo <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;/cloud/project/activity02/site_info.csv&quot;</span>)</span></code></pre></div>
+<pre class="colout"><code>  agency  siteID         datetime gheight.ft
+1   USGS 2256500 2017-09-08 00:00       5.68
+2   USGS 2256500 2017-09-08 00:15       5.68
+3   USGS 2256500 2017-09-08 00:30       5.68
+4   USGS 2256500 2017-09-08 00:45       5.68
+5   USGS 2256500 2017-09-08 01:00       5.69
+6   USGS 2256500 2017-09-08 01:15       5.69</code></pre>
+<p>In a data frame, you can always refer to a single column using the <code>$</code> notation for <code>data.frame$column.name</code></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb7-1" tabindex="-1"></a>siteInfo<span class="sc">$</span>names</span></code></pre></div>
+<pre class="colout"><code>[1] &quot;FISHEATING CREEK AT PALMDALE&quot;            
+[2] &quot;PEACE RIVER AT US 17 AT ZOLFO SPRINGS&quot;   
+[3] &quot;SANTA FE RIVER NEAR FORT WHITE&quot;          
+[4] &quot; WITHLACOOCHEE RIVER AT US 301 AT TRILBY&quot;</code></pre>
+</div>
+<div id="parsing-datetime" class="section level3 hasAnchor" number="3.5.2">
+<h3><span class="header-section-number">3.5.2</span> <em>Parsing date/time</em><a href="the-data-deluge-data-wrangling-in-r.html#parsing-datetime" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Parsing</strong> a date in R means that you are specifying the date and telling R how to structure it into a standard format. Date data can be formatted in many ways (think Jan-21-22 and 01/21/22 are two different ways to write the same date). In <code>lubridate</code>, parsing dates is easy a function that is named based on the order of your date formatting where <code>y</code>=year, <code>m</code>= month, <code>d</code> = day, <code>h</code> = hour, <code>m</code>=minute, <code>s</code>. The function parses the date into a standardized format for R using the specified date and time elements that are in your date data. If both are in the same column then you separate the date and time letters with an underscore. You can set the timezone with the argument <code>tz</code></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb9-1" tabindex="-1"></a>exampleDate <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;2021-01-10 05:23:30&quot;</span>)</span>
+<span id="cb9-2"><a href="the-data-deluge-data-wrangling-in-r.html#cb9-2" tabindex="-1"></a><span class="co">#parse date with year, month, day hour:minute:second</span></span>
+<span id="cb9-3"><a href="the-data-deluge-data-wrangling-in-r.html#cb9-3" tabindex="-1"></a><span class="fu">ymd_hms</span>(exampleDate)</span></code></pre></div>
+<pre class="colout"><code>[1] &quot;2021-01-10 05:23:30 UTC&quot;</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb11-1" tabindex="-1"></a><span class="co">#parse date with timezone so that it is always in NY time</span></span>
+<span id="cb11-2"><a href="the-data-deluge-data-wrangling-in-r.html#cb11-2" tabindex="-1"></a><span class="co">#will account for daylight savings. Time local to NY</span></span>
+<span id="cb11-3"><a href="the-data-deluge-data-wrangling-in-r.html#cb11-3" tabindex="-1"></a><span class="fu">ymd_hms</span>(exampleDate, <span class="at">tz=</span><span class="st">&quot;America/New_York&quot;</span>)</span></code></pre></div>
+<pre class="colout"><code>[1] &quot;2021-01-10 05:23:30 EST&quot;</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb13-1" tabindex="-1"></a><span class="co">#eastern standard time (note this doesn&#39;t work during daylight savings)</span></span>
+<span id="cb13-2"><a href="the-data-deluge-data-wrangling-in-r.html#cb13-2" tabindex="-1"></a><span class="fu">ymd_hms</span>(exampleDate, <span class="at">tz=</span><span class="st">&quot;EST&quot;</span>)</span></code></pre></div>
+<pre class="colout"><code>[1] &quot;2021-01-10 05:23:30 EST&quot;</code></pre>
+<p>You can reformat the date in a column:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb15-1" tabindex="-1"></a>streamH<span class="sc">$</span>dateF <span class="ot">&lt;-</span> <span class="fu">ymd_hm</span>(streamH<span class="sc">$</span>datetime, <span class="at">tz=</span><span class="st">&quot;America/New_York&quot;</span>)</span></code></pre></div>
+<p>I used New York because that will include both eastern standard and eastern daylight savings time. Florida and its cities don’t have a pre-defined time zone in R.</p>
+<center>
+<img src="EnvDataSci_files/figure-html/unnamed-chunk-15-1.png" width="768" />
+</center>
+</div>
+<div id="extracting-information-from-dates" class="section level3 hasAnchor" number="3.5.3">
+<h3><span class="header-section-number">3.5.3</span> <em>Extracting information from dates</em><a href="the-data-deluge-data-wrangling-in-r.html#extracting-information-from-dates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>There are many functions in <code>lubridate</code> to extract information for dates. You can use the <code>year</code> function to extract just the year from the date. The only argument is the vector of dates:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb16-1" tabindex="-1"></a><span class="fu">year</span>(streamH<span class="sc">$</span>dateF )</span></code></pre></div>
+<p>You can check if the year in a date is is a leap year with <code>leap_year</code>:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb17-1" tabindex="-1"></a><span class="fu">leap_year</span>(streamH<span class="sc">$</span>dateF )</span></code></pre></div>
+<p>You can get the day of year (Jan 1 is day 1 and December 31 on a non-leap year is day 365) with <code>yday</code>:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb18-1" tabindex="-1"></a><span class="fu">yday</span>(streamH<span class="sc">$</span>dateF )</span></code></pre></div>
+<p>You can get the decimal date with <code>decimal_day</code></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb19-1" tabindex="-1"></a><span class="fu">decimal_date</span>(streamH<span class="sc">$</span>dateF )</span></code></pre></div>
+<p>There are too many functions to go through here. If you have both date and time, there are functions like <code>hour</code> and <code>minute</code> that allow to extract time information.</p>
+<p>Decimal date and day of year might be useful. You can save it into the <code>streamH</code> using the <code>$</code> notation.</p>
+</div>
+</div>
+<div id="basic-subsetting" class="section level2 hasAnchor" number="3.6">
+<h2><span class="header-section-number">3.6</span> <em>Basic subsetting</em><a href="the-data-deluge-data-wrangling-in-r.html#basic-subsetting" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Subsetting</strong> data is a common technique in analysis. Subsetting involves isolating your datas to focus on a narrower characteristic or set of conditions. For example, you might want to look at river stage height at a single location or point in time.</p>
+<p>The use of <strong>relational</strong> operators allows you to identify and reference data that meets a condition such as (height <em>LESS THAN</em> 9 feet). <strong>Logical</strong> operators allow you to combine relational statements such as (height &lt; 8 feet <em>AND</em> height &gt; 6 feet ).</p>
+<table>
+<thead>
+<tr class="header">
+<th>Operator</th>
+<th>Interpretation</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>==</code></td>
+<td>equal to</td>
+<td>relational</td>
+</tr>
+<tr class="even">
+<td><code>!=</code></td>
+<td>not equal to</td>
+<td>relational</td>
+</tr>
+<tr class="odd">
+<td><code>&gt;</code></td>
+<td>more than (not including)</td>
+<td>relational</td>
+</tr>
+<tr class="even">
+<td><code>&gt;=</code></td>
+<td>more than or equal to</td>
+<td>relational</td>
+</tr>
+<tr class="odd">
+<td><code>&lt;</code></td>
+<td>less than (not including)</td>
+<td>relational</td>
+</tr>
+<tr class="even">
+<td><code>&lt;=</code></td>
+<td>less than or equal to</td>
+<td>relational</td>
+</tr>
+<tr class="odd">
+<td><code>&amp;</code></td>
+<td>and</td>
+<td>logical</td>
+</tr>
+<tr class="even">
+<td><code>|</code></td>
+<td>or</td>
+<td>logical</td>
+</tr>
+</tbody>
+</table>
+<p>You can place these statements in <code>[]</code> (remember tutorial 1) in a vector or the row/columns of a data frame. For example, let’s make a new data frame that just focuses on Peace River (ID = 2295637). Since a data frame is two dimensions the bracket notation must include both notations <code>[rows,columns]</code>:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb20-1" tabindex="-1"></a><span class="co">#subset stream height to just include peace river</span></span>
+<span id="cb20-2"><a href="the-data-deluge-data-wrangling-in-r.html#cb20-2" tabindex="-1"></a>peaceH <span class="ot">&lt;-</span> streamH[streamH<span class="sc">$</span>siteID <span class="sc">==</span> <span class="dv">2295637</span>, ]</span></code></pre></div>
+<p>The statement above indicates that only rows where siteID IS EQUAL TO 2295637 will be included all columns will be included (empty slote comma indicates include everything).</p>
+<center>
+<img src="EnvDataSci_files/figure-html/unnamed-chunk-22-1.png" width="768" />
+</center>
+<div id="basic-plotting" class="section level3 hasAnchor" number="3.6.1">
+<h3><span class="header-section-number">3.6.1</span> <em>Basic plotting</em><a href="the-data-deluge-data-wrangling-in-r.html#basic-plotting" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Visualizing data can be a helpful helpful for characterizing, understanding, and checking your data. We will learn how to make more sophisticated visualizations in the next tutorial using a package called <code>ggplot</code>, but a basic understanding of base R plotting is also helpful. The <code>plot</code> function will make a basic scatter plot for continuous data and a box plot for a categorical x axis. There are many arguments in the plot function. The first two arguements are the x axis and y axis data. Arguments like <code>type</code> (<code>"b"</code> means points and lines, <code>"l"</code> means just lines, and <code>"p</code> means just points) and <code>pch</code> (numbers for different shapes) change the characteristics of the graph. ‘xlab’ and ‘ylab’ change the labels on the axes. Let’s look at a plot of the Peace river stage height for each date:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb21-1" tabindex="-1"></a><span class="co">#plot date vs height with both lines and filled in points</span></span>
+<span id="cb21-2"><a href="the-data-deluge-data-wrangling-in-r.html#cb21-2" tabindex="-1"></a><span class="fu">plot</span>(peaceH<span class="sc">$</span>dateF, peaceH<span class="sc">$</span>gheight.ft, <span class="at">type=</span><span class="st">&quot;b&quot;</span>, <span class="at">pch=</span><span class="dv">19</span>, <span class="at">xlab=</span><span class="st">&quot;Date&quot;</span>,</span>
+<span id="cb21-3"><a href="the-data-deluge-data-wrangling-in-r.html#cb21-3" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Stage height (ft)&quot;</span>)</span></code></pre></div>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>You can see that the river level drastically increased on September 11 and took a while to decline. It might be helpful to bring in the NWS flood categories to understand the scale of the flooding.</p>
+<center>
+<img src="EnvDataSci_files/figure-html/unnamed-chunk-24-1.png" width="768" />
+</center>
+</div>
+<div id="joining-data-tables-with-a-common-feature" class="section level3 hasAnchor" number="3.6.2">
+<h3><span class="header-section-number">3.6.2</span> <em>Joining data tables with a common feature</em><a href="the-data-deluge-data-wrangling-in-r.html#joining-data-tables-with-a-common-feature" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>You want to understand if Peace River actually flooded during the hurricane. The <code>siteInfo</code> table contains that information. There are thousands of observations for each stream gauge measurement in streamH, but only one observation for each site in siteInfo. <strong>Joining</strong> the tables together will match the tables using a common feature in each table. In this case it is the <code>siteID</code> column that gives the unique identifying number for each stream gauge station. Using an unique numerical identifier is a really common feature in data organization.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb22-1" tabindex="-1"></a><span class="co">#preview streamH table </span></span>
+<span id="cb22-2"><a href="the-data-deluge-data-wrangling-in-r.html#cb22-2" tabindex="-1"></a><span class="fu">str</span>(streamH)</span></code></pre></div>
+<pre class="colout"><code>&#39;data.frame&#39;:   8681 obs. of  7 variables:
+ $ agency    : chr  &quot;USGS&quot; &quot;USGS&quot; &quot;USGS&quot; &quot;USGS&quot; ...
+ $ siteID    : int  2256500 2256500 2256500 2256500 2256500 2256500 2256500 2256500 2256500 2256500 ...
+ $ datetime  : chr  &quot;2017-09-08 00:00&quot; &quot;2017-09-08 00:15&quot; &quot;2017-09-08 00:30&quot; &quot;2017-09-08 00:45&quot; ...
+ $ gheight.ft: num  5.68 5.68 5.68 5.68 5.69 5.69 5.69 5.69 5.7 5.7 ...
+ $ dateF     : POSIXct, format: &quot;2017-09-08 00:00:00&quot; &quot;2017-09-08 00:15:00&quot; ...
+ $ DD        : num  2018 2018 2018 2018 2018 ...
+ $ doy       : num  251 251 251 251 251 251 251 251 251 251 ...</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb24-1" tabindex="-1"></a><span class="co">#print siteInfo</span></span>
+<span id="cb24-2"><a href="the-data-deluge-data-wrangling-in-r.html#cb24-2" tabindex="-1"></a>siteInfo</span></code></pre></div>
+<pre class="colout"><code>   siteID                                    names action.ft flood.ft
+1 2256500             FISHEATING CREEK AT PALMDALE       5.0        7
+2 2295637    PEACE RIVER AT US 17 AT ZOLFO SPRINGS       9.0       11
+3 2322500           SANTA FE RIVER NEAR FORT WHITE      22.0       23
+4 2312000  WITHLACOOCHEE RIVER AT US 301 AT TRILBY      10.5       12
+  moderate.ft major.ft
+1         8.0      9.0
+2        14.0     16.0
+3        25.0     29.0
+4        14.2     16.5</code></pre>
+<p>It would be helpful to have the flood category alongside the actual measurements. You could look at what flood category an individual measurement falls under. In joining two tables, you designate one table as the <strong>left table</strong> and one table as the <strong>right table</strong>. A <strong>join</strong> combines the columns in the left table with the right table to create a new table. The rows are matched between tables using a common identifier. Let’s do what is called a <strong>full join</strong>. This will keep information from all tables. Any observations that do not have a match between tables get a <code>NA</code> (missing data) designation.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb26-1" tabindex="-1"></a><span class="co"># join site info and stream heights into a new data frame floods</span></span>
+<span id="cb26-2"><a href="the-data-deluge-data-wrangling-in-r.html#cb26-2" tabindex="-1"></a>floods <span class="ot">&lt;-</span> <span class="fu">full_join</span>(streamH, <span class="co"># left table</span></span>
+<span id="cb26-3"><a href="the-data-deluge-data-wrangling-in-r.html#cb26-3" tabindex="-1"></a>                    siteInfo, <span class="co"># right table</span></span>
+<span id="cb26-4"><a href="the-data-deluge-data-wrangling-in-r.html#cb26-4" tabindex="-1"></a>                    <span class="at">by=</span><span class="st">&quot;siteID&quot;</span>) <span class="co"># common identifier</span></span>
+<span id="cb26-5"><a href="the-data-deluge-data-wrangling-in-r.html#cb26-5" tabindex="-1"></a><span class="fu">head</span>(floods)</span></code></pre></div>
+<pre class="colout"><code>  agency  siteID         datetime gheight.ft               dateF       DD doy
+1   USGS 2256500 2017-09-08 00:00       5.68 2017-09-08 00:00:00 2017.685 251
+2   USGS 2256500 2017-09-08 00:15       5.68 2017-09-08 00:15:00 2017.685 251
+3   USGS 2256500 2017-09-08 00:30       5.68 2017-09-08 00:30:00 2017.685 251
+4   USGS 2256500 2017-09-08 00:45       5.68 2017-09-08 00:45:00 2017.685 251
+5   USGS 2256500 2017-09-08 01:00       5.69 2017-09-08 01:00:00 2017.685 251
+6   USGS 2256500 2017-09-08 01:15       5.69 2017-09-08 01:15:00 2017.685 251
+                         names action.ft flood.ft moderate.ft major.ft
+1 FISHEATING CREEK AT PALMDALE         5        7           8        9
+2 FISHEATING CREEK AT PALMDALE         5        7           8        9
+3 FISHEATING CREEK AT PALMDALE         5        7           8        9
+4 FISHEATING CREEK AT PALMDALE         5        7           8        9
+5 FISHEATING CREEK AT PALMDALE         5        7           8        9
+6 FISHEATING CREEK AT PALMDALE         5        7           8        9</code></pre>
+<p>You can see there are now columns from both tables. The observations from siteInfo were replicated for each observation in streamH with the matching id. There are other types of joins like <strong>left_join</strong> that keeps the structure of the left table and does not add new observations if there is an observation present in the right table but not the left. An <strong>inner_join</strong> only keeps observations present in each table.</p>
+<center>
+<img src="EnvDataSci_files/figure-html/unnamed-chunk-27-1.png" width="768" />
+</center>
+</div>
+<div id="aggregating-data-chaining-functions" class="section level3 hasAnchor" number="3.6.3">
+<h3><span class="header-section-number">3.6.3</span> <em>Aggregating data &amp; chaining functions</em><a href="the-data-deluge-data-wrangling-in-r.html#aggregating-data-chaining-functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A common action in data analysis is to summarize data observations across groups or categories. This means dropping down from a large number of observations to a smaller number using a <strong>summary statistic</strong>. You are familiar with a range of summary statistics including the average (<code>mean</code> in R), standard deviation (<code>sd</code> in R), and the count (<code>length</code> or <code>n</code> in R). It is rare that you will want to take an average for an entire data set. For example running the following code to average the entire height column doesn’t provide a lot of useful information.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb28-1" tabindex="-1"></a><span class="fu">mean</span>(floods<span class="sc">$</span>gheight.ft)</span></code></pre></div>
+<pre class="colout"><code>[1] 11.62245</code></pre>
+<p>In this case, that would not mean much since there is a random assortment of rivers with different baseline heights for each flood category. Instead it makes sense to look at each river individually.</p>
+<p>You can use the <code>group_by</code> and <code>summarise</code> function from dplyr to calculate the mean over a variable containing different grouping factors. These functions will be chained together in what is called a <strong>pipe</strong>.
+In <em>tidyverse</em> packages like <code>dplyr</code>, a pipe looks like this: <code>%&gt;%</code>. Each function can be chained on its own line. Note that brand new versions of R offer a pipe in base R that looks a little different. It is too confusing to switch between the two. We will focus on the tidyverse version here. Pipes also use a specific format that starts by naming the new object that will be the final output from the chain of functions.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb30-1" tabindex="-1"></a>height.ave <span class="ot">&lt;-</span> floods <span class="sc">%&gt;%</span> <span class="co"># data frame with pipe</span></span>
+<span id="cb30-2"><a href="the-data-deluge-data-wrangling-in-r.html#cb30-2" tabindex="-1"></a>  <span class="fu">group_by</span>(names) <span class="sc">%&gt;%</span> <span class="co"># group data frame by unique names</span></span>
+<span id="cb30-3"><a href="the-data-deluge-data-wrangling-in-r.html#cb30-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean.height =</span> <span class="fu">mean</span>(gheight.ft)) <span class="co"># next summarize using mean</span></span>
+<span id="cb30-4"><a href="the-data-deluge-data-wrangling-in-r.html#cb30-4" tabindex="-1"></a>height.ave</span></code></pre></div>
+<pre class="colout"><code># A tibble: 4 × 2
+  names                                      mean.height
+  &lt;chr&gt;                                            &lt;dbl&gt;
+1 &quot; WITHLACOOCHEE RIVER AT US 301 AT TRILBY&quot;       15.5 
+2 &quot;FISHEATING CREEK AT PALMDALE&quot;                    7.53
+3 &quot;PEACE RIVER AT US 17 AT ZOLFO SPRINGS&quot;          17.1 
+4 &quot;SANTA FE RIVER NEAR FORT WHITE&quot;                  6.76</code></pre>
+<p>Tidyverse generates a variant of data frames called a <strong>tibble</strong>. The format is very similar to a data frame, but there are additional labels for the type of data and any group designations in the data.</p>
+<p>You will notice that you get an message about grouping. This is a friendly warning that an argument made a default assumption about keeping the structure of groups in the output. We won’t work super closely with the groups in the output data so you can ignore it.</p>
+<p>More than one column can be used to create groups and multiple columns of summaries can be generated within <code>summarise</code>. Let’s look at the average and maximum daily heights for each site:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb32-1" tabindex="-1"></a>height.day <span class="ot">&lt;-</span> floods <span class="sc">%&gt;%</span> <span class="co"># data frame with pipe</span></span>
+<span id="cb32-2"><a href="the-data-deluge-data-wrangling-in-r.html#cb32-2" tabindex="-1"></a>  <span class="fu">group_by</span>(names, doy) <span class="sc">%&gt;%</span> <span class="co"># group data frame by unique names and doy</span></span>
+<span id="cb32-3"><a href="the-data-deluge-data-wrangling-in-r.html#cb32-3" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean.height =</span> <span class="fu">mean</span>(gheight.ft), <span class="at">max.height =</span> <span class="fu">max</span>(gheight.ft)) <span class="co"># next summarize using mean and max</span></span></code></pre></div>
+<pre class="colout"><code># A tibble: 10 × 4
+# Groups:   names [1]
+   names                                        doy mean.height max.height
+   &lt;chr&gt;                                      &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;
+ 1 &quot; WITHLACOOCHEE RIVER AT US 301 AT TRILBY&quot;   251        10.0       10.1
+ 2 &quot; WITHLACOOCHEE RIVER AT US 301 AT TRILBY&quot;   252        10.1       10.2
+ 3 &quot; WITHLACOOCHEE RIVER AT US 301 AT TRILBY&quot;   253        10.3       11.0
+ 4 &quot; WITHLACOOCHEE RIVER AT US 301 AT TRILBY&quot;   254        12.4       13.7
+ 5 &quot; WITHLACOOCHEE RIVER AT US 301 AT TRILBY&quot;   255        14.3       14.7
+ 6 &quot; WITHLACOOCHEE RIVER AT US 301 AT TRILBY&quot;   256        14.9       15.1
+ 7 &quot; WITHLACOOCHEE RIVER AT US 301 AT TRILBY&quot;   257        15.3       15.5
+ 8 &quot; WITHLACOOCHEE RIVER AT US 301 AT TRILBY&quot;   258        15.7       16.0
+ 9 &quot; WITHLACOOCHEE RIVER AT US 301 AT TRILBY&quot;   259        16.3       16.6
+10 &quot; WITHLACOOCHEE RIVER AT US 301 AT TRILBY&quot;   260        16.8       17.0</code></pre>
+</div>
+<div id="filtering-data" class="section level3 hasAnchor" number="3.6.4">
+<h3><span class="header-section-number">3.6.4</span> <em>Filtering data</em><a href="the-data-deluge-data-wrangling-in-r.html#filtering-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The <code>filter</code> function is very similar in operation to the bracket subset you learned above in base R. The benefit in filter is that it can also be linked to <code>group_by</code>.</p>
+<p>Rather than thinking about average height, it may be helpful to characterize how long each gauge was in a certain flood category for each river. It is useful to subset the data frame so that you can characterize the time spent under that condition.</p>
+<p>Let’s start by looking at the highest category of flooding, the major flooding category. This category is associated with extensive damage, travel interruptions, and mobilizes the national guard.</p>
+<p>Let’s start by with the filter to isolate only observations at or above a major flooding category:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb34-1" tabindex="-1"></a>max.cat <span class="ot">&lt;-</span> floods <span class="sc">%&gt;%</span> <span class="co">#filter floods</span></span>
+<span id="cb34-2"><a href="the-data-deluge-data-wrangling-in-r.html#cb34-2" tabindex="-1"></a>  <span class="fu">group_by</span>(names) <span class="sc">%&gt;%</span> <span class="co"># group by name</span></span>
+<span id="cb34-3"><a href="the-data-deluge-data-wrangling-in-r.html#cb34-3" tabindex="-1"></a>  <span class="fu">filter</span>(gheight.ft <span class="sc">&gt;=</span> major.ft) <span class="co">#observations with height more than or equal to the major flood height</span></span></code></pre></div>
+<pre class="colout"><code># A tibble: 6 × 12
+# Groups:   names [1]
+  agency  siteID datetime       gheight.ft dateF                  DD   doy names
+  &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;               &lt;dbl&gt; &lt;dttm&gt;              &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;
+1 USGS   2256500 2017-09-12 02…       9.02 2017-09-12 02:00:00 2018.   255 FISH…
+2 USGS   2256500 2017-09-12 02…       9.05 2017-09-12 02:15:00 2018.   255 FISH…
+3 USGS   2256500 2017-09-12 02…       9.07 2017-09-12 02:30:00 2018.   255 FISH…
+4 USGS   2256500 2017-09-12 02…       9.09 2017-09-12 02:45:00 2018.   255 FISH…
+5 USGS   2256500 2017-09-12 03…       9.12 2017-09-12 03:00:00 2018.   255 FISH…
+6 USGS   2256500 2017-09-12 03…       9.15 2017-09-12 03:15:00 2018.   255 FISH…
+# ℹ 4 more variables: action.ft &lt;dbl&gt;, flood.ft &lt;int&gt;, moderate.ft &lt;dbl&gt;,
+#   major.ft &lt;dbl&gt;</code></pre>
+<p>A preview reveals a tibble that looks different from floods. However, it would be help to characterize how many of these observations were above the major flood stage. You can build on the <code>filter</code> function with <code>summarise</code>. The <code>n</code> function in dplyr will count the number of observations in the data frame. In this case, this is the 15 min intervals that exceeded major flooding.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb36-1" tabindex="-1"></a>max.cat <span class="ot">&lt;-</span> floods <span class="sc">%&gt;%</span></span>
+<span id="cb36-2"><a href="the-data-deluge-data-wrangling-in-r.html#cb36-2" tabindex="-1"></a>  <span class="fu">group_by</span>(names) <span class="sc">%&gt;%</span></span>
+<span id="cb36-3"><a href="the-data-deluge-data-wrangling-in-r.html#cb36-3" tabindex="-1"></a>  <span class="fu">filter</span>(gheight.ft <span class="sc">&gt;=</span> major.ft) <span class="sc">%&gt;%</span></span>
+<span id="cb36-4"><a href="the-data-deluge-data-wrangling-in-r.html#cb36-4" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n.major =</span> <span class="fu">n</span>()) <span class="co"># count number of observations for each name</span></span></code></pre></div>
+<pre class="colout"><code># A tibble: 3 × 2
+  names                                      n.major
+  &lt;chr&gt;                                        &lt;int&gt;
+1 &quot; WITHLACOOCHEE RIVER AT US 301 AT TRILBY&quot;     981
+2 &quot;FISHEATING CREEK AT PALMDALE&quot;                 357
+3 &quot;PEACE RIVER AT US 17 AT ZOLFO SPRINGS&quot;       1147</code></pre>
+<p>That is a lot of observations! One site is not present and never got to a major flood category. A fifteen minute period is tough to interpret. Let’s convert those 15 minute periods to days. R allows you to put functions or calculations in another function. It can make for messy coding if you have a lot of functions, but in this case it reduces the amount of coding. You have to first multiply each observation period by 15 to represent it in minutes and then convert minutes to days.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="the-data-deluge-data-wrangling-in-r.html#cb38-1" tabindex="-1"></a>max.cat <span class="ot">&lt;-</span> floods <span class="sc">%&gt;%</span></span>
+<span id="cb38-2"><a href="the-data-deluge-data-wrangling-in-r.html#cb38-2" tabindex="-1"></a>  <span class="fu">group_by</span>(names) <span class="sc">%&gt;%</span></span>
+<span id="cb38-3"><a href="the-data-deluge-data-wrangling-in-r.html#cb38-3" tabindex="-1"></a>  <span class="fu">filter</span>(gheight.ft <span class="sc">&gt;=</span> major.ft) <span class="sc">%&gt;%</span></span>
+<span id="cb38-4"><a href="the-data-deluge-data-wrangling-in-r.html#cb38-4" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n.major =</span> ((<span class="fu">n</span>()<span class="sc">*</span><span class="dv">15</span>)<span class="sc">/</span><span class="dv">60</span>)<span class="sc">/</span><span class="dv">24</span>) <span class="co"># find out how many days the 15 minute periods add up to</span></span></code></pre></div>
+<pre class="colout"><code># A tibble: 3 × 2
+  names                                      n.major
+  &lt;chr&gt;                                        &lt;dbl&gt;
+1 &quot; WITHLACOOCHEE RIVER AT US 301 AT TRILBY&quot;   10.2 
+2 &quot;FISHEATING CREEK AT PALMDALE&quot;                3.72
+3 &quot;PEACE RIVER AT US 17 AT ZOLFO SPRINGS&quot;      11.9 </code></pre>
+<p>There is clearly a lot of variation in the duration of flooding and severity of flooding in each of these four stations. In your homework, you will continue to explore characterizing this flood data through the summary and organization of the data. This is just an introduction to the many functions that are involved in data wrangling.</p>
+<p>Data wrangling is a central part to data analysis and is often needed to calculate statistics or set up your data for a model or algorithm. It may be the starting point for your data analysis and it may even be the endgame if you simply need summary statistics or visualizations.</p>
+<center>
+<img src="EnvDataSci_files/figure-html/unnamed-chunk-38-1.png" width="768" />
+</center>
+</div>
+</div>
+<div id="citations" class="section level2 hasAnchor" number="3.7">
+<h2><span class="header-section-number">3.7</span> Citations<a href="the-data-deluge-data-wrangling-in-r.html#citations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Kossin, James P., et al. “Global increase in major tropical cyclone exceedance probability over the past four decades.” Proceedings of the National Academy of Sciences 117.22 (2020): 11975-11980.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction-to-r-statistical-software-and-git.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

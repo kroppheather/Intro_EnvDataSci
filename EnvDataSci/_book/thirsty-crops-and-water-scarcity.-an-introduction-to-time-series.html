@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Thirsty crops and water scarcity. An introduction to time series | Introduction to Environmental Data Science</title>
+  <meta name="description" content="“ENVST 325: Environmental Data Science, Hamilton College”" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Thirsty crops and water scarcity. An introduction to time series | Introduction to Environmental Data Science" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="“ENVST 325: Environmental Data Science, Hamilton College”" />
+  <meta name="github-repo" content="kroppheather/Intro_EnvDataSci" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Thirsty crops and water scarcity. An introduction to time series | Introduction to Environmental Data Science" />
+  
+  <meta name="twitter:description" content="“ENVST 325: Environmental Data Science, Hamilton College”" />
+  
+
+<meta name="author" content="Heather Kropp" />
+
+
+<meta name="date" content="2024-01-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="linear-regression-model-selection-and-prediction-in-r.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#course-learning-objectives"><i class="fa fa-check"></i><b>1.1</b> Course Learning objectives</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#license"><i class="fa fa-check"></i><b>1.2</b> License</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html"><i class="fa fa-check"></i><b>2</b> Introduction to R Statistical Software and Git</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#learning-objectives"><i class="fa fa-check"></i><b>2.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="2.2" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#new-functions-syntax"><i class="fa fa-check"></i><b>2.2</b> New functions &amp; syntax</a></li>
+<li class="chapter" data-level="2.3" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#first-some-terms"><i class="fa fa-check"></i><b>2.3</b> First some terms:</a></li>
+<li class="chapter" data-level="2.4" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#setting-up-a-repository-in-github"><i class="fa fa-check"></i><b>2.4</b> Setting up a Repository in GitHub</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#create-a-repository"><i class="fa fa-check"></i><b>2.4.1</b> <em>Create a repository</em></a></li>
+<li class="chapter" data-level="2.4.2" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#create-a-personal-token-for-rstudio-cloud"><i class="fa fa-check"></i><b>2.4.2</b> <em>Create a personal token for Rstudio Cloud</em></a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#start-a-project-with-version-control-in-rstudio-cloud"><i class="fa fa-check"></i><b>2.5</b> Start a project with version control in Rstudio Cloud</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#start-a-project-linked-with-a-repository"><i class="fa fa-check"></i><b>2.5.1</b> <em>Start a project linked with a repository</em></a></li>
+<li class="chapter" data-level="2.5.2" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#rstudio-interface"><i class="fa fa-check"></i><b>2.5.2</b> <em>Rstudio interface</em></a></li>
+<li class="chapter" data-level="2.5.3" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#version-control"><i class="fa fa-check"></i><b>2.5.3</b> <em>Version control</em></a></li>
+<li class="chapter" data-level="2.5.4" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#commit-your-first-changes-to-github"><i class="fa fa-check"></i><b>2.5.4</b> <em>Commit your first changes to GitHub</em></a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#introrefresher-on-r"><i class="fa fa-check"></i><b>2.6</b> Intro/Refresher on R</a></li>
+<li class="chapter" data-level="2.7" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#variables"><i class="fa fa-check"></i><b>2.7</b> Variables</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#vectors"><i class="fa fa-check"></i><b>2.7.1</b> <em>Vectors</em></a></li>
+<li class="chapter" data-level="2.7.2" data-path="introduction-to-r-statistical-software-and-git.html"><a href="introduction-to-r-statistical-software-and-git.html#data-frames"><i class="fa fa-check"></i><b>2.7.2</b> <em>Data frames</em></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html"><i class="fa fa-check"></i><b>3</b> The data deluge: data wrangling in R</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#learning-objectives-1"><i class="fa fa-check"></i><b>3.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="3.2" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#new-functions-syntax-1"><i class="fa fa-check"></i><b>3.2</b> New functions &amp; syntax</a></li>
+<li class="chapter" data-level="3.3" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#the-problem"><i class="fa fa-check"></i><b>3.3</b> The problem:</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#flooding-and-natural-disasters"><i class="fa fa-check"></i><b>3.3.1</b> <em>Flooding and natural disasters</em></a></li>
+<li class="chapter" data-level="3.3.2" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#the-data-flood-stage-stream-guage-height"><i class="fa fa-check"></i><b>3.3.2</b> <em>The data: flood stage &amp; stream guage height</em></a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#the-approach-packages-in-r"><i class="fa fa-check"></i><b>3.4</b> The approach: packages in R</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#installing-packages"><i class="fa fa-check"></i><b>3.4.1</b> <em>Installing packages</em></a></li>
+<li class="chapter" data-level="3.4.2" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#loading-packages"><i class="fa fa-check"></i><b>3.4.2</b> <em>Loading packages</em></a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#the-approach-data-wrangling"><i class="fa fa-check"></i><b>3.5</b> The approach: data wrangling</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#reading-in-data"><i class="fa fa-check"></i><b>3.5.1</b> <em>Reading in data</em></a></li>
+<li class="chapter" data-level="3.5.2" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#parsing-datetime"><i class="fa fa-check"></i><b>3.5.2</b> <em>Parsing date/time</em></a></li>
+<li class="chapter" data-level="3.5.3" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#extracting-information-from-dates"><i class="fa fa-check"></i><b>3.5.3</b> <em>Extracting information from dates</em></a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#basic-subsetting"><i class="fa fa-check"></i><b>3.6</b> <em>Basic subsetting</em></a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#basic-plotting"><i class="fa fa-check"></i><b>3.6.1</b> <em>Basic plotting</em></a></li>
+<li class="chapter" data-level="3.6.2" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#joining-data-tables-with-a-common-feature"><i class="fa fa-check"></i><b>3.6.2</b> <em>Joining data tables with a common feature</em></a></li>
+<li class="chapter" data-level="3.6.3" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#aggregating-data-chaining-functions"><i class="fa fa-check"></i><b>3.6.3</b> <em>Aggregating data &amp; chaining functions</em></a></li>
+<li class="chapter" data-level="3.6.4" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#filtering-data"><i class="fa fa-check"></i><b>3.6.4</b> <em>Filtering data</em></a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#citations"><i class="fa fa-check"></i><b>3.7</b> Citations</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html"><i class="fa fa-check"></i><b>4</b> Data visualization in R</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#learning-objectives-2"><i class="fa fa-check"></i><b>4.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="4.2" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#new-functions-syntax-2"><i class="fa fa-check"></i><b>4.2</b> New functions &amp; syntax</a></li>
+<li class="chapter" data-level="4.3" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#the-problem-1"><i class="fa fa-check"></i><b>4.3</b> The problem:</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#communicating-about-climate-change"><i class="fa fa-check"></i><b>4.3.1</b> <em>Communicating about climate change</em></a></li>
+<li class="chapter" data-level="4.3.2" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#the-data"><i class="fa fa-check"></i><b>4.3.2</b> <em>The data</em></a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#fundamentals-of-plotting-data"><i class="fa fa-check"></i><b>4.4</b> Fundamentals of plotting data</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#representation-of-data"><i class="fa fa-check"></i><b>4.4.1</b> <em>1. Representation of data</em></a></li>
+<li class="chapter" data-level="4.4.2" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#layout"><i class="fa fa-check"></i><b>4.4.2</b> <em>2. Layout</em></a></li>
+<li class="chapter" data-level="4.4.3" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#encoding"><i class="fa fa-check"></i><b>4.4.3</b> <em>3. Encoding</em></a></li>
+<li class="chapter" data-level="4.4.4" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#simplicity"><i class="fa fa-check"></i><b>4.4.4</b> <em>4. Simplicity</em></a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#plotting-data-in-base-r"><i class="fa fa-check"></i><b>4.5</b> Plotting data in base R</a></li>
+<li class="chapter" data-level="4.6" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#plotting-in-ggplot2"><i class="fa fa-check"></i><b>4.6</b> Plotting in ggplot2</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#intro-to-ggplot"><i class="fa fa-check"></i><b>4.6.1</b> <em>Intro to ggplot</em></a></li>
+<li class="chapter" data-level="4.6.2" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#changing-colors"><i class="fa fa-check"></i><b>4.6.2</b> <em>Changing colors</em></a></li>
+<li class="chapter" data-level="4.6.3" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#exploring-different-visualizations-in-ggplot2"><i class="fa fa-check"></i><b>4.6.3</b> Exploring different visualizations in ggplot2</a></li>
+<li class="chapter" data-level="4.6.4" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#violin-and-box-plots"><i class="fa fa-check"></i><b>4.6.4</b> <em>Violin and box plots</em></a></li>
+<li class="chapter" data-level="4.6.5" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#area-and-ribbon-plots"><i class="fa fa-check"></i><b>4.6.5</b> <em>Area and ribbon plots</em></a></li>
+<li class="chapter" data-level="4.6.6" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#labels"><i class="fa fa-check"></i><b>4.6.6</b> <em>Labels</em></a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#conclusions"><i class="fa fa-check"></i><b>4.7</b> Conclusions</a></li>
+<li class="chapter" data-level="4.8" data-path="data-visualization-in-r.html"><a href="data-visualization-in-r.html#citations-1"><i class="fa fa-check"></i><b>4.8</b> Citations</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><i class="fa fa-check"></i><b>5</b> When it rains, it pours. An introduction to data cleaning.</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#learning-objectives-3"><i class="fa fa-check"></i><b>5.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="5.2" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#new-functions-syntax-3"><i class="fa fa-check"></i><b>5.2</b> New functions &amp; syntax</a></li>
+<li class="chapter" data-level="5.3" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#the-problem-ensuring-reliable-data"><i class="fa fa-check"></i><b>5.3</b> The problem: ensuring reliable data</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#sensors-for-weather-and-microclimate"><i class="fa fa-check"></i><b>5.3.1</b> <em>Sensors for weather and microclimate</em></a></li>
+<li class="chapter" data-level="5.3.2" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#problematic-data"><i class="fa fa-check"></i><b>5.3.2</b> <em>Problematic data</em></a></li>
+<li class="chapter" data-level="5.3.3" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#the-data-1"><i class="fa fa-check"></i><b>5.3.3</b> <em>The data</em></a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cleaning-data"><i class="fa fa-check"></i><b>5.4</b> Cleaning data</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#removing-unreliable-data"><i class="fa fa-check"></i><b>5.4.1</b> <em>Removing unreliable data</em></a></li>
+<li class="chapter" data-level="5.4.2" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#creating-flags"><i class="fa fa-check"></i><b>5.4.2</b> <em>Creating flags</em></a></li>
+<li class="chapter" data-level="5.4.3" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#creating-functions-to-check-data"><i class="fa fa-check"></i><b>5.4.3</b> <em>Creating functions to check data</em></a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#conclusion"><i class="fa fa-check"></i><b>5.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html"><i class="fa fa-check"></i><b>6</b> Linear regression, model selection, and prediction in R</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html#learning-objectives-4"><i class="fa fa-check"></i><b>6.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="6.2" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html#new-functions-syntax-4"><i class="fa fa-check"></i><b>6.2</b> New functions &amp; syntax</a></li>
+<li class="chapter" data-level="6.3" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html#the-problem-greenhouse-gas-emssisions-from-anthropogenic-land-use"><i class="fa fa-check"></i><b>6.3</b> The problem: greenhouse gas emssisions from anthropogenic land use</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html#the-data-greenhouse-gases-and-reservoir-characteristics"><i class="fa fa-check"></i><b>6.3.1</b> <em>The data: greenhouse gases and reservoir characteristics</em></a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html#the-approach-linear-regression-in-r"><i class="fa fa-check"></i><b>6.4</b> The approach: Linear regression in R</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html#transforming-variables"><i class="fa fa-check"></i><b>6.4.1</b> <em>Transforming variables</em></a></li>
+<li class="chapter" data-level="6.4.2" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html#binary-variables"><i class="fa fa-check"></i><b>6.4.2</b> <em>Binary variables</em></a></li>
+<li class="chapter" data-level="6.4.3" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html#running-a-multiple-regression"><i class="fa fa-check"></i><b>6.4.3</b> <em>Running a multiple regression</em></a></li>
+<li class="chapter" data-level="6.4.4" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html#checking-assumptions"><i class="fa fa-check"></i><b>6.4.4</b> <em>Checking assumptions</em></a></li>
+<li class="chapter" data-level="6.4.5" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html#multicollinearity"><i class="fa fa-check"></i><b>6.4.5</b> <em>5. Multicollinearity</em></a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html#model-selection"><i class="fa fa-check"></i><b>6.5</b> Model selection</a></li>
+<li class="chapter" data-level="6.6" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html#predictions"><i class="fa fa-check"></i><b>6.6</b> Predictions</a></li>
+<li class="chapter" data-level="6.7" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html#conclusions-1"><i class="fa fa-check"></i><b>6.7</b> Conclusions</a></li>
+<li class="chapter" data-level="6.8" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html#citations-2"><i class="fa fa-check"></i><b>6.8</b> Citations</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><i class="fa fa-check"></i><b>7</b> Thirsty crops and water scarcity. An introduction to time series</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#learning-objectives-5"><i class="fa fa-check"></i><b>7.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="7.2" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#new-functions-syntax-5"><i class="fa fa-check"></i><b>7.2</b> New functions &amp; syntax</a></li>
+<li class="chapter" data-level="7.3" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#the-problem-irrigation-and-water-security"><i class="fa fa-check"></i><b>7.3</b> The problem: Irrigation and water security</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#the-data-satellite-observations-of-evapotranspiration"><i class="fa fa-check"></i><b>7.3.1</b> <em>The data: satellite observations of evapotranspiration</em></a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#the-approach-analyzing-and-forecasting-a-time-series"><i class="fa fa-check"></i><b>7.4</b> The approach: Analyzing and forecasting a time series</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#setting-up-a-time-series-data-type"><i class="fa fa-check"></i><b>7.4.1</b> <em>Setting up a time series data type</em></a></li>
+<li class="chapter" data-level="7.4.2" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#decomposing-a-time-series"><i class="fa fa-check"></i><b>7.4.2</b> <em>Decomposing a time series</em></a></li>
+<li class="chapter" data-level="7.4.3" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#autocorrelation"><i class="fa fa-check"></i><b>7.4.3</b> <em>Autocorrelation</em></a></li>
+<li class="chapter" data-level="7.4.4" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#autoregressive-ar-models-for-time-series"><i class="fa fa-check"></i><b>7.4.4</b> <em>Autoregressive (AR) models for time series</em></a></li>
+<li class="chapter" data-level="7.4.5" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#forecast-future-data"><i class="fa fa-check"></i><b>7.4.5</b> <em>Forecast future data</em></a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#conclusions-2"><i class="fa fa-check"></i><b>7.5</b> Conclusions</a></li>
+<li class="chapter" data-level="7.6" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#citations-3"><i class="fa fa-check"></i><b>7.6</b> Citations</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to Environmental Data Science</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Thirsty crops and water scarcity. An introduction to time series<a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#thirsty-crops-and-water-scarcity.-an-introduction-to-time-series" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><em>by Heather Kropp</em>
+<em>for ENVST 325: Introduction to Environmental Data Science</em>
+<em>Hamilton College</em></p>
+<style type="text/css">
+.book .book-body .page-wrapper .page-inner section.normal pre.colout {
+  background-color: #D9EDF7;
+}
+</style>
+<div id="learning-objectives-5" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Learning objectives<a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#learning-objectives-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Establish and visualize time series data</li>
+<li>Learn basic statistical evaluation of time series</li>
+<li>Forecast observations into the future</li>
+<li>Interpret satellite derived evapotranspiration for agriculture and water management</li>
+</ol>
+</div>
+<div id="new-functions-syntax-5" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> New functions &amp; syntax<a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#new-functions-syntax-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>ts</code>, <code>decompose</code>, <code>acf</code>,<code>pacf</code>,<code>ar</code>,<code>arima</code>,<code>forecast</code></p>
+</div>
+<div id="the-problem-irrigation-and-water-security" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> The problem: Irrigation and water security<a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#the-problem-irrigation-and-water-security" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>California experienced drought throughout much of the late 2000s. As air temperatures continue to rise under climate change, droughts and water limitations will be heightened as warmer, drier conditions lead to greater evaporation of water from soils and surface water. These conditions also impact plant growth via transpiration. Plants limit water loss by reducing transpiration via stomatal closure, but as a consequence also limit the intake of carbon dioxide for photosynthesis. Many agricultural operations in warm, dry climates rely on irrigation to ensure that plants have enough water to adequately grow under these conditions when precipitation alone will not deliver enough water for plant growth. Irrigation can be sourced from surface water like rivers or reservoirs, but it can also be drawn from the groundwater using wells. <strong>Water security</strong> is an umbrella term for developing sustainable and reliable access to clean water that seeks to limit the potential for water related natural disasters.</p>
+<center>
+<p><img src="photos/tutorial06/NRCS_california.png" style="width:50.0%" /></p>
+<p><em>A micro-irrigation set up in an almond orchard in California. Source: Photo courtesy of USDA Natural Resources Conservation Service. Public Domain.</em></p>
+</center>
+<p>California is a major source of agricultural production in the US with the California Department of Food and Agriculture citing over $49 billion of sales. To support agriculture within California’s dry climate, many agricultural fields are irrigated. The amount of ground water withdrawn for irrigation is attributed to ground subsidence throughout large portions of California. This means that the ground is sinking due to the extraction of belowground resources.</p>
+<center>
+<p><img src="photos/tutorial06/USGS%20subsidence.png" style="width:50.0%" /></p>
+<p><em>Left: a map of known causes of subsidence in California. Right: a USGS employee demonstrates differences recent and historical elevation at survey locations. Source: USGS</em></p>
+</center>
+<p>In addition to the subsidence issues, there are concerns about limitations in ground water. Ground water aquifers can take years-centuries to recharge. As surface water becomes more limiting under droughts, ground water may be increasingly depleted.</p>
+<p>The USGS estimates agricultural irrigation accounts for 60% of California’s water use and the California Department of Water Resources estimates that agricultural irrigation accounts for 40% of total water use in the state. These discrepancies in water use estimates highlight the challenges in data availability and collection around water use. In this tutorial, we’ll explore a new type of data meant to help support monitoring and measuring agricultural water use for water managers. Monitoring water use can be an important step in ensuring water security in the future.</p>
+<div id="the-data-satellite-observations-of-evapotranspiration" class="section level3 hasAnchor" number="7.3.1">
+<h3><span class="header-section-number">7.3.1</span> <em>The data: satellite observations of evapotranspiration</em><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#the-data-satellite-observations-of-evapotranspiration" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Evapotranspiration (ET)</strong> describes the cumulative amount of water that is evaporated (from soil and bodies of water) and transpired (from plants) over an area of land per unit time. It can be a helpful measure for water managers since it represents the total amount of water lost to the atmosphere from the land surface. It is a measure of water consumption. In cases of irrigation, some water will infiltrate deeper into the soil before it can evaporate or be used by plants. This means that just measuring the amount of water pumped for irrigation would count that water as a loss even if it returned to the soil.</p>
+<p>Several satellites can measure the surface temperature of land by taking images of far infrared radiation emitted from the earth’s surface. The process of evapotranspiration uses energy for the phase change from liquid to gas (refered to as latent heat), and thus areas with higher evapotranspiration are cooler than areas with lower rates. Using weather observations, land cover, and the constraints of the energy balance, evapotranspiration can be estimated from far infrared satellite imagery. The OpenET project (<a href="https://openetdata.org/" class="uri">https://openetdata.org/</a>) is sponsored by many government and academic agencies and seeks to make this data publicly available for the western United States. OpenET indicates that this data can help farmers estimate better understand their water use, water managers understand water demand and plan for future needs, and stands as a neutral data source for policy makers to understand water budgets.</p>
+<p>OpenET estimates the cumulative (total) monthly evapotranspiration. The data portal includes an interactive map and an option to download data from individual fields.</p>
+<center>
+<img src="photos/tutorial06/openET.png" style="width:66.0%" />
+</center>
+<p>I have downloaded data from 49 fields in southern California. These fields represent different types of crops. Read in <code>ETdata.csv</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb1-1" tabindex="-1"></a>ETdat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;/cloud/project/activity06/ETdata.csv&quot;</span>)</span></code></pre></div>
+<pre class="colout"><code>        date Ensemble.ET  NDVI                 crop fieldID
+1 2016-01-01       0.842 0.337 Fallow/Idle Cropland       1
+2 2016-02-01       1.442 0.422 Fallow/Idle Cropland       1
+3 2016-03-01       1.252 0.431 Fallow/Idle Cropland       1
+4 2016-04-01       2.246 0.324 Fallow/Idle Cropland       1
+5 2016-05-01       2.543 0.325 Fallow/Idle Cropland       1
+6 2016-06-01       2.296 0.290 Fallow/Idle Cropland       1</code></pre>
+<p>The observations are cumulative totals over a monthly basis so the <code>date</code> column shows each month as occuring on the 1st of the month. The <code>Ensemble.ET</code> column gives cumulative ET calculated through an ensemble modeling process for each month and the units are in inches. This means that it is the total inches of water that evaporated/transpired over a standard area per month in inches. You can think of this type of measure of ET kind of like you would think about measuring rain in a rain gauge: adding up all of the liquid that evaporated and measuring the depth in inches for the month over a standard area. The <code>NDVI</code> column stands for the Normalized Difference Vegetation Index. It is a remotely sensed measure of the relative amount of photosynthetically active vegetation on the ground. It can range from -1 (all water) to 0 (no vegetation or water) to 1 (high amounts of photosynthetic vegetation). This type of observation can help contextualize ET since more plants will lead to more transpiration. The <code>crop</code> column is a character ID of the type of crop grown in the field. You can see that we will look at fallow fields and a few orchard and grain crops.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb3-1" tabindex="-1"></a><span class="fu">unique</span>(ETdat<span class="sc">$</span>crop)</span></code></pre></div>
+<pre class="colout"><code>[1] &quot;Fallow/Idle Cropland&quot;  &quot;Corn&quot;                  &quot;Grapes (Table/Raisin)&quot;
+[4] &quot;Almonds&quot;               &quot;Pistachios&quot;            &quot;Alfalfa&quot;              </code></pre>
+<p>The <code>fieldID</code> is an integer identifier that counts each unique field in the data. There are replicates of different types of crops in different fields.</p>
+<p>You will want to load the typical data wrangling and visualization packages, but you will also want to install the <code>forecast</code> package for working with time series.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb5-1" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb5-2"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb5-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb5-3"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb5-3" tabindex="-1"></a><span class="fu">library</span>(forecast)</span>
+<span id="cb5-4"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb5-4" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
+</div>
+</div>
+<div id="the-approach-analyzing-and-forecasting-a-time-series" class="section level2 hasAnchor" number="7.4">
+<h2><span class="header-section-number">7.4</span> The approach: Analyzing and forecasting a time series<a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#the-approach-analyzing-and-forecasting-a-time-series" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="setting-up-a-time-series-data-type" class="section level3 hasAnchor" number="7.4.1">
+<h3><span class="header-section-number">7.4.1</span> <em>Setting up a time series data type</em><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#setting-up-a-time-series-data-type" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let’s start by looking at the time series for a single crop, almonds. You may have heard about the environmental impact of almond water use in California. The use of groundwater by almond farmers is contentious and some residential neighbors contribute their home wells drying up to the water use by commercial almond growers. Let’s characterize almond water use in the region with the multiple fields rather than looking at each individual almond field. Before you set up the time series, you will want to average the fields across each date:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb6-1" tabindex="-1"></a><span class="co"># average fields for each month for almonds</span></span>
+<span id="cb6-2"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb6-2" tabindex="-1"></a>almond <span class="ot">&lt;-</span> ETdat <span class="sc">%&gt;%</span> <span class="co"># ET data</span></span>
+<span id="cb6-3"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb6-3" tabindex="-1"></a>  <span class="fu">filter</span>(crop <span class="sc">==</span> <span class="st">&quot;Almonds&quot;</span>) <span class="sc">%&gt;%</span> <span class="co"># only use almond fields</span></span>
+<span id="cb6-4"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb6-4" tabindex="-1"></a>  <span class="fu">group_by</span>(date) <span class="sc">%&gt;%</span> <span class="co"># calculate over each date</span></span>
+<span id="cb6-5"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb6-5" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">ET.in =</span> <span class="fu">mean</span>(Ensemble.ET, <span class="at">na.rm=</span><span class="cn">TRUE</span>)) <span class="co"># average fields</span></span>
+<span id="cb6-6"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb6-6" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb6-7" tabindex="-1"></a><span class="co"># visualize the data</span></span>
+<span id="cb6-8"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb6-8" tabindex="-1"></a><span class="fu">ggplot</span>(almond, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">ymd</span>(date),<span class="at">y=</span>ET.in))<span class="sc">+</span></span>
+<span id="cb6-9"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb6-9" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb6-10"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb6-10" tabindex="-1"></a>  <span class="fu">geom_line</span>()<span class="sc">+</span></span>
+<span id="cb6-11"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb6-11" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;year&quot;</span>, <span class="at">y=</span><span class="st">&quot;Monthy evapotranspiration (in)&quot;</span>)</span></code></pre></div>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-9-1.png" width="1152" /></p>
+<p>You can see from there is strong <strong>seasonality</strong> to the data with ET reaching the lowest levels in the winter months and the highest levels in the late spring and early summer. It also looks like some years might have higher ET than others. Accounting for seasonality and trends will be a major part of working with time series.</p>
+<p>First, we must form the data as a <strong>time series object</strong>. A time series object will expect the data to be ordered in equal, consistent intervals. This means that there is no change in timing of the observations (for example, one month missing entirely or switch from monthly to weekly). The function <code>ts</code> creates a time series data type. The arguments to include are the vector of data occurring over time, the starting time (<code>start</code>), and the frequency of each observation in a unit. Here our units would be years with 12 months of observation within a unit.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb7-1" tabindex="-1"></a><span class="co"># almond ET time series</span></span>
+<span id="cb7-2"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb7-2" tabindex="-1"></a>almond_ts <span class="ot">&lt;-</span> <span class="fu">ts</span>(almond<span class="sc">$</span>ET.in, <span class="co"># data</span></span>
+<span id="cb7-3"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb7-3" tabindex="-1"></a>                <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2016</span>,<span class="dv">1</span>), <span class="co">#start year 2016, month 1</span></span>
+<span id="cb7-4"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb7-4" tabindex="-1"></a>                <span class="co">#first number is unit of time and second is observations within a unit</span></span>
+<span id="cb7-5"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb7-5" tabindex="-1"></a>   <span class="at">frequency=</span> <span class="dv">12</span>) <span class="co"># frequency of observations in a unit</span></span></code></pre></div>
+</div>
+<div id="decomposing-a-time-series" class="section level3 hasAnchor" number="7.4.2">
+<h3><span class="header-section-number">7.4.2</span> <em>Decomposing a time series</em><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#decomposing-a-time-series" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Decomposing a time series extracts the <strong>trend</strong> (change in values over time), <strong>seasonality</strong> (cyclical or regular patterns in the data typically occurring in one unit of time), and random error. In a simplified format where each of these components is additive, you can think of time series as a linear equation for each time point (<em>t</em>):</p>
+<p><span class="math display">\[y_t = Trend_t + seasonality_t * error_t\]</span>
+You can create a decomposition of each of these elements using the <code>decompose</code> function:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb8-1" tabindex="-1"></a><span class="co"># decompose almond ET time series</span></span>
+<span id="cb8-2"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb8-2" tabindex="-1"></a>almond_dec <span class="ot">&lt;-</span> <span class="fu">decompose</span>(almond_ts)</span>
+<span id="cb8-3"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb8-3" tabindex="-1"></a><span class="co"># plot decomposition</span></span>
+<span id="cb8-4"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb8-4" tabindex="-1"></a><span class="fu">plot</span>(almond_dec)</span></code></pre></div>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+<div id="autocorrelation" class="section level3 hasAnchor" number="7.4.3">
+<h3><span class="header-section-number">7.4.3</span> <em>Autocorrelation</em><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#autocorrelation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Autocorrelation</strong> is a measure of correlation from one observation to the observations before and after. Autocorrelation is an important consideration in both time series (an observation is related to what happend before it) and spatial data (observations closer in space will be similar to each other). Autocorrelation is an important consideration because it violates a lot of frequentist statistical assumptions: that observations are independent and random. If autocorrelated observations are close enough together in time (or space!), this implies that there is a relationship without independence and randomness between observations. This is why time series analysis are useful, because you can inherently evaluate observations that are not independent throughout time.</p>
+<p>The autocorrelation factor (ACF) can be calculated using the <code>acf</code> function. The function looks at the correlation between observations and observations in increments into the past called <strong>lags</strong>. A lag period would look one unit of time into the past. <code>acf</code> will produce a plot of autocorrelation over lag periods within the data. Here a value of 1 means high positive association (both values will be higher values), a value of zero means that there is no correlation, and a value of -1 means a strong negative association (as one value is higher the other one is lower). The blue line indicates the range of values that represent a non-significant autocorrelation factor. The first lag period only has one measurement so it will always be perfectly correlated with itself. It is the next lag periods that you want to look at.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb9-1" tabindex="-1"></a><span class="fu">acf</span>(<span class="fu">na.omit</span>(almond_ts), <span class="co"># remove missing data</span></span>
+<span id="cb9-2"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb9-2" tabindex="-1"></a>    <span class="at">lag.max =</span> <span class="dv">24</span>) <span class="co"># look at 2 years (24 months)</span></span></code></pre></div>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><strong>Stationarity</strong> is a condition of a time series where the mean and variance remains constant over time. Data that have seasonality or a trend will not be stationary data. Our ET data do not meet this assumption.</p>
+</div>
+<div id="autoregressive-ar-models-for-time-series" class="section level3 hasAnchor" number="7.4.4">
+<h3><span class="header-section-number">7.4.4</span> <em>Autoregressive (AR) models for time series</em><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#autoregressive-ar-models-for-time-series" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Autoregressive models can be useful for modeling time series data. Instead of a simple linear regression with time as the independent variable, the model considers the previous value(s) of y in the equation. A 1<span class="math inline">\(^{st}\)</span> order AR model uses an equation with one lag period (<em>t-1</em>) prior to the observation of interest (<em>t</em>).</p>
+<p><span class="math display">\[y_t = \beta_0 + \beta_1 y_{t-1} + \epsilon_t\]</span>
+A 2<span class="math inline">\(^{nd}\)</span> order AR model uses an equation with two lag period (<em>t-1</em> , <em>t-2</em>) prior to the observation of interest (<em>t</em>).</p>
+<p><span class="math display">\[y_t = \beta_0 + \beta_1 y_{t-1}+ \beta_2 y_{t-2} + \epsilon_t\]</span>
+You could continue on with more orders. However, typically past 3-4 orders you may risk adding additional parameters with little benefit. There are a few ways to select the order. You can choose look at the ACF or partial ACF. The partial ACF can better represent potential lag periods. You can run multiple AR models and look at model fit metrics and determine which orders are most important for model fit.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb10-1" tabindex="-1"></a>pacf.plot <span class="ot">&lt;-</span> <span class="fu">pacf</span>(<span class="fu">na.omit</span>(almond_ts))</span></code></pre></div>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>The <code>ar</code> function in R can be used to run an autoregressive model. The <code>ar</code> function gives limited information. However, we can run the <code>arima</code> function. ARIMA stands for Autoregressive Integrated Moving Average. It builds more coefficients into the AR model, but we would need to transform our data and cover further statistics to learn it. However, we can run just an AR model using the function if we specify the simplest form. This will return a standard error for coefficients and it will provide model fit statistics. Let’s omit the NAs to run the model in almond_ts before running the model.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb11-1" tabindex="-1"></a>almond_y <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(almond_ts)</span>
+<span id="cb11-2"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb11-2" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">arima</span>(almond_y , <span class="co"># data </span></span>
+<span id="cb11-3"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb11-3" tabindex="-1"></a>                <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>)) <span class="co"># first number is AR order all other numbers get a 0 to keep AR format</span></span>
+<span id="cb11-4"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb11-4" tabindex="-1"></a>model1</span></code></pre></div>
+<pre class="colout"><code>
+Call:
+arima(x = almond_y, order = c(1, 0, 0))
+
+Coefficients:
+         ar1  intercept
+      0.8624     4.3608
+s.e.  0.0603     0.9764
+
+sigma^2 estimated as 1.45:  log likelihood = -109.81,  aic = 225.62</code></pre>
+<p>The coefficient seems far from one and has a small se so this approach overall looks promising. The correlation plot looked like a higher order would be useful. Let’s try running a 4th order AR:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb13-1" tabindex="-1"></a>model4 <span class="ot">&lt;-</span> <span class="fu">arima</span>(almond_y , <span class="co"># data </span></span>
+<span id="cb13-2"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb13-2" tabindex="-1"></a>                <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">0</span>,<span class="dv">0</span>)) <span class="co"># first number is AR order all other numbers get a 0 to keep AR format</span></span>
+<span id="cb13-3"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb13-3" tabindex="-1"></a>model4</span></code></pre></div>
+<pre class="colout"><code>
+Call:
+arima(x = almond_y, order = c(4, 0, 0))
+
+Coefficients:
+         ar1      ar2     ar3      ar4  intercept
+      1.0147  -0.2878  0.1782  -0.5034     4.3840
+s.e.  0.1066   0.1637  0.1614   0.1051     0.0724
+
+sigma^2 estimated as 0.1208:  log likelihood = -28.16,  aic = 68.33</code></pre>
+<p>The AIC dropped a lot from the 1st-4th order AR. Let’s look at the fitted values between the models to see how they match the observations. You can calculate the fitted values by subtracting the residuals from the data:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb15-1" tabindex="-1"></a><span class="co"># calculate fit</span></span>
+<span id="cb15-2"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb15-2" tabindex="-1"></a>AR_fit1 <span class="ot">&lt;-</span> almond_y <span class="sc">-</span> <span class="fu">residuals</span>(model1) </span>
+<span id="cb15-3"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb15-3" tabindex="-1"></a>AR_fit4 <span class="ot">&lt;-</span> almond_y <span class="sc">-</span> <span class="fu">residuals</span>(model4)</span>
+<span id="cb15-4"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb15-4" tabindex="-1"></a><span class="co">#plot data</span></span>
+<span id="cb15-5"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb15-5" tabindex="-1"></a><span class="fu">plot</span>(almond_y)</span>
+<span id="cb15-6"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb15-6" tabindex="-1"></a><span class="co"># plot fit</span></span>
+<span id="cb15-7"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb15-7" tabindex="-1"></a><span class="fu">points</span>(AR_fit1, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">col =</span> <span class="st">&quot;tomato3&quot;</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb15-8"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb15-8" tabindex="-1"></a><span class="fu">points</span>(AR_fit4, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">col =</span> <span class="st">&quot;darkgoldenrod4&quot;</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb15-9"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb15-9" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;data&quot;</span>,<span class="st">&quot;AR1&quot;</span>,<span class="st">&quot;AR4&quot;</span>),</span>
+<span id="cb15-10"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb15-10" tabindex="-1"></a>       <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>), <span class="at">lwd=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>), </span>
+<span id="cb15-11"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb15-11" tabindex="-1"></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;black&quot;</span>, <span class="st">&quot;tomato3&quot;</span>,<span class="st">&quot;darkgoldenrod4&quot;</span>),</span>
+<span id="cb15-12"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb15-12" tabindex="-1"></a>       <span class="at">bty=</span><span class="st">&quot;n&quot;</span>)</span></code></pre></div>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-16-1.png" width="1152" /></p>
+<p>The model fit for the 4th order AR looks encouraging and close enough to the observations that this model would be useful to forecast future near-term observations. The model also tells us that evapotranspiration 1-4 months in the past influence current values. This would be relevant information for farmers and water managers. For example, the first coefficient is a positive value indicating that higher ET in the previous month is associated with higher ET in the current month.</p>
+</div>
+<div id="forecast-future-data" class="section level3 hasAnchor" number="7.4.5">
+<h3><span class="header-section-number">7.4.5</span> <em>Forecast future data</em><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#forecast-future-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The <code>forecast</code> function allows you to forecast data and give you an uncertainty interval. Let’s look at our AR4 model forecast:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb16-1" tabindex="-1"></a>newAlmond <span class="ot">&lt;-</span> <span class="fu">forecast</span>(model4)</span>
+<span id="cb16-2"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb16-2" tabindex="-1"></a>newAlmond</span></code></pre></div>
+<pre class="colout"><code>         Point Forecast     Lo 80    Hi 80        Lo 95    Hi 95
+Sep 2021       4.794693 4.3493294 5.240056  4.113568340 5.475817
+Oct 2021       3.076415 2.4419259 3.710904  2.106047627 4.046782
+Nov 2021       1.851318 1.1359725 2.566664  0.757291217 2.945346
+Dec 2021       1.257720 0.4878752 2.027566  0.080343660 2.435097
+Jan 2022       1.501016 0.7295535 2.272479  0.321165752 2.680867
+Feb 2022       2.565412 1.7684838 3.362339  1.346615761 3.784207
+Mar 2022       4.086355 3.2227418 4.949968  2.765572570 5.407138
+Apr 2022       5.665450 4.7075356 6.623364  4.200446271 7.130454
+May 2022       6.897167 5.8645887 7.929745  5.317974806 8.476359
+Jun 2022       7.427680 6.3696712 8.485689  5.809594957 9.045766
+Jul 2022       7.127210 6.0687936 8.185625  5.508502096 8.745917
+Aug 2022       6.094198 5.0211613 7.167235  4.453129855 7.735267
+Sep 2022       4.606985 3.4812042 5.732766  2.885251868 6.328718
+Oct 2022       3.074651 1.8780381 4.271263  1.244589718 4.904712
+Nov 2022       1.915046 0.6655250 3.164567  0.004068525 3.826024
+Dec 2022       1.434458 0.1656974 2.703219 -0.505943894 3.374860
+Jan 2023       1.756184 0.4872558 3.025113 -0.184474449 3.696843
+Feb 2023       2.785704 1.5037224 4.067685  0.825082362 4.746325
+Mar 2023       4.235852 2.9113341 5.560369  2.210176855 6.261527
+Apr 2023       5.710236 4.3287953 7.091677  3.597504579 7.822968
+May 2023       6.810386 5.3864426 8.234329  4.632652614 8.988119
+Jun 2023       7.242478 5.8038696 8.681086  5.042316229 9.442640
+Jul 2023       6.896989 5.4583394 8.335638  4.696764461 9.097213
+Aug 2023       5.875893 4.4255217 7.326263  3.657741771 8.094043</code></pre>
+<p>The output is a 24 month time series with a prediction and a prediction interval (including a 95% range). You will have to format a date and set up a data frame to plot it:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb18-1" tabindex="-1"></a><span class="co">#make dataframe for plotting</span></span>
+<span id="cb18-2"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb18-2" tabindex="-1"></a>newAlmondF <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(newAlmond)</span>
+<span id="cb18-3"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb18-3" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb18-4" tabindex="-1"></a><span class="co"># set up dates</span></span>
+<span id="cb18-5"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb18-5" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">2021</span>,<span class="dv">4</span>),<span class="fu">rep</span>(<span class="dv">2022</span>,<span class="dv">12</span>), <span class="fu">rep</span>(<span class="dv">2023</span>,<span class="dv">8</span>))</span>
+<span id="cb18-6"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb18-6" tabindex="-1"></a>month <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">seq</span>(<span class="dv">9</span>,<span class="dv">12</span>),<span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">12</span>), <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">8</span>))</span>
+<span id="cb18-7"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb18-7" tabindex="-1"></a>newAlmondF<span class="sc">$</span>dateF <span class="ot">&lt;-</span> <span class="fu">ymd</span>(<span class="fu">paste</span>(years,<span class="st">&quot;/&quot;</span>,month,<span class="st">&quot;/&quot;</span>,<span class="dv">1</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb19-1" tabindex="-1"></a><span class="co"># make a plot with data and predictions including a prediction interval</span></span>
+<span id="cb19-2"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb19-2" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb19-3"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb19-3" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> almond, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">ymd</span>(date), <span class="at">y =</span> ET.in))<span class="sc">+</span></span>
+<span id="cb19-4"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb19-4" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="fu">ymd</span>(almond<span class="sc">$</span>date[<span class="dv">1</span>]),newAlmondF<span class="sc">$</span>dateF[<span class="dv">24</span>])<span class="sc">+</span>  <span class="co"># Plotting original data</span></span>
+<span id="cb19-5"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb19-5" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> newAlmondF, <span class="fu">aes</span>(<span class="at">x =</span> dateF, <span class="at">y =</span> Point.Forecast),</span>
+<span id="cb19-6"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb19-6" tabindex="-1"></a>            <span class="at">col=</span><span class="st">&quot;red&quot;</span>) <span class="sc">+</span>  <span class="co"># Plotting model forecasts</span></span>
+<span id="cb19-7"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb19-7" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>newAlmondF, </span>
+<span id="cb19-8"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb19-8" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">x=</span>dateF,<span class="at">ymin=</span>Lo<span class="fl">.95</span>,</span>
+<span id="cb19-9"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb19-9" tabindex="-1"></a>                  <span class="at">ymax=</span>Hi<span class="fl">.95</span>), <span class="at">fill=</span><span class="fu">rgb</span>(<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>))<span class="sc">+</span> <span class="co"># uncertainty interval</span></span>
+<span id="cb19-10"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb19-10" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb19-11"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#cb19-11" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;year&quot;</span>, <span class="at">y=</span><span class="st">&quot;Evapotranspiration (in)&quot;</span>)</span></code></pre></div>
+<pre><code>Warning: Removed 4 rows containing missing values or values outside the scale range
+(`geom_line()`).</code></pre>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+</div>
+<div id="conclusions-2" class="section level2 hasAnchor" number="7.5">
+<h2><span class="header-section-number">7.5</span> Conclusions<a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#conclusions-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Time series analysis helped us better understand ET in almond orchards. We observed strong, consistent seasonal patterns. The overall trend showed that there was an initial increase in ET from 2016-2017, but ET stabilized in recent years. We found that current ET was influenced by ET in previous 4 months, and were able to forecast data for missing months at the end of our time series. These forecasts indicate that if conditions are similar to previous years, we can expect to see similar values of ET as previous years. This can help with short term planning in addition to understanding the historical consumption of water. In your homework, you will examine trends in other types of agricultural fields.</p>
+</div>
+<div id="citations-3" class="section level2 hasAnchor" number="7.6">
+<h2><span class="header-section-number">7.6</span> Citations<a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#citations-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Subsidence in California Map and Images. <a href="https://www.usgs.gov/centers/land-subsidence-in-california" class="uri">https://www.usgs.gov/centers/land-subsidence-in-california</a></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="linear-regression-model-selection-and-prediction-in-r.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,293 @@
+---
+output: 
+  html_document:
+    theme: yeti
+---
+# Linear regression, model selection, and prediction in R
+
+_by Heather Kropp_
+_for ENVST 325: Introduction to Environmental Data Science_
+_Hamilton College_
+
+
+```{css, echo=FALSE}
+.book .book-body .page-wrapper .page-inner section.normal pre.colout {
+  background-color: #D9EDF7;
+}
+```
+
+
+## Learning objectives
+
+1. Conduct multiple linear regression in R
+2. Transform variables for linear analysis
+3. Consider model selection
+4. Make predictions from a regression model
+5. Analyze greenhouse gas emissions data from anthropogenic driven sources
+
+
+## New functions & syntax
+`log`,`unique`,`lm`, `summary`, `qqnorm`, `qqline`, `rstandard`, `fitted.values`, `abline`, `chart.Correlation`, `ols_step_forward_aic`, `predict`
+
+```{r warning=FALSE,echo=FALSE, message=FALSE}
+library(imager)
+```
+
+```{r include=FALSE}
+knitr::opts_chunk$set(comment = NA, class.output="bg-info",class.output = "colout" )
+```
+
+## The problem: greenhouse gas emssisions from anthropogenic land use
+
+There are many areas around the world that rely on surface water in rivers and lakes for a drinking and irrigation source. Man-made reservoirs are a common water management approach that involves constructing a dam to slow the flow of water in a river so that a lake may form upstream of the dam. This lake formation can ensure a stable water source for drinking and irrigation and electricity. However, reservoirs involve inundating areas of land that would not have been covered in water without a dam. Many of these areas would previously be covered with vegetation with soils rich in organic matter. There is an increasing concern that reservoirs can be sources of greenhouse gases, especially methane. Methane is a highly potent greenhouse gas. Methane is produced by bacteria in soils saturated with water with little oxygen. The flooded vegetation and organic rich soils offer ample food sources for bacteria and the low oxygen water environment is expect to promote greater production of methane than if the land was left unflooded. A new study by Deemer _et al._ compiled measurements of greenhouse gases taken from reservoirs around the world to examine the potential for reservoirs to be a source of greenhouse gas emissions. In this exercise, you will examine how much methane global reservoirs produce and examine the characteristics that drive greater methane production.
+
+<center>
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial05/Lake_Vyrnwy_-_geograph.org.uk_-_1536682.jpg){width=66%}
+
+_A dam helps form Lake Vyrnwy, a man-made reservoir. Source: Ray Jones CC2_
+
+</center>
+
+### _The data: greenhouse gases and reservoir characteristics_
+The data collected by Deemer is a **synthesis** data set. A synthesis aim to compile data collected from a range of different studies to draw conclusions over a broader spatial scale with greater replication than the individual studies alone. However, synthesis often have to merge different observation approaches and some data may be missing if the original study did not collect it.
+
+<center>
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial05/Deemer_map.png){width=66%}
+
+</center>
+
+The `Deemer_GHG_Data.csv` file contains the greenhouse gas and reservoir characterstic data from sites shown in the map above.
+
+```{r eval=FALSE}
+# read in greenhouse gas data from reservoirs
+ghg <- read.csv("/cloud/project/activity05/Deemer_GHG_Data.csv")
+```
+
+```{r echo = FALSE}
+
+ghg <- read.csv("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter05/Deemer_GHG_Data.csv")
+head(ghg)
+
+```
+
+There are a few main columns of data to focus on here. `ch4` describes the methane flux ($mg CH_4-C$ $m^{-2}$ $day^{-1}$) in carbon equivalents emitted from the reservoir. The `co2` column gives the carbon dioxide flux  ($mg CO_2-C$ $m^{-2}$ $day^{-1}$) in carbon equivalents. If a carbon dioxide flux is negative, that means that the lake takes in more carbon dioxide than it emits. There are explanatory variables that also can influence the release of greenhouse gases. The depth of the reservoir (`mean.depth`, meters) can affect the exchange of oxygen, water chemistry, and microclimate. The age of the reservoir (`age`, years) can influence the availability of carbon and oxygen newly flooded vegetation and soils for microbes. The chlorophyll A measurements indicate how much photosynthesizing organisms are living in the water (`chlorophyll.a` in $\mu g L^{-1}$). The surface area (`surface.area` in $km^2$) and volume (`volume` in $km^3$) can influence water conditions. The following are all variables modeled from global data that were used by the authors: dissolved inorganic phosphorous (`DIP` $kg ~km^{-2}~ yr^{-1}$) influences the growth of microbes and photosynthetic organisms. Precipitation influences the flow of new water into the reservoir (`precipitation`, $mm~ yr^{-1}$),
+runoff is the total amount of water from precipitation that flows into a drainage basin (`runoff`, $mm~ yr^{-1}$), and the air temperature influences the conditions for microbial and aquatic organisms as well as water chemistry (`airTemp`, $^\circ C$).
+
+You will also find it helpful to install and load the following packages:
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(olsrr)
+library(PerformanceAnalytics)
+```
+
+
+## The approach: Linear regression in R
+
+### _Transforming variables_
+
+Methane emissions around bodies of water are a type of observation that tends to have many observations at low values with occasional very high value. The histogram of the methane data below confirms this.
+
+```{r echo=FALSE}
+
+hist(ghg$ch4, seq(0,4000,by=20), col="royalblue4", border="grey60",
+     main=" ", xlab="Methane (g CH4-C m-2 d-1)", ylab="Count")
+```
+
+Keep in mind that the linear assumption for the ordinary least squares regression is: **the parameters are linear, describing a linear relationship between two variables**. This assumption simply gives the structure for $$y = \beta_0 + \beta_1 * x$$. However, either y or x does not have to be on a linear scale. In fact, y or x can be **transformed** to allow the data to be described on a linear scale. The most common type of transformation is a **log-scale** transformation. In R, the function `log` takes the natural log of data. The natural log often explains more relationships in environmental data than log base 10. Let's transform the methane data before working with it. For the methane data, values of zero exist and there is no natural log of zero. However, including adding a value of one will shift all the data by a value, and any value that was zero on the linear scale will be zero on the log scale `log(1) = 0`.
+
+```{r echo=TRUE}
+# log transform methane fluxes
+ghg$log.ch4 <- log(ghg$ch4+1)
+```
+
+```{r echo=FALSE}
+par(mfrow=c(1,2))
+plot(ghg$airTemp,ghg$ch4, pch=19,
+     xlab="Air temperature (C)",
+     ylab="Methane (g CH4-C m-2 d-1)", col="royalblue4")
+plot(ghg$airTemp,ghg$log.ch4, pch=19,
+     xlab="Air temperature (C)",
+     ylab="Methane log(g CH4-C m-2 d-1 + 1)", col="royalblue4")
+
+```
+
+
+You can see that the log scale results in a linear relationship between temperature and methane. Now the interpretation of the data in that linear relationship changes. As air temperature increases by one value, we are now looking at the increase in methane by one value on the log(ch4+1) scale. 
+
+Variables like total annual precipitation, age of the reservoir, and dissolved inorganic phosphorous would also be good values to transform due to their distribution and wide range of values.
+
+```{r echo=TRUE}
+ghg$log.age <- log(ghg$age)
+ghg$log.DIP <- log(ghg$DIP+1)
+ghg$log.precip <- log(ghg$precipitation)
+```
+
+### _Binary variables_
+
+It can be useful to control for categorical binary variables in a regression. A slope coefficient for these variables represents an addition or subtraction (if negative) to the intercept. This can account for an expectation for values of data being shifted higher or lower within this group category. There are a few variables where this might be helpful. Let's use the `unique` function to look at all of the regions. Unique will print out each unique object in a vector with no duplicates.
+
+```{r echo=TRUE}
+unique(ghg$Region)
+
+```
+
+`ifelse` will be helpful here to make a binary variable (just like making a flag in the last tutorial). It will be helpful to isolate two regions. Boreal regions are known for their methane producing wetlands with organic rich soils and vegetation adapted to flooding, and thus we might expect that the flooded regions and the vegetation around a reservoir may be more prone to producing methane. We will also isolate tropical regions. There are studies that indicate that tropical lakes emit more methane so we might also expect emissions to differ from subtropical and temperature regions.  
+
+```{r echo=TRUE}
+
+# binary variable for boreal region
+ghg$BorealV <- ifelse(ghg$Region == "Boreal",1,0)
+# binary variable for tropical region
+ghg$TropicalV <- ifelse(ghg$Region == "Tropical",1,0)
+```
+
+We will also want to create a variable for alpine regions (high elevation). Alpine regions are known for long term snow cover and glaciers that bring high amounts of cold, nutrient depleted melt water. 
+
+```{r echo=TRUE}
+# binary variable for alpine region
+ghg$AlpineV <- ifelse(ghg$Alpine == "yes",1,0)
+```
+
+Finally we will also add a variable that indicates that the reservoir is knowingly maintained for hydropower usage.
+```{r echo=TRUE}
+# binary variable for known hydropower
+ghg$HydroV <- ifelse(ghg$hydropower == "yes",1,0)
+```
+
+### _Running a multiple regression_
+
+In R, the `lm` function allows you to specify a linear model and will automatically run an ordinary least squares regression. Here, we will focus on a multiple regression. The function can be easily altered to include only a single variable for a simple linear regression. The `lm` function expects a specific order of arguments where `y ~ x1 + x2` where y is the dependent variable, and x is one or more independent variables. Let's set up a multiple regression for our methane fluxes that looks at the main variables that I predict will have the greatest impact: air temperature, reservoir age, reservoir depth, log-scale dissolved inorganic phosphorous, precipitation, and presence in a boreal region.
+
+```{r echo}
+# multiple regression
+# creates a model object
+mod.full <- lm(log.ch4 ~ airTemp+
+                log.age+mean.depth+
+                log.DIP+
+                log.precip+ BorealV, data=ghg) #uses the data argument to specify dataframe
+```
+
+You can see the full model results using the `summary` function and referring to the model name. This will give you key information like the coefficients table and r-squared.
+
+```{r echo=TRUE}
+summary(mod.full)
+```
+
+One thing to note is that almost half of the data was omitted due to a missing value in at least one of the columns included.
+
+Assuming a standard confidence level of $\alpha$= 0.05, you can see that some variables are related to methane fluxes but others do not have the relationship that I predicted.
+
+
+
+### _Checking assumptions_
+Before moving on to closely interpreting this regression, it is a good idea to check the main assumptions of the regression:
+
+1. Relationships are linear
+2. Residuals are normally distributed
+3. Residuals have equal variance
+4. Residuals are independent and random
+5. In a multiple regression, independent variables are not highly correlated (multicollinearity)
+
+It will be helpful to isolate standardized residuals (`rstandard`) and the fitted values from the regression line at each observation (`fitted.values`) for these tests.
+
+```{r echo=TRUE}
+res.full <- rstandard(mod.full)
+fit.full <- fitted.values(mod.full)
+
+```
+
+#### _1. Normality_
+
+You can use a qqplot to check normality of the residuals. For small data sets, the Shapiro-Wilks test (`shapiro.test`) can also be used to check normality.  
+
+```{r echo=TRUE}
+# qq plot
+qqnorm(res.full, pch=19, col="grey50")
+qqline(res.full)
+# shapiro-wilks test
+shapiro.test(res.full)
+
+```
+
+You can see there are a few values that aren't perfect but the data mainly follows the line. You can also see that the `shapiro.test` indicates the residuals do not significantly deviate from a normal distribution.
+
+#### _2-4. Residuals_
+
+Many of the issues outlined in assumptions 2-4 can be seen using a residual plot and background knowledge about the data. A residual plot simpily uses the fitted values and standard residuals. You can add a horizontal line to the plot at zero for easier comparison.
+
+```{r echo=TRUE}
+plot(fit.full,res.full, pch=19, col="grey50")
+abline(h=0)
+```
+
+Here the residuals are not in major violation of any assumptions.
+
+### _5. Multicollinearity_
+
+The assumption of multicollinearity applies to multiple regressions only. Reliable slope coefficients assume that each independent variable is not related to other independent variables in the model. You can check this easily using the `chart.Correlation` function in the `PerformanceAnalytics` package. You simply need a data frame of just the variables to compare.
+
+```{r echo=TRUE}
+# isolate continuous model variables into data frame:
+
+reg.data <- data.frame(ghg$airTemp,
+  ghg$log.age,ghg$mean.depth,
+  ghg$log.DIP,
+  ghg$log.precip)
+
+# make a correlation matrix 
+chart.Correlation(reg.data, histogram=TRUE, pch=19)
+
+```
+
+A correlation coefficient varies from 0-1 with 1 indicated a perfect correlation. There is no established threshold for multicollinearity, but some studies indicate that correlation coefficients greater than 0.7-0.8 indicate that both variables are too correlated to include. The solution to this is to choose just one variable knowing that it may represent other underlying variables and processes (include this in your interpretation). The other solution is to create an index that represents both variables.
+
+Here, there are a few variables that have a fair amount of correlation, but there is not a severe enough correlation to cause concern here.
+
+
+## Model selection
+
+Model selection is one of the most challenging parts of designing an analysis. My selection of initial variables related to my biophysical understanding of microbial respiration, aquatic ecosystems, and microclimate. However, you can see that some variables are simply not significant and indicate no relationship. This outcome would be useful to report for **inference**. Understanding which variables influence methane emission and by how much provides more information about when and why reservoirs may be significant sources of methane. However, if I am interested in **prediction**, I will only want to include significant variables that greatly describe the variability in methane to reduce data collection and issues with over-fitting. **Model selection** is the process of eliminating variables and parameters that are not critical to the objective of the analysis and the outcomes of the model.
+
+There are various ways of assessing model performance. The $R^2$ gives information on the amount of variability in y explained by the model. The adjusted $R^2$ penalizes the addition of extra independent variables. The **Akaike information criterion (AIC)** is a measure of model fit. The smaller the value, the better the model fit. Comparing these measures between **candidate models**, a series of possible models to compare. Model selection can help with statistically selecting variables that best describe the independent variable without adding unnecessary variables. 
+
+You can assess the importance of your variables in a multiple regression using **stepwise selection**. Stepwise selection iteratively adds (forward) or removes (backward) variables to calculate their impact on the model. Let's look at forward stepwise selection using the function `ols_step_forward_aic` function from the `olsrr` package. The only argument needed is your full model.
+
+```{r echo=TRUE}
+# run stepwise
+full.step <- ols_step_forward_aic(mod.full)
+# view table
+full.step 
+# check full model
+full.step$model
+# plot AIC over time
+plot(full.step )
+
+```
+
+THe main thing that you want to interpret here is how much the AIC and adjusted $R^2$ change with each added variable. You can see here that the log(DIP+1) had almost no influence on the model despite being statistically significant. This information is helpful for both inference and prediction. Adding the air temperature variable increased the adjusted $R^2$ and decreased the AIC by the greatest magnitude.
+
+## Predictions
+
+Regression lines can be used to make predict for missing data. In R, the `predict.lm` function can be used to predict the value from the regression model for given input data values. Here, you need to specify the input model, input independent variables, and the interval to return. `confidence` returns the 95% confidence interval whereas `prediction` returns the interval for a single point of data. The prediction variable accounts for the extra variability of each regression point around the line (think about that error term in the regression equation).
+```{r echo=TRUE}
+# prediction with interval for predicting a point
+predict.lm(mod.full, data.frame(airTemp=20,log.age=log(2),
+                             mean.depth=15,log.DIP=3,
+                             log.precip=6, BorealV=0),
+           interval="prediction")
+# look at prediction with 95% confidence interval of the mean
+
+predict.lm(mod.full, data.frame(airTemp=20,log.age=log(2),
+                                mean.depth=15,log.DIP=3,
+                                log.precip=6, BorealV=0),
+           interval="confidence")
+```
+
+
+## Conclusions
+
+You can see that reservoirs are a significant source of methane in some cases, but some reservoirs produce more methane than others. It seems that areas with high air temperatures, lower amounts of annual precipitation, or in boreal regions are prone to higher levels of methane. With this information, we can understand the impact of reservoirs on greenhouse gas emissions across the globe or predict the carbon footprint of a proposed reservoir. You will practice implementing, designing,and selecting linear models further in class and homework.
+
+## Citations
+Deemer, Bridget R., et al. "Greenhouse gas emissions from reservoir water surfaces: a new global synthesis." BioScience 66.11 (2016): 949-964.
