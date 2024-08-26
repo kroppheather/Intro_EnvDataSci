@@ -1,0 +1,381 @@
+---
+output: 
+  html_document:
+    theme: yeti
+---
+# Classifying landcover. An introduction to machine learning in R.
+
+_by Heather Kropp_
+_for ENVST 325: Introduction to Environmental Data Science_
+_Hamilton College_
+
+
+```{css, echo=FALSE}
+.book .book-body .page-wrapper .page-inner section.normal pre.colout {
+  background-color: #D9EDF7;
+}
+```
+
+
+## Learning objectives
+
+1. Implement random forest and neural networks in R
+2. Assess predictions from machine learning
+3. Work with drone imagery
+
+
+## New functions & syntax
+`expand.grid`, `set.seed`, `train`, `predict`, `confusionMatrix`
+
+```{r warning=FALSE,echo=FALSE, message=FALSE}
+library(imager)
+```
+
+```{r include=FALSE}
+knitr::opts_chunk$set(comment = NA, class.output="bg-info",class.output = "colout" )
+```
+## The problem: Precision mapping from drones. 
+
+Agriculture often involves making complex decisions around when and where to plant crops, what types of crops to plan, and timing and amount of irrigation, pesticides, herbicides, and fertilizers. Farmers must often balance the crop yield with the economic considerations of the costs, subsidies, market, and profit margins of their crops. Forests also can be actively managed for many purposes including timber harvests, aesthetics, and recreation. Precision agriculture and forestry involve managing crops and forests using data and predictions that are specialized for within an agricultural field or forest stand. This type of approach develops specialized management plans and solutions that will be more cost efficient, lead to higher yield/productivity, and can have a better environmental impact. For example, irrigating crops only when additional water is necessary can reduce water consumption or applying smaller, more targeted amounts of fertilizer can reduce runoff pollution and decrease costs. In forestry, regrowth and harvesting can be targeted to species and locations with optimal conditions. Precision approaches to forestry and agriculture use high spatial resolution data over small scales (field/forest) using sensors and remote sensing. The diagram below illustrates the data streams that can go into precision management of irrigation amounts.
+
+<center> 
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial08/Components_of_a_Precision_Agriculture_System_(49132514563).jpg){width=75%}
+
+_Source: U.S. Government Accountability Office from Washington DC. Public Domain_
+</center>
+
+Remote sensing observations that can image land at the meter or centimeter scales can provide detailed information about the plant growth and water stress in the field or forest. Drones aka small Uncrewed Aerial Systems (sUAS) are becoming increasing common ways to image the land surface at high resolution over small scales (< 1 $km^2$) with low cost systems and photogrammetry software that combines individual images into maps. Most hobby drones can generate high resolution images in red, green, blue wavelengths of light. Advanced research set ups allow for images of additional wavelengths including red-edge, near infrared, and far infrared (thermal). 
+
+
+<center> 
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial08/drone.jpg){width=40%}
+
+_Source: A hobby drone that includes a mounted thermal camera_
+
+</center>
+
+Maps created by drone imagery allow for characterization of fields and forests on the sub-meter scale, enhancing the reach of precision agriculture and forestry. A comparison between drone data and some of the highest resolution, freely available satellite data (Sentinel 2, 10x10 meter pixels), demonstrates the differences in characterizing the land surface:
+
+<center> 
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial08/comp.png){width=80%}
+
+_Source: A comparison of Sentinel 2 satellite imagery to imagery from a drone (Phantom P4M) _
+
+</center>
+
+
+### The data: 
+
+Hamilton College is currently reforesting fields that were originally leased for agriculture or used as a golf course. The college is also exploring the carbon held in existing forests and weighing forest management plans that optimize forest carbon stores.
+
+In this exercise, you will assist in mapping fields that are slated for reforestation in addition to existing forest and recreational use. You will quantify the area of the fields that can potentially be converted to forest land cover.
+
+There are four periods of drone measurements from 2021 that will use to create a map of a field undergoing reforestation. Drone measurements were taken with a DJI Phantom P4M and images include measurements in the blue (band 1), green (band 2), red (band 3), red edge (band 4), and near infrared (band 5) wavelengths. You will work with maps from spatial
+
+
+The college would like to know how large the field is for planning seedling density and the potential future carbon sequestration potential. 
+
+You will need to load in the spatial package, `terra`, from the previous chapter to read in the drone data. You will also need packages that include functions for implementing the machine learning approaches we will use. The `caret` package has functions that help train and evaluate the machine learning models and the `randomForest` package includes a function for the random forest algorithm.
+
+```{r echo=TRUE, results="hide", message=FALSE, warning=FALSE}
+library(caret)
+library(randomForest)
+library(terra)
+```
+
+In the activity folder, you will find four tif files, each named with the date of the flight, and a shapefile of points that contain an identified land cover for each location and a label that was randomly selected to act as training or validation data. Let's look at one of the drone flights that was taken in October:  
+
+```{r eval=FALSE}
+oct <- rast("/cloud/project/activity08/Oct_12.tif")
+
+```
+
+```{r echo=FALSE}
+oct <- rast("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter08/Oct_12.tif")
+
+```
+
+When you plot out all of the images, you will see the values are on a scale from 0-1 and are the actual reflectance for each band. 
+
+
+```{r echo=TRUE}
+plot(oct)
+
+```
+
+You can also make a true color plot of the image. Note that R automatically rescales the resolution of each plot to only show 500,000 pixels on your plot. This is a little lower resolution than the actual data. Changing this setting would unnecessarily use computational resources and slow down your work.
+
+
+```{r echo=TRUE}
+plotRGB(oct, r=3,g=2,b=1, scale=0.7, stretch="lin")
+
+```
+
+We will want to use all four maps to make inferences about landcover. Let's read all four images into one stack for a total of 20 bands:
+
+```{r eval=FALSE}
+drStack <- rast(c("/cloud/project/activity08/May_19.tif",
+                 "/cloud/project/activity08/June_10.tif",
+                 "/cloud/project/activity08/June_18.tif",
+                 "/cloud/project/activity08/Oct_12.tif"))
+```
+
+```{r echo=FALSE}
+drStack <- rast(c("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter08/May_19.tif",
+                 "/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter08/June_10.tif",
+                 "/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter08/June_18.tif",
+                 "/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter08/Oct_12.tif"))
+```
+
+You can preview up to 16 of the images by running the plot function:
+
+```{r echo=TRUE}
+plot(drStack)
+
+```
+
+You can also subset specific bands
+
+```{r echo=TRUE}
+plot(drStack[[16:20]])
+```
+
+Finally, you will want to read in the points with known landcover classes. 
+
+```{r eval=FALSE}
+lc <- vect("/cloud/project/activity08/land_pts.shp")
+```
+
+```{r echo=FALSE}
+lc <- vect("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter08/land_pts.shp")
+```
+```{r echo=TRUE}
+head(values(lc))
+```
+You can see that each point comes with a data table that gives a land cover class name `landcover`, a numerical id for land cover class `LCID`, and an indication if it is for training or validation (`train` = train or valid).
+
+You can also view a map of both the points and the images:
+
+```{r echo=TRUE}
+# plot the main reforestation field and surrounding areas:
+plotRGB(oct, r=3,g=2,b=1, scale=0.7, stretch="lin")
+# add the known land cover points to the RGB plot
+plot(lc,"LCID", add=TRUE, legend=FALSE,
+     pch=19,cex=0.5, # make small filled in points
+    col= hcl.colors(3, palette = "Harmonic")) # colors from a color palette
+# make a legend
+legend("bottomright",
+       c("field", "path", "tree"), #add legend names
+       pch=19, pt.cex=0.5, #make small filled in points
+       col=hcl.colors(3, palette = "Harmonic"), # color palette
+       bty="n")
+```
+
+
+There are over 700,000 pixels in this small area and classifying the landcover by hand drawing it would be tedious. You can check by looking at the rows and columns in the raster stack: 
+
+
+```{r echo=TRUE}
+drStack
+```
+
+Designating landcover without a predictive approach would involve tracing every individual tree in the field and the outline of all paths, fields, and forests. This would be tedious work for even an image this small and impossible in many real world applications. However, it would be helpful to know the total area of unforested fields and the area designated to trails. In the next section you work on generating these classifications.   
+
+## The approach: classification with machine learning
+
+### _Training data_
+
+We will use two common types of machine learning approaches used for remote sensing: *Neural Networks* and *Random Forest*. We'll compare how these methods make predictions and learn about the packages that run them. 
+
+Now that you have the data read in, it is time to classify every pixel. You will need to pull out the reflectance data from every image for each point of known land cover:
+
+```{r echo=TRUE}
+# subset to only focus on training pts (60 in each class)
+trainPts <- subset(lc, lc$train=="train", drop=FALSE)
+
+```
+
+Then we need to extract the pixel values from our stack:
+
+```{r echo=TRUE}
+# extract pixel data
+train <- extract(drStack, trainPts)
+# get attribute table from points
+trainTable <- values(trainPts)
+# combine into one table that has a y column
+# for land cover and all other data are predictions
+trainDF <- na.omit(cbind(y=as.factor(trainTable[,3]), train))
+
+```
+
+### _Training random forest_
+
+You will start with classification using the random forest method. There is a chapter of a brief overview posted in Blackboard. This method can be used for classifications or continuous predictions. This method works well with data with a large number of features, generally performs well, and it can handle noisy data. However, tuning the model to the data can not always be straightforward. This is a commonly used prediction method for remotely sensed data.
+
+For both methods (random forests and neural networks) today, we will use the caret package to help tune the parameters. The data folder also contains an overview of *caret* and parameter tuning in the _caret.pdf_ file. For many machine learning methods, there are often parameters that need to be set to help configure the models and you can often choose from a range of values for parameters depending on the method you are using. Finding the parameter values that will work best for predictions can involve a lot of trial and error and setting arbitrary values. The *Caret* pacakge helps streamline this part of the model training process by finding the optimal parameter settings within a range of values. We will use caret to find the optimal parameter setting for our random forest predictions. Here we will use a repeated ** cross-validation** approach discussed in class. This will allow us to quickly assess the optimal parameter settings to increase the accuracy of the algorithm. 
+
+```{r echo=TRUE}
+#Kfold cross validation
+tc <- trainControl(method = "repeatedcv", # repeated cross-validation of the training data
+                   number = 10, # number 10 fold
+                   repeats = 10) # number of repeats
+###random forests
+#Typically square root of number of variables
+nbands <- 20 #20 bands of information
+rf.grid <- expand.grid(mtry=1:round(sqrt(nbands))) # number of variables available for splitting at each tree node
+
+```
+
+Here train control indicates how we want to set up our parameter tuning. We are using a repeated cross valdiation method. We also need to indicate the values to check for our random forests. You can see in the table below, there is one parameter we can tune in random forests:
+
+Here train control indicates how we want to set up our parameter tuning. We are using a repeated cross valdiation method. We also need to indicate the values to check for our random forests. You can see in the table below, there is one parameter we can tune in random forests:
+
+
+<center>
+![](/Users/hkropp/Documents/GitHub/EnviroDataSci/tutorials/tutorial08/pics/caret_param.png)
+
+_Source: Lantz, Machine Learning in R_
+</center>
+
+You can see for random forests, there is one parameter that can be tuned in caret: _mtry_. This describes the number of variables sampled as candidates in splitting the decision trees that go into this method. Typically the default value for classification is the square root of the number of variables in the data (here we have 20 bands of the electromagnetic spectrum so we have 20 variables). However, you could also choose a value that is less than that (1 or 2 or 3  so we will tune the model over this grid of options. Now that we've set up this tuning we will train the model with our training data through the caret package.
+
+Anytime you are working data that involves the random generation of numbers, it is good to set a *random seed*. This allows for reproducibility in your script and will generate random numbers in the same way everytime you run your script. You can set your seed to be any number you like. Note that this only works if you run your script in the same order every time and don't rerun a random number function over and over again in your console within the same session. If you want to ensure that any vector of random numbers is exactly the same everytime, it is always good to set the seed before each individual vector. Here, we'll set the seed at the beginning and if you always run these vectors in exactly this order the samples will be the same every time.
+
+```{r echo=TRUE}
+# set random seed for algorithm so you can get the same results when
+# running multiple times
+set.seed(43)
+
+#note that caret:: will make sure we use train from the caret package
+rf_model <- caret::train(x = trainDF[,2:21], #digital number data
+                         y = as.factor(trainDF[,1]), #land class we want to predict
+                         method = "rf", #use random forest
+                         metric="Accuracy", #assess by accuracy
+                         trainControl = tc, #use parameter tuning method
+                         tuneGrid = rf.grid) #parameter t
+
+
+```
+
+You can view the final model configuration and the training by typing in the name or the model or plotting it:
+
+```{r echo=TRUE}
+rf_model
+```
+
+
+This process might take a minute to run on your computer. Once it finishes you can see the model checked accuracy and Kappa. Kappa is similar to accuracy but accounts for the level of accuracy that we might see just by random chance. 
+
+### _Predictions and validation_
+
+Now that you have trained the model, you can make predictions for the entire raster of observations.
+
+
+```{r echo=TRUE}
+#use the model to predict land cover class for the entire raster stack
+rf_prediction <- raster::predict(drStack, rf_model )
+# plot the land cover class (uses LCID number)
+plot(rf_prediction, col= hcl.colors(3, palette = "Harmonic"))
+```
+
+You can see the prediction looks good initially. There might be some field marked as path or trees, but let's look at the validation points to assess this more formally:
+
+```{r echo=TRUE}
+# subset land cover points for validation
+validPts <- subset(lc, lc$train=="valid", drop=FALSE)
+# convert to data frame
+valid_Table <- st_drop_geometry(validPts)
+
+# extract predicted land cover for each point
+valid_rf <- extract(rf_prediction, validPts)
+# turn into table
+validDF_rf <- data.frame(y=valid_Table[,3], rf=valid_rf)
+
+```
+
+You are ready to compare the predictions to the observed data. You will set up a **confusion matrix** to compare the observations to the predictions. The `confusionMatrix` function in the `caret` package simply needs a vector of predictions and a vector of known data.
+
+```{r echo=TRUE}
+# make a confusion matrix
+# LCID 1 = field
+# LCID 2 =  tree
+# LCID 3 = path
+# confusion Matrix, first argument is prediction second is data
+rf_errorM = confusionMatrix(as.factor(validDF_rf$rf),as.factor(validDF_rf$y))
+# make LCID easier to interpret
+colnames(rf_errorM$table) <- c("field","tree","path")
+rownames(rf_errorM$table) <- c("field","tree","path")
+rf_errorM
+```
+
+### _Classification with Neural Network_
+
+Now you will compare your random forest predictions to another common approach, _neural networks_. Neural networks can be used for classification or numerical predictions. Neural networks are often successful at classifications without needing to make a lot of assumptions about the data and capable of detecting complex patterns. However, this method can also be computationally intensive and prone to overfitting. Small training data sets may also cause issues in training and prediciton. First you'll set up the parameter tuning in caret. You will fit the _nnet_ function. This requires parameters _size_ (number of nodes) of the hidden layer in your network topology. You will also need to specify the _decay_ parameter will be used to prevent over-fitting in the model training. I've set up some initial parameter values that have give a good range of accuracy to start with. Running the training over a large range of values would be too time consuming and computationally intensive for this class:
+
+```{r echo=TRUE}
+# starting parameters for neural net
+nnet.grid <- expand.grid(size = seq(from = 1, to = 10, by = 1), # number of neurons units in the hidden layer 
+                         decay = seq(from = 0.001, to = 0.01, by = 0.001)) # regularization parameter to avoid over-fitting 
+
+
+```
+
+Now you are ready to train the model:
+
+```{r echo=TRUE}
+# train nnet
+set.seed(18)
+nnet_model <- caret::train(x = trainDF[,c(2:21)], y = as.factor(trainDF[,1]),
+                           method = "nnet", metric="Accuracy", 
+                           trainControl = tc, tuneGrid = nnet.grid,
+                           trace=FALSE)
+nnet_model
+```
+
+A note: you will see a lot of print out if _trace=TRUE_ is specified as the parameter tuning is done throughout the grid. This can be used to identify that you are running enough iterations and provide you with more information. You can find out more by printing out the results by changing this argument to FALSE. 
+
+Make predictions for the entire image and view:
+```{r echo=TRUE}
+# predictions
+nn_prediction <- raster::predict(drStack, nnet_model)
+# map
+plot(nn_prediction, col= hcl.colors(3, palette = "Harmonic"))
+
+```
+
+## Analyzing predictions of land cover
+
+You set out to do this analysis to see if you could classify the area of fields, paths, and forests. Now let's assess the conclusions and potential bias in interpreting these classifications. Let's start by comparing the area of land predicted to be an algal bloom. You can check the number of cells in each class using the *freq* function in the raster package
+
+
+```{r echo=TRUE}
+#cell count neural net
+freq(nn_prediction)
+#cell count random forest
+freq(rf_prediction)
+
+# field RF area calculation
+0.4*0.4*71019
+
+# field NN area calculation
+0.4*0.4*71047
+
+```
+
+You can also view the predictions side by side:
+```{r echo=TRUE}
+par(mfrow=c(1,2))
+plot(nn_prediction, col= hcl.colors(3, palette = "Harmonic"),
+     legend=FALSE, axes=FALSE, main="Neural network", box=FALSE)
+legend("bottomleft", c("field","tree","path"),
+       fill=hcl.colors(3, palette = "Harmonic") ,bty="n")
+
+plot(rf_prediction, col= hcl.colors(3, palette = "Harmonic"),
+     legend=FALSE, axes=FALSE, main="Random forest", box=FALSE)
+legend("bottomleft", c("field","tree","path"),
+       fill=hcl.colors(3, palette = "Harmonic") ,bty="n")
+```
+
+## Conclusions
+
+In your homework, you will practice comparing predictions and implementing these algorithms. You can see from the tutorial that both algorithms predicted a similar area of field (roughly 11,360 $m^2$). Our image focused on this area, so it is not surprising that there are more pixels in fields than paths or forests. However this map could serve as a basis for tracking the regrowth of trees in the field or be entered into calculations projecting future additional forested areas for future carbon calculations.
