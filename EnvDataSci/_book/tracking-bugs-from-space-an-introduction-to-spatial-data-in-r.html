@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Page not found | Introduction to Environmental Data Science</title>
+  <title>Chapter 8 Tracking bugs from space?!?! An introduction to spatial data in R | Introduction to Environmental Data Science</title>
   <meta name="description" content="“ENVST 325: Environmental Data Science, Hamilton College”" />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Page not found | Introduction to Environmental Data Science" />
+  <meta property="og:title" content="Chapter 8 Tracking bugs from space?!?! An introduction to spatial data in R | Introduction to Environmental Data Science" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="“ENVST 325: Environmental Data Science, Hamilton College”" />
   <meta name="github-repo" content="kroppheather/Intro_EnvDataSci" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Page not found | Introduction to Environmental Data Science" />
+  <meta name="twitter:title" content="Chapter 8 Tracking bugs from space?!?! An introduction to spatial data in R | Introduction to Environmental Data Science" />
   
   <meta name="twitter:description" content="“ENVST 325: Environmental Data Science, Hamilton College”" />
   
@@ -30,7 +30,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
+<link rel="prev" href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"/>
 
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -317,18 +317,160 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="page-not-found" class="section level1">
-<h1>Page not found</h1>
-<p>The page you requested cannot be found (perhaps it was moved or renamed).</p>
-<p>You may want to try searching to find the page's new location, or use
-the table of contents to find the page you are looking for.</p>
+<div id="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Tracking bugs from space?!?! An introduction to spatial data in R<a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#tracking-bugs-from-space-an-introduction-to-spatial-data-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><em>by Heather Kropp</em>
+<em>for ENVST 325: Introduction to Environmental Data Science</em>
+<em>Hamilton College</em></p>
+<style type="text/css">
+.book .book-body .page-wrapper .page-inner section.normal pre.colout {
+  background-color: #D9EDF7;
+}
+</style>
+<div id="learning-objectives-6" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Learning objectives<a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#learning-objectives-6" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>Work with raster and vector data in R</li>
+<li>Calcualte NDVI</li>
+<li>Track spongy moth defioliation with satellite data</li>
+</ol>
+</div>
+<div id="new-functions-syntax-6" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> New functions &amp; syntax<a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#new-functions-syntax-6" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><code>rast</code>, <code>stack</code>, <code>st_read</code>, <code>plotRGB</code>,<code>extract</code></p>
+</div>
+<div id="the-problem-monitoring-pest-outbreaks" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> The problem: monitoring pest outbreaks<a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#the-problem-monitoring-pest-outbreaks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Throughout much of the world, insect and fungal pests can be a common disturbance to forests resulting in outcomes like defoliation and death. The spongy moth ( <em>Lymantria dispar dispar</em>) is a common pest to the northeastern United states that infests forests and eats the leaf foliage. According the the New York State Department of Environmental Conservation, spongy moths were introduced to the US in the 1800s via a silkworm breeding program.</p>
+<center>
+<p><img src="photos/tutorial07/moth2.jpg" style="width:50.0%" /></p>
+<p><em>Source:A Spongy moth consumes leaves. Patrick Reijnders CC3</em></p>
+</center>
+<p>Large outbreaks can defoliate entire forest stands. Deciduous tree leaves can regrow within the summer. This means that the outbreaks are mostly harmless, but successive years of outbreak or outbreaks co-occurring with other stresses like drought may lead to mortality. Outbreaks can also make trees more susceptible to other pests. Evergreen needleleaf trees may have more difficulty regrowing leaves and can be more susceptible to mortality. The installation of barriers and insecticides can help control spongy moth outbreaks. Tracking outbreaks can help inform forest monitoring and multiple sequential years of outbreaks may suggest spongy moth control measures may be warranted. As you can see from the image below, outbreaks can cover large areas of land that can be difficult to quantify from the ground.</p>
+<center>
+<p><img src="photos/tutorial07/Moth_Defoliation_PA.jpg" style="width:50.0%" /></p>
+<p><em>An aerial image of spongy moth defoliation in Pennsylvania. Source: Dhalusa CC3</em></p>
+</center>
+</div>
+<div id="the-data-2" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> The data:<a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#the-data-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="raster-data-sentinel-2-imagery" class="section level3 hasAnchor" number="8.4.1">
+<h3><span class="header-section-number">8.4.1</span> <em>Raster data: Sentinel 2 imagery</em><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#raster-data-sentinel-2-imagery" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Changes in vegetation over large spatial extents can be quantified from satellite imagery. As discussed in class, the reflectance of light in different wavelengths can be used characterize vegetation, water and other features on the land surface. In this activity, you will work with data from the Sentinel 2 satellite. You will work with Bands 2 (blue), 3 (green), 4 (red), and 8 (near-infrared). A lot of satellite image data is stored in a <strong>GeoTiff</strong> format. This format stores the data as an image with additional metadata in the file and includes the geographic information. The <code>raster</code> package can be used to read, analyze, and map these images. The <code>sf</code> package contains functions for working with vector data. Let’s load the packages into the environment:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb1-1" tabindex="-1"></a><span class="fu">library</span>(terra)</span></code></pre></div>
+<pre><code>terra 1.7.78</code></pre>
+<pre><code>
+Attaching package: &#39;terra&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:imager&#39;:
+
+    depth, width</code></pre>
+<pre><code>The following objects are masked from &#39;package:magrittr&#39;:
+
+    extract, inset</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb6-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
+<p>Each image can actually contain multiple images organized in a <strong>rast</strong>. Here, each tiff file contains four images from each band so you will want to read in the file using the `rast`` function. In the summer of 2021, a major spongy moth outbreak occurred around Lake George in New York State. There is a pre- and post- outbreak image. Let’s read the images in:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb7-1" tabindex="-1"></a><span class="co"># pre outbreak image</span></span>
+<span id="cb7-2"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb7-2" tabindex="-1"></a>pre <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;/cloud/project/activity07/ldd_pre.tif&quot;</span>)</span></code></pre></div>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb8-1" tabindex="-1"></a><span class="co"># post outbreak image</span></span>
+<span id="cb8-2"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb8-2" tabindex="-1"></a>post <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;/cloud/project/activity07/ldd_post.tif&quot;</span>)</span></code></pre></div>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>You can view the components of the stack using the <code>plot</code> function and set a greyscale using <code>col</code> and <code>grey</code>. You can see each band plotted:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb9-1" tabindex="-1"></a><span class="fu">plot</span>(pre, <span class="at">col=</span><span class="fu">grey</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span><span class="sc">/</span><span class="dv">100</span>) )</span></code></pre></div>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-10-1.png" width="1152" /></p>
+<p>Sentinel 2 data is represented as a <strong>digital number</strong> where the actual reflectance is multiplied by 10,000 for each band. Since we are only working with sentinel data, we don’t need to convert to an actual reflectance value (0-1 scale).</p>
+<p>You can also make a <strong>color composite</strong> using the plotRGB function. By changing the bands, you can make the <strong>false color composites</strong>. The <code>plotRGB</code> function uses three bands to make a composite of red, green, blue color in an image. The <code>scale</code> argument specifies the maximum data value (255 will be assumed by default because that is a common value for image data). Color contrast can also be added using the <code>stretch</code> argument.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb10-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb10-2"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb10-2" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb10-3" tabindex="-1"></a><span class="fu">plotRGB</span>(post, <span class="at">r=</span><span class="dv">3</span>,<span class="at">g=</span><span class="dv">2</span>,<span class="at">b=</span><span class="dv">1</span>, <span class="co"># image and bands</span></span>
+<span id="cb10-4"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb10-4" tabindex="-1"></a>        <span class="at">scale=</span><span class="dv">13000</span>, <span class="co"># note high scale due to clouds</span></span>
+<span id="cb10-5"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb10-5" tabindex="-1"></a>        <span class="at">stretch=</span><span class="st">&quot;lin&quot;</span>, <span class="co"># contrast stretch</span></span>
+<span id="cb10-6"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb10-6" tabindex="-1"></a>        <span class="at">main=</span><span class="st">&quot;True color&quot;</span>,</span>
+<span id="cb10-7"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb10-7" tabindex="-1"></a>        <span class="at">axes=</span><span class="cn">TRUE</span>)</span>
+<span id="cb10-8"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb10-8" tabindex="-1"></a><span class="fu">plotRGB</span>(post, <span class="at">r=</span><span class="dv">4</span>,<span class="at">g=</span><span class="dv">3</span>,<span class="at">b=</span><span class="dv">2</span>, <span class="co"># image and bands</span></span>
+<span id="cb10-9"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb10-9" tabindex="-1"></a>        <span class="at">scale=</span><span class="dv">13000</span>,<span class="co"># max data value</span></span>
+<span id="cb10-10"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb10-10" tabindex="-1"></a>        <span class="at">stretch=</span><span class="st">&quot;lin&quot;</span>, <span class="co"># contrast stretch</span></span>
+<span id="cb10-11"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb10-11" tabindex="-1"></a>        <span class="at">main=</span><span class="st">&quot;False color&quot;</span>,</span>
+<span id="cb10-12"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb10-12" tabindex="-1"></a>        <span class="at">axes=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-11-1.png" width="960" /></p>
+</div>
+<div id="vector-data" class="section level3 hasAnchor" number="8.4.2">
+<h3><span class="header-section-number">8.4.2</span> <em>Vector data:</em><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#vector-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>You have been given two areas around Lake George towards the North of the lake and in the central region of the lake to track outbreaks. You would like to use these boundaries in your calculations:</p>
+<p>The <code>terra</code> package also works with vector data. This includes points, polygons, and lines with attribute table data. The <code>vect</code> function loads the data into R:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb11-1" tabindex="-1"></a>northBound <span class="ot">&lt;-</span> <span class="fu">vect</span>(<span class="st">&quot;/cloud/project/activity07/north_bound.shp&quot;</span>)</span>
+<span id="cb11-2"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb11-2" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb11-3" tabindex="-1"></a>midBound <span class="ot">&lt;-</span> <span class="fu">vect</span>(<span class="st">&quot;/cloud/project/activity07/mid_bound.shp&quot;</span>)</span></code></pre></div>
+<p>You can add these polygons to your plot by specifically referring the the <code>geometry</code> column and using the <code>add=TRUE</code> argument. Here the plot function defaluts to an sf plot. You can also find more arguments like <code>fill</code> for working with polygons:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb12-1" tabindex="-1"></a><span class="fu">plotRGB</span>(post, <span class="at">r=</span><span class="dv">3</span>,<span class="at">g=</span><span class="dv">2</span>,<span class="at">b=</span><span class="dv">1</span>, <span class="at">stretch=</span><span class="st">&quot;lin&quot;</span>)</span>
+<span id="cb12-2"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb12-2" tabindex="-1"></a><span class="fu">plot</span>(northBound, <span class="at">border=</span><span class="st">&quot;tomato3&quot;</span>, <span class="at">fill=</span><span class="cn">NA</span>, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>Warning in graphics::plot.xy(g, type = &quot;l&quot;, lty = lty, col = col, lwd = lwd, :
+&quot;fill&quot; is not a graphical parameter</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb14-1" tabindex="-1"></a><span class="fu">plot</span>(midBound, <span class="at">border=</span><span class="st">&quot;royalblue4&quot;</span>,<span class="at">fill=</span><span class="cn">NA</span>, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>Warning in graphics::plot.xy(g, type = &quot;l&quot;, lty = lty, col = col, lwd = lwd, :
+&quot;fill&quot; is not a graphical parameter</code></pre>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+</div>
+<div id="the-approach-ndvi-in-r" class="section level2 hasAnchor" number="8.5">
+<h2><span class="header-section-number">8.5</span> The approach: NDVI in R<a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#the-approach-ndvi-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="ndvi-calculations" class="section level3 hasAnchor" number="8.5.1">
+<h3><span class="header-section-number">8.5.1</span> <em>NDVI calculations</em><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#ndvi-calculations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Calculations on rasters will be very familar in R. You can directly apply functions and calculations to a raster cell just like you are used with vectors and data frames. If you remember, the <strong>Normalized Difference Vegetation Index</strong> is calculated based on the normalized difference between near infrared and red reflectance. Values of -1 represent water, values of 0 are a non-vegetated surface, and values of 1 are areas of high levels of photosynthesizing vegetation. You can refer to individual bands in a raster stack using double brackets <code>[[]]</code></p>
+<p>You can calculate the NDVI for each raster:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb16-1" tabindex="-1"></a><span class="co">#calculate NDVI pre from NIR (4th band) and Red (3rd band)</span></span>
+<span id="cb16-2"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb16-2" tabindex="-1"></a>ndvi_pre <span class="ot">&lt;-</span> (pre[[<span class="dv">4</span>]]<span class="sc">-</span>pre[[<span class="dv">3</span>]])<span class="sc">/</span>(pre[[<span class="dv">4</span>]]<span class="sc">+</span>pre[[<span class="dv">3</span>]])</span>
+<span id="cb16-3"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb16-3" tabindex="-1"></a><span class="co">#calculate NDVI post</span></span>
+<span id="cb16-4"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb16-4" tabindex="-1"></a>ndvi_post <span class="ot">&lt;-</span> (post[[<span class="dv">4</span>]]<span class="sc">-</span>post[[<span class="dv">3</span>]])<span class="sc">/</span>(post[[<span class="dv">4</span>]]<span class="sc">+</span>post[[<span class="dv">3</span>]])</span>
+<span id="cb16-5"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb16-5" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb16-6" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb16-7"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb16-7" tabindex="-1"></a><span class="fu">plot</span>(ndvi_pre)</span>
+<span id="cb16-8"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb16-8" tabindex="-1"></a><span class="fu">plot</span>(ndvi_post)</span></code></pre></div>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>You can see the drop in NDVI after the outbreak. We can specifically calculate the difference:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb17-1" tabindex="-1"></a><span class="co"># difference between post and pre ndvi</span></span>
+<span id="cb17-2"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb17-2" tabindex="-1"></a>ndviDiff <span class="ot">&lt;-</span> ndvi_post <span class="sc">-</span> ndvi_pre</span>
+<span id="cb17-3"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb17-3" tabindex="-1"></a><span class="fu">plot</span>(ndviDiff)</span></code></pre></div>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
+<div id="extract-data-in-a-vector-geometry" class="section level3 hasAnchor" number="8.5.2">
+<h3><span class="header-section-number">8.5.2</span> <em>Extract data in a vector geometry</em><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#extract-data-in-a-vector-geometry" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>You can <strong>extract</strong> the raster values that fall within a vector geometry. The value of every pixel that overlaps with the geometry will be returned. Let’s extract the NDVI values pre and post for the two polygons. The <code>extract</code> function will pull data from out all raster cells that overlaps. When data is extracted from points, you will get a data frame. When data is extracted from lines or polygons, you get a vector stored in a <strong>list</strong> for each feature. A list is a very flexible type of object and it can store multiple items that are different R objects (for example, both a vector and data frame). Here we only have one polygon in our data frame so we can directly refer to the vector using the <code>[[1]]</code> syntax.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb18-1" tabindex="-1"></a><span class="co"># return a vector of cell values from the first polygon</span></span>
+<span id="cb18-2"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb18-2" tabindex="-1"></a>ndvi_North <span class="ot">&lt;-</span> <span class="fu">extract</span>(ndviDiff,northBound)</span>
+<span id="cb18-3"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb18-3" tabindex="-1"></a><span class="co"># return a vector of cell values from the first polygon</span></span>
+<span id="cb18-4"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb18-4" tabindex="-1"></a>ndvi_Mid <span class="ot">&lt;-</span> <span class="fu">extract</span>(ndviDiff,midBound)</span></code></pre></div>
+<p>Let’s use ggplot to visualize the data. Let’s make a data frame for the two vectors that will integrate with ggplot. You can use the <code>rep</code> function to repeat a value. Here it would be helpful to repeat the name of the boundary. The first argument is the data you want to repeat and the second argument is the number of times to repeat it:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb19-1" tabindex="-1"></a>ndviDataframe <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">location=</span><span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;North&quot;</span>, <span class="fu">length</span>(ndvi_North[,<span class="dv">2</span>])),</span>
+<span id="cb19-2"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb19-2" tabindex="-1"></a>                                       <span class="fu">rep</span>(<span class="st">&quot;Mid&quot;</span>, <span class="fu">length</span>(ndvi_Mid[,<span class="dv">2</span>]))),</span>
+<span id="cb19-3"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb19-3" tabindex="-1"></a>                            <span class="at">ndvi.diff =</span><span class="fu">c</span>(ndvi_North[,<span class="dv">2</span>],ndvi_Mid[,<span class="dv">2</span>]))</span></code></pre></div>
+<p>Let’s look at the change in the ndvi. We will ignore outliers here since there are occasionally numerical artifacts from calculating ndvi differences over water or the build environment:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb20-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>ndviDataframe,</span>
+<span id="cb20-2"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb20-2" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">x=</span>location,ndvi.diff))<span class="sc">+</span></span>
+<span id="cb20-3"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb20-3" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.shape =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
+<span id="cb20-4"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#cb20-4" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span><span class="fl">0.5</span>,<span class="fl">0.5</span>)</span></code></pre></div>
+<pre><code>Warning: Removed 7020 rows containing non-finite outside the scale range
+(`stat_boxplot()`).</code></pre>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+</div>
+<div id="conclusions-3" class="section level2 hasAnchor" number="8.6">
+<h2><span class="header-section-number">8.6</span> Conclusions<a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#conclusions-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In 2021, you can see that the spongy moth defoliated much of the immediate area around Lake George. Areas in the north and the south of the lake were hit harder. A boundary of interest at the north of the lake was hit harder than a boundary near the central part of the lake.</p>
+</div>
+<div id="citations-4" class="section level2 hasAnchor" number="8.7">
+<h2><span class="header-section-number">8.7</span> Citations<a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#citations-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>NYS DEC. Spongy moth. <a href="https://www.dec.ny.gov/animals/83118.html" class="uri">https://www.dec.ny.gov/animals/83118.html</a></p>
+<p>Data made available by Charles Bettigole at Skidmore College.</p>
+
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
+<a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>

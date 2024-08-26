@@ -131,3 +131,15 @@ autoregressive-ar-models-for-time-series
 forecast-future-data
 conclusions-2
 citations-3
+tracking-bugs-from-space-an-introduction-to-spatial-data-in-r
+learning-objectives-6
+new-functions-syntax-6
+the-problem-monitoring-pest-outbreaks
+the-data-2
+raster-data-sentinel-2-imagery
+vector-data
+the-approach-ndvi-in-r
+ndvi-calculations
+extract-data-in-a-vector-geometry
+conclusions-3
+citations-4

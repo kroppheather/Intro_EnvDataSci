@@ -62,12 +62,12 @@ _An aerial image of spongy moth defoliation in Pennsylvania. Source: Dhalusa CC3
 ### _Raster data: Sentinel 2 imagery_
 
 Changes in vegetation over large spatial extents can be quantified from satellite imagery. As discussed in class, the reflectance of light in different wavelengths can be used characterize vegetation, water and other features on the land surface. In this activity, you will work with data from the Sentinel 2 satellite. You will work with Bands 2 (blue), 3 (green), 4 (red), and 8 (near-infrared). A lot of satellite image data is stored in a **GeoTiff** format. This format stores the data as an image with additional metadata in the file and includes the geographic information. The `raster` package can be used to read, analyze, and map these images. The `sf` package contains functions for working with vector data. Let's load the packages into the environment:
-```{r echo=TRUE, message="hide"}
+```{r echo=TRUE}
 library(terra)
 library(ggplot2)
 ```
 
-Each image can actually contain multiple images organized in a **stack**. Here, each tiff file contains four images from each band so you will want to read in the file using the `stack` function. In the summer of 2021, a major spongy moth outbreak occurred around Lake George in New York State. There is a pre- and post- outbreak image. Let's read the images in:
+Each image can actually contain multiple images organized in a **rast**. Here, each tiff file contains four images from each band so you will want to read in the file using the `rast`` function. In the summer of 2021, a major spongy moth outbreak occurred around Lake George in New York State. There is a pre- and post- outbreak image. Let's read the images in:
 
 ```{r eval=FALSE}
 # pre outbreak image
@@ -76,7 +76,7 @@ pre <- rast("/cloud/project/activity07/ldd_pre.tif")
 
 ```{r echo=FALSE}
 
-pre <- rast("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter07/ldd_pre.tif")
+pre <- terra::rast("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter07/ldd_pre.tif")
 
 plotRGB(pre, r=3,g=2,b=1, stretch="lin")
 ```
@@ -109,7 +109,7 @@ You can also make a **color composite** using the plotRGB function. By changing 
 par(mfrow=c(1,2))
 
 plotRGB(post, r=3,g=2,b=1, # image and bands
-        scale=13000, # some urban or clouds can have reflectance > 1
+        scale=13000, # note high scale due to clouds
         stretch="lin", # contrast stretch
         main="True color",
         axes=TRUE)
@@ -184,18 +184,18 @@ You can **extract** the raster values that fall within a vector geometry. The va
 
 ```{r echo=TRUE}
 # return a vector of cell values from the first polygon
-ndvi_North <- extract(ndviDiff,northBound)[[1]]
+ndvi_North <- extract(ndviDiff,northBound)
 # return a vector of cell values from the first polygon
-ndvi_Mid <- extract(ndviDiff,midBound)[[1]]
+ndvi_Mid <- extract(ndviDiff,midBound)
 ```
 
 Let's use ggplot to visualize the data. Let's make a data frame for the two vectors that will integrate with ggplot. You can use the `rep` function to repeat a value. Here it would be helpful to repeat the name of the boundary. The first argument is the data you want to repeat and the second argument is the number of times to repeat it: 
 
 ```{r echo=TRUE}
 
-ndviDataframe <- data.frame(location=c(rep("North", length(ndvi_North)),
-                                       rep("Mid", length(ndvi_Mid))),
-                            ndvi.diff =c(ndvi_North,ndvi_Mid))
+ndviDataframe <- data.frame(location=c(rep("North", length(ndvi_North[,2])),
+                                       rep("Mid", length(ndvi_Mid[,2]))),
+                            ndvi.diff =c(ndvi_North[,2],ndvi_Mid[,2]))
 
 ```
 
