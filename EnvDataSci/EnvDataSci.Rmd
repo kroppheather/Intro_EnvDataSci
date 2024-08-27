@@ -1,3 +1,225 @@
+--- 
+title: "Introduction to Environmental Data Science"
+author: "Heather Kropp"
+date: "2024"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+# url: your book url like https://bookdown.org/yihui/bookdown
+# cover-image: path to the social sharing image like images/cover.jpg
+description: |
+  "ENVST 325: Environmental Data Science, Hamilton College"
+link-citations: yes
+github-repo: kroppheather/Intro_EnvDataSci
+---
+--- 
+title: "Introduction to Environmental Data Science"
+author: "Heather Kropp"
+date: "2024"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+# url: your book url like https://bookdown.org/yihui/bookdown
+# cover-image: path to the social sharing image like images/cover.jpg
+description: |
+  "ENVST 325: Environmental Data Science, Hamilton College"
+link-citations: yes
+github-repo: kroppheather/Intro_EnvDataSci
+---
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
+
+<!--chapter:end:index.Rmd-->
+
+
+# Introduction
+
+Placeholder
+
+
+## Course Learning objectives
+## License
+
+<!--chapter:end:00-intro.Rmd-->
+
+
+# Introduction to R Statistical Software and Git
+
+Placeholder
+
+
+## Learning objectives
+## New functions & syntax
+## First some terms:
+## Setting up a Repository in GitHub
+### _Create a repository_
+### _Create a personal token for Rstudio Cloud_
+## Start a project with version control in Rstudio Cloud
+### _Start a project linked with a repository_
+### _Rstudio interface_
+### _Version control_
+### _Commit your first changes to GitHub_
+## Intro/Refresher on R
+## Variables
+### _Vectors_
+### _Data frames_
+
+<!--chapter:end:01-introR_git.Rmd-->
+
+
+# The data deluge: data wrangling in R
+
+Placeholder
+
+
+## Learning objectives
+## New functions & syntax
+## The problem: 
+### _Flooding and natural disasters_
+### _The data: flood stage & stream guage height_ 
+## The approach: packages in R
+### _Installing packages_
+### _Loading packages_
+## The approach: data wrangling
+### _Reading in data_
+### _Parsing date/time_
+### _Extracting information from dates_
+## _Basic subsetting_
+### _Basic plotting_
+### _Joining data tables with a common feature_
+### _Aggregating data & chaining functions_
+### _Filtering data_
+## Citations
+
+<!--chapter:end:02-data_wrangling.Rmd-->
+
+
+# Data visualization in R
+
+Placeholder
+
+
+## Learning objectives
+## New functions & syntax
+## The problem: 
+### _Communicating about climate change_
+### _The data_
+## Fundamentals of plotting data
+### _1. Representation of data_
+### _2. Layout_
+### _3. Encoding_
+### _4. Simplicity_
+## Plotting data in base R
+## Plotting in ggplot2
+### _Intro to ggplot_
+### _Changing colors_
+### Exploring different visualizations in ggplot2
+### _Violin and box plots_
+### _Area and ribbon plots_
+### _Labels_
+## Conclusions
+## Citations
+
+<!--chapter:end:03-data_vis.Rmd-->
+
+
+# When it rains, it pours. An introduction to data cleaning.
+
+Placeholder
+
+
+## Learning objectives
+## New functions & syntax
+## The problem: ensuring reliable data
+### _Sensors for weather and microclimate_
+##### 1. **sensor:** relates an electrical or chemical property to the conditions of the physical environment (_e.g._ change in voltage or resistance).
+##### 2. **datalogger:** records and stores the data. Programs adjust the interval of data records and the nature of each record (_e.g._ averaged over interval versus value at time of observation).
+### _Problematic data_
+### _The data_
+##### 1. There is no heated precipitation sensor. This means that frozen precipitation will not be accurately measured and accumulation can prevent liquid precipitation from being measured until melt.
+##### 2. Air temperature in an all-in-one does have the traditional solar radiation shield of louvered plates that allow for air circulation. High accuracy air temperature measurements will also use a fan to aspirate the air around the sensor. Corrections are automatically applied to account for the sensor lacking these features based on wind and solar radiation.
+##### 3. Accumulation of snow or ice on the side of the sensor can impact wind measurements.
+##### 4. The installation location experiences late afternoon shading by nearby trees. While it accurately describes the solar radiation of the reforestation plot, it does not reflect broader levels of solar radiation experienced outside of that location. 
+##### 5. COVID supply chain issues delayed the shipping of bird spike until late June. Bird activity was minimal in the winter, but in May or June it was clear that bird interference was high.
+## Cleaning data
+### _Removing unreliable data_
+### _Creating flags_
+### _Creating functions to check data_
+## Conclusion
+
+<!--chapter:end:04-qaqc.Rmd-->
+
+
+# Linear regression, model selection, and prediction in R
+
+Placeholder
+
+
+## Learning objectives
+## New functions & syntax
+## The problem: greenhouse gas emssisions from anthropogenic land use
+### _The data: greenhouse gases and reservoir characteristics_
+## The approach: Linear regression in R
+### _Transforming variables_
+### _Binary variables_
+### _Running a multiple regression_
+### _Checking assumptions_
+#### _1. Normality_
+#### _2-4. Residuals_
+### _5. Multicollinearity_
+## Model selection
+## Predictions
+## Conclusions
+## Citations
+
+<!--chapter:end:05-reg_select.Rmd-->
+
+
+# Thirsty crops and water scarcity. An introduction to time series
+
+Placeholder
+
+
+## Learning objectives
+## New functions & syntax
+## The problem: Irrigation and water security
+### _The data: satellite observations of evapotranspiration_
+## The approach: Analyzing and forecasting a time series
+### _Setting up a time series data type_
+### _Decomposing a time series_
+### _Autocorrelation_
+### _Autoregressive (AR) models for time series_
+### _Forecast future data_
+## Conclusions
+## Citations
+
+<!--chapter:end:06-time_series.Rmd-->
+
+
+# Tracking bugs from space?!?! An introduction to spatial data in R
+
+Placeholder
+
+
+## Learning objectives
+## New functions & syntax
+## The problem: monitoring pest outbreaks
+## The data: 
+### _Raster data: Sentinel 2 imagery_
+### _Vector data:_ 
+## The approach: NDVI in R
+### _NDVI calculations_
+### _Extract data in a vector geometry_
+## Conclusions
+## Citations
+
+<!--chapter:end:07-raster_rs.Rmd-->
+
 ---
 output: 
   html_document:
@@ -378,3 +600,6 @@ legend("bottomleft", c("field","tree","path"),
 ## Conclusions
 
 In your homework, you will practice comparing predictions and implementing these algorithms. You can see from the tutorial that both algorithms predicted a similar area of field (roughly 11,360 $m^2$). Our image focused on this area, so it is not surprising that there are more pixels in fields than paths or forests. However this map could serve as a basis for tracking the regrowth of trees in the field or be entered into calculations projecting future additional forested areas for future carbon calculations.
+
+<!--chapter:end:08-classification.Rmd-->
+
