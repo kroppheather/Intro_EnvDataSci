@@ -77,8 +77,8 @@ pre <- rast("/cloud/project/activity07/ldd_pre.tif")
 ```{r echo=FALSE}
 
 pre <- terra::rast("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter07/ldd_pre.tif")
-
-plotRGB(pre, r=3,g=2,b=1, stretch="lin")
+preR <- pre/10000
+terra::plotRGB(preR, r=3,g=2,b=1, stretch="lin")
 ```
 
 ```{r eval=FALSE}
@@ -89,8 +89,8 @@ post <- rast("/cloud/project/activity07/ldd_post.tif")
 ```{r echo=FALSE}
 
 post <- rast("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter07/ldd_post.tif")
-
-plotRGB(post, r=3,g=2,b=1, stretch="lin")
+postR <- post/10000
+plotRGB(postR, r=3,g=2,b=1, stretch="lin")
 ```
 
 You can view the components of the stack using the `plot` function and set a greyscale using `col` and `grey`. You can see each band plotted:

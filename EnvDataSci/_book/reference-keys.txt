@@ -143,3 +143,15 @@ ndvi-calculations
 extract-data-in-a-vector-geometry
 conclusions-3
 citations-4
+classifying-landcover.-an-introduction-to-machine-learning-in-r.
+learning-objectives-7
+new-functions-syntax-7
+the-problem-precision-mapping-from-drones.
+the-data-3
+the-approach-classification-with-machine-learning
+training-data
+training-random-forest
+predictions-and-validation
+classification-with-neural-network
+analyzing-predictions-of-land-cover
+conclusions-4
