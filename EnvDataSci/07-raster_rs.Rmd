@@ -144,7 +144,7 @@ midBound <- vect("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/dat
 You can add these polygons to your plot by specifically referring the the `geometry` column and using the `add=TRUE` argument. Here the plot function defaluts to an sf plot. You can also find more arguments like `fill` for working with polygons:
 
 ```{r echo=TRUE}
-plotRGB(post, r=3,g=2,b=1, stretch="lin")
+plotRGB(postR, r=3,g=2,b=1, stretch="lin")
 plot(northBound, border="tomato3", fill=NA, lwd=3, add=TRUE)
 plot(midBound, border="royalblue4",fill=NA, lwd=3, add=TRUE)
 ```
