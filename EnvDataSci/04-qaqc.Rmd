@@ -52,11 +52,13 @@ _An automated weather observing system for a municple airport. Source: NOAA_
 
 There are two main components to sensor data collection:
 
-##### 1. **sensor:** relates an electrical or chemical property to the conditions of the physical environment (_e.g._ change in voltage or resistance).
+1. **sensor:** relates an electrical or chemical property to the conditions of the physical environment (_e.g._ change in voltage or resistance).
 
-##### 2. **datalogger:** records and stores the data. Programs adjust the interval of data records and the nature of each record (_e.g._ averaged over interval versus value at time of observation).
+2. **datalogger:** records and stores the data. Programs adjust the interval of data records and the nature of each record (_e.g._ averaged over interval versus value at time of observation).
 
-The large observing stations from organizations like NOAA (pictured above) produce highly accurate data necessary for meteorological observations, but are costly to maintain. This means that observations can be many miles apart and miss critical conditions that vary from the location of observation. The **microclimate** refers to the climate of a specific area that differs from the surrounding area. This means that the air temperature, humidity, precipitation, and solar radiation can all differ from the surrounding area. Microclimate is influenced by topography, vegetation, soil, human infrastructure, and surface water. For example, if you walk across campus on a hot, summer day you will notice a drop in temperature and sunlight as you go from the sidewalks onto the glen path. This is due to the canopy shading and evapotranspiration of the trees and creeks in the glen compared to the lawns and build surfaces of the main campus. The concept of microclimate is increasingly becoming important for ventures like precision agriculture where farmers try to customize irrigation and fertilization based on the needs of the field. Microclimate is also critical for understanding diversity and ecosystem function. Small, inexpensive sensors enable measurements of microclimate that will not be characterized by weather stations miles away. The microclimate weather station on campus will help evaluate the meterological conditions for the planted trees and support a number of student research projects. However, these less accurate sensors require users to maintain good data practices and may not always be able to capture all meteorological conditions. Each sensor will depend on the specifications outlined by the manufacturer. Below is an example of an all-in-one weather station. These stations are easy to install and maintain, but sensors like precipitation, air temperature, and solar radiation can be subject to measurement issues that affect reliability.
+The large observing stations from organizations like NOAA (pictured above) produce highly accurate data necessary for meteorological observations, but are costly to maintain. This means that observations can be many miles apart and miss critical conditions that vary from the location of observation. The **microclimate** refers to the climate of a specific area that differs from the surrounding area. This means that the air temperature, humidity, precipitation, and solar radiation can all differ from the surrounding area. Microclimate is influenced by topography, vegetation, soil, human infrastructure, and surface water. For example, if you walk across campus on a hot, summer day you will notice a drop in temperature and sunlight as you go from the sidewalks onto the glen path. This is due to the canopy shading and evapotranspiration of the trees and creeks in the glen compared to the lawns and build surfaces of the main campus. 
+
+The concept of microclimate is increasingly becoming important for ventures like precision agriculture where farmers try to customize irrigation and fertilization based on the needs of the field. Microclimate is also critical for understanding diversity and ecosystem function. Small, inexpensive sensors enable measurements of microclimate that will not be characterized by weather stations miles away. The microclimate weather station on campus will help evaluate the meterological conditions for the planted trees and support a number of student research projects. However, these less accurate sensors require users to maintain good data practices and may not always be able to capture all meteorological conditions. Each sensor will depend on the specifications outlined by the manufacturer. Below is an example of an all-in-one weather station. These stations are easy to install and maintain, but sensors like precipitation, air temperature, and solar radiation can be subject to measurement issues that affect reliability.
 
 <center>
 ![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial04/hamilton.png){width=33%}
@@ -125,15 +127,15 @@ library(lubridate)
 
 There are a few downsides to the current system that can affect the data:
 
-##### 1. There is no heated precipitation sensor. This means that frozen precipitation will not be accurately measured and accumulation can prevent liquid precipitation from being measured until melt.
+1. There is no heated precipitation sensor. This means that frozen precipitation will not be accurately measured and accumulation can prevent liquid precipitation from being measured until melt.
 
-##### 2. Air temperature in an all-in-one does have the traditional solar radiation shield of louvered plates that allow for air circulation. High accuracy air temperature measurements will also use a fan to aspirate the air around the sensor. Corrections are automatically applied to account for the sensor lacking these features based on wind and solar radiation.
+2. Air temperature in an all-in-one does have the traditional solar radiation shield of louvered plates that allow for air circulation. High accuracy air temperature measurements will also use a fan to aspirate the air around the sensor. Corrections are automatically applied to account for the sensor lacking these features based on wind and solar radiation.
 
-##### 3. Accumulation of snow or ice on the side of the sensor can impact wind measurements.
+3. Accumulation of snow or ice on the side of the sensor can impact wind measurements.
 
-##### 4. The installation location experiences late afternoon shading by nearby trees. While it accurately describes the solar radiation of the reforestation plot, it does not reflect broader levels of solar radiation experienced outside of that location. 
+4. The installation location experiences late afternoon shading by nearby trees. While it accurately describes the solar radiation of the reforestation plot, it does not reflect broader levels of solar radiation experienced outside of that location. 
 
-##### 5. COVID supply chain issues delayed the shipping of bird spike until late June. Bird activity was minimal in the winter, but in May or June it was clear that bird interference was high.
+5. The bird spike was not installed until late June in 2021. Bird activity was minimal in the winter, but in May or June it was clear that bird interference was high with bird excrement clogging the rain sensor.
 
 
 ## Cleaning data

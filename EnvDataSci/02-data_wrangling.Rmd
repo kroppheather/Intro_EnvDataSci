@@ -28,7 +28,7 @@ _Hamilton College_
 4. Aggregate and sumarize data
 
 ## New functions & syntax
-`$`, `==`,`&`,`< >`,`|`,`plot`,`full_join`, `mean`,`max`,`sd`, `%>%`, `sumarise`, `filter`, `n`
+`$`, `==`,`&`,`< >`,`|`,`plot`,`full_join`, `mean`,`max`,`sd`, `%>%`, `sumarise`, `filter`, `n`,`group_by`
 
 ```{r warning=FALSE,echo=FALSE, message=FALSE}
 library(imager)
@@ -278,21 +278,27 @@ Operator | Interpretation | Type
 `&`        | and                     | logical
 `|`       | or                      | logical
 
-You can place these statements in `[]` (remember tutorial 1) in a vector or the row/columns of a data frame. For example, let's make a new data frame that just focuses on Peace River (ID = 2295637). Since a data frame is two dimensions the bracket notation must include both notations `[rows,columns]`:
+The `filter` function in the `dplyr` package will create a new data frame based on your criteria. Let's filter out the data for the Peace River (gauge ID 2295637). 
+
+
+You can use a **pipe** (`%>%`) to link data frames to a function and run functions in a sequences. Here we will pipe the `streamH` dataframe to `filter` so that column names can be easily referenced without repeating the dataframe name. In _tidyverse_ packages like `dplyr`, a pipe looks like this: `%>%`. Note that brand new versions of R offer a pipe in base R that looks a little different. It is too confusing to switch between the two. We will focus on the tidyverse version here. 
+
+ Here we will pipe the `streamH` dataframe to `filter` so that column names can be easily referenced without repeating the dataframe name.
 
 ```{r echo=TRUE}
 #subset stream height to just include peace river
-peaceH <- streamH[streamH$siteID == 2295637, ]
+peaceH <- streamH %>% 
+  filter(siteID == 2295637)
 
 ```
 
-The statement above indicates that only rows where siteID IS EQUAL TO 2295637 will be included all columns will be included (empty slote comma indicates include everything).
+Chaining functions together can run multiple steps in the data wrangling process all at once and spare you from creating a lot of new data frames in your environment or frequently overwritting variable names. This is really key when you are working with big data and have to consider how much memory you are using in your data workflows.
 
 <center>
 ```{r echo=FALSE, warning=FALSE,fig.width=8,fig.height=1.5}
 par(bg = rgb(229/255,214/255,232/255), mai=c(0,0.2,0,7))
 plot(load.image("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial02/Leaf5.png"),   axes=FALSE)
-a <- strwrap("How would you subset streamH to include all sites except Peace River?",width=70)
+a <- strwrap("How would you use the filter function to subset streamH to include all sites except Peace River?",width=70)
 text(1300,75, "Check your understanding:", font=2, xpd=T, cex=1.25,adj = c(0,0))
 for(i in 1:length(a)){
   text(1300,75+(i*400),paste(a[i]), xpd=T, cex=1.25,adj = c(0,0))
@@ -326,7 +332,7 @@ for(i in 1:length(a)){
 
 ### _Joining data tables with a common feature_
 
-You want to understand if Peace River actually flooded during the hurricane. The `siteInfo` table contains that information. There are thousands of observations for each stream gauge measurement in streamH, but only one observation for each site in siteInfo. **Joining** the tables together will match the tables using a common feature in each table. In this case it is the `siteID` column that gives the unique identifying number for each stream gauge station. Using an unique numerical identifier is a really common feature in data organization.
+You want to understand if Peace River actually flooded during the hurricane. The `siteInfo` table contains that information. There are thousands of observations for each stream gauge measurement in `streamH`, but only one observation for each site in `siteInfo`. **Joining** the tables together will match the tables using a common feature in each table. In this case it is the `siteID` column that gives the unique identifying number for each stream gauge station. Using an unique numerical identifier is a really common feature in data organization.
 
 ```{r echo=TRUE}
 #preview streamH table 
@@ -369,10 +375,8 @@ A common action in data analysis is to summarize data observations across groups
 mean(floods$gheight.ft)
 ```
 
-In this case, that would not mean much since there is a random assortment of rivers with different baseline heights for each flood category. Instead it makes sense to look at each river individually.
+You can use the `group_by` and `summarise` function from dplyr to calculate the mean over a variable containing different grouping factors. In this case, that would not mean much since there is a random assortment of rivers with different baseline heights for each flood category. Instead it makes sense to look at each river individually. We will `pipes` to run the functions in sequence:
 
-You can use the `group_by` and `summarise` function from dplyr to calculate the mean over a variable containing different grouping factors. These functions will be chained together in what is called a **pipe**.
-In _tidyverse_ packages like `dplyr`, a pipe looks like this: `%>%`. Each function can be chained on its own line. Note that brand new versions of R offer a pipe in base R that looks a little different. It is too confusing to switch between the two. We will focus on the tidyverse version here. Pipes also use a specific format that starts by naming the new object that will be the final output from the chain of functions.
 
 ```{r echo=TRUE}
 height.ave <- floods %>% # data frame with pipe
@@ -396,11 +400,7 @@ height.day <- floods %>% # data frame with pipe
 height.day[1:10,]
 ```
 
-### _Filtering data_
-
-The `filter` function is very similar in operation to the bracket subset you learned above in base R. The benefit in filter is that it can also be linked to `group_by`. 
-
-Rather than thinking about average height, it may be helpful to characterize how long each gauge was in a certain flood category for each river. It is useful to subset the data frame  so that you can characterize the time spent under that condition.
+You can link other functions like filter, to grouping variables. For example, rather than thinking about average height, it may be helpful to characterize how long each gauge was in a certain flood category for each river. It is useful to subset the data frame  so that you can characterize the time spent under that condition.
 
 Let's start by looking at the highest category of flooding, the major flooding category. This category is associated with extensive damage, travel interruptions, and mobilizes the national guard.
 

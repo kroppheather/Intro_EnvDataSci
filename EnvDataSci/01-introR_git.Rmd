@@ -63,6 +63,10 @@ Log into GitHub and click on the `Repositories` tab and click the `New` green bu
 
 You can name it _ENVST325_activity1_ or anything that you want. You should avoid spaces in repository names. Make it public and make sure the README box is checked as shown below. Should you wish your repository to be kept private, please talk to me about setting it up for grading.
 
+<center>
+![](/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/photos/tutorial01/git_repo_setup.png)
+</center>
+
 ### _Create a personal token for Rstudio Cloud_
 
 For each new Rstudio Cloud assignment, you will need to create a token that gives Posit Cloud permission to post to your GitHub. You can access the token through `Settings`. Click on your profile tab in the upper right corner:
@@ -333,6 +337,8 @@ The final basic type of data that will be useful to keep in mind is a data frame
 highPeaks <- data.frame(elev = peaks,
                         prom = prom,
                         name = peakNames)
+# print a single column
+highPeaks$elev
 ```
 
 A helpful way to check that your code ran as expected is to track the objects in your global environment. Vectors show up under _values_ and data frames are shown under _data_. If you click the blue arrow button you will get a preview of the data frame. 

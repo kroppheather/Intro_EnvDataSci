@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 6 Linear regression, model selection, and prediction in R | Introduction to Environmental Data Science</title>
   <meta name="description" content="“ENVST 325: Environmental Data Science, Hamilton College”" />
-  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 6 Linear regression, model selection, and prediction in R | Introduction to Environmental Data Science" />
   <meta property="og:type" content="book" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"/>
-
+<link rel="next" href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -56,7 +56,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -66,7 +66,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -191,7 +191,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.6.1" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#basic-plotting"><i class="fa fa-check"></i><b>3.6.1</b> <em>Basic plotting</em></a></li>
 <li class="chapter" data-level="3.6.2" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#joining-data-tables-with-a-common-feature"><i class="fa fa-check"></i><b>3.6.2</b> <em>Joining data tables with a common feature</em></a></li>
 <li class="chapter" data-level="3.6.3" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#aggregating-data-chaining-functions"><i class="fa fa-check"></i><b>3.6.3</b> <em>Aggregating data &amp; chaining functions</em></a></li>
-<li class="chapter" data-level="3.6.4" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#filtering-data"><i class="fa fa-check"></i><b>3.6.4</b> <em>Filtering data</em></a></li>
 </ul></li>
 <li class="chapter" data-level="3.7" data-path="the-data-deluge-data-wrangling-in-r.html"><a href="the-data-deluge-data-wrangling-in-r.html#citations"><i class="fa fa-check"></i><b>3.7</b> Citations</a></li>
 </ul></li>
@@ -262,6 +261,61 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.6" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html#predictions"><i class="fa fa-check"></i><b>6.6</b> Predictions</a></li>
 <li class="chapter" data-level="6.7" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html#conclusions-1"><i class="fa fa-check"></i><b>6.7</b> Conclusions</a></li>
 <li class="chapter" data-level="6.8" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html#citations-2"><i class="fa fa-check"></i><b>6.8</b> Citations</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><i class="fa fa-check"></i><b>7</b> Thirsty crops and water scarcity. An introduction to time series</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#learning-objectives-5"><i class="fa fa-check"></i><b>7.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="7.2" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#new-functions-syntax-5"><i class="fa fa-check"></i><b>7.2</b> New functions &amp; syntax</a></li>
+<li class="chapter" data-level="7.3" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#the-problem-irrigation-and-water-security"><i class="fa fa-check"></i><b>7.3</b> The problem: Irrigation and water security</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#the-data-satellite-observations-of-evapotranspiration"><i class="fa fa-check"></i><b>7.3.1</b> <em>The data: satellite observations of evapotranspiration</em></a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#the-approach-analyzing-and-forecasting-a-time-series"><i class="fa fa-check"></i><b>7.4</b> The approach: Analyzing and forecasting a time series</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#setting-up-a-time-series-data-type"><i class="fa fa-check"></i><b>7.4.1</b> <em>Setting up a time series data type</em></a></li>
+<li class="chapter" data-level="7.4.2" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#decomposing-a-time-series"><i class="fa fa-check"></i><b>7.4.2</b> <em>Decomposing a time series</em></a></li>
+<li class="chapter" data-level="7.4.3" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#autocorrelation"><i class="fa fa-check"></i><b>7.4.3</b> <em>Autocorrelation</em></a></li>
+<li class="chapter" data-level="7.4.4" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#autoregressive-ar-models-for-time-series"><i class="fa fa-check"></i><b>7.4.4</b> <em>Autoregressive (AR) models for time series</em></a></li>
+<li class="chapter" data-level="7.4.5" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#forecast-future-data"><i class="fa fa-check"></i><b>7.4.5</b> <em>Forecast future data</em></a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#conclusions-2"><i class="fa fa-check"></i><b>7.5</b> Conclusions</a></li>
+<li class="chapter" data-level="7.6" data-path="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html"><a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html#citations-3"><i class="fa fa-check"></i><b>7.6</b> Citations</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html"><i class="fa fa-check"></i><b>8</b> Tracking bugs from space?!?! An introduction to spatial data in R</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#learning-objectives-6"><i class="fa fa-check"></i><b>8.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="8.2" data-path="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#new-functions-syntax-6"><i class="fa fa-check"></i><b>8.2</b> New functions &amp; syntax</a></li>
+<li class="chapter" data-level="8.3" data-path="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#the-problem-monitoring-pest-outbreaks"><i class="fa fa-check"></i><b>8.3</b> The problem: monitoring pest outbreaks</a></li>
+<li class="chapter" data-level="8.4" data-path="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#the-data-2"><i class="fa fa-check"></i><b>8.4</b> The data:</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#raster-data-sentinel-2-imagery"><i class="fa fa-check"></i><b>8.4.1</b> <em>Raster data: Sentinel 2 imagery</em></a></li>
+<li class="chapter" data-level="8.4.2" data-path="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#vector-data"><i class="fa fa-check"></i><b>8.4.2</b> <em>Vector data:</em></a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#the-approach-ndvi-in-r"><i class="fa fa-check"></i><b>8.5</b> The approach: NDVI in R</a>
+<ul>
+<li class="chapter" data-level="8.5.1" data-path="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#ndvi-calculations"><i class="fa fa-check"></i><b>8.5.1</b> <em>NDVI calculations</em></a></li>
+<li class="chapter" data-level="8.5.2" data-path="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#extract-data-in-a-vector-geometry"><i class="fa fa-check"></i><b>8.5.2</b> <em>Extract data in a vector geometry</em></a></li>
+</ul></li>
+<li class="chapter" data-level="8.6" data-path="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#conclusions-3"><i class="fa fa-check"></i><b>8.6</b> Conclusions</a></li>
+<li class="chapter" data-level="8.7" data-path="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html"><a href="tracking-bugs-from-space-an-introduction-to-spatial-data-in-r.html#citations-4"><i class="fa fa-check"></i><b>8.7</b> Citations</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="classifying-landcover.-an-introduction-to-machine-learning-in-r..html"><a href="classifying-landcover.-an-introduction-to-machine-learning-in-r..html"><i class="fa fa-check"></i><b>9</b> Classifying landcover. An introduction to machine learning in R.</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="classifying-landcover.-an-introduction-to-machine-learning-in-r..html"><a href="classifying-landcover.-an-introduction-to-machine-learning-in-r..html#learning-objectives-7"><i class="fa fa-check"></i><b>9.1</b> Learning objectives</a></li>
+<li class="chapter" data-level="9.2" data-path="classifying-landcover.-an-introduction-to-machine-learning-in-r..html"><a href="classifying-landcover.-an-introduction-to-machine-learning-in-r..html#new-functions-syntax-7"><i class="fa fa-check"></i><b>9.2</b> New functions &amp; syntax</a></li>
+<li class="chapter" data-level="9.3" data-path="classifying-landcover.-an-introduction-to-machine-learning-in-r..html"><a href="classifying-landcover.-an-introduction-to-machine-learning-in-r..html#the-problem-precision-mapping-from-drones."><i class="fa fa-check"></i><b>9.3</b> The problem: Precision mapping from drones.</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="classifying-landcover.-an-introduction-to-machine-learning-in-r..html"><a href="classifying-landcover.-an-introduction-to-machine-learning-in-r..html#the-data-3"><i class="fa fa-check"></i><b>9.3.1</b> The data:</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="classifying-landcover.-an-introduction-to-machine-learning-in-r..html"><a href="classifying-landcover.-an-introduction-to-machine-learning-in-r..html#the-approach-classification-with-machine-learning"><i class="fa fa-check"></i><b>9.4</b> The approach: classification with machine learning</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="classifying-landcover.-an-introduction-to-machine-learning-in-r..html"><a href="classifying-landcover.-an-introduction-to-machine-learning-in-r..html#training-data"><i class="fa fa-check"></i><b>9.4.1</b> <em>Training data</em></a></li>
+<li class="chapter" data-level="9.4.2" data-path="classifying-landcover.-an-introduction-to-machine-learning-in-r..html"><a href="classifying-landcover.-an-introduction-to-machine-learning-in-r..html#training-random-forest"><i class="fa fa-check"></i><b>9.4.2</b> <em>Training random forest</em></a></li>
+<li class="chapter" data-level="9.4.3" data-path="classifying-landcover.-an-introduction-to-machine-learning-in-r..html"><a href="classifying-landcover.-an-introduction-to-machine-learning-in-r..html#predictions-and-validation"><i class="fa fa-check"></i><b>9.4.3</b> <em>Predictions and validation</em></a></li>
+<li class="chapter" data-level="9.4.4" data-path="classifying-landcover.-an-introduction-to-machine-learning-in-r..html"><a href="classifying-landcover.-an-introduction-to-machine-learning-in-r..html#classification-with-neural-network"><i class="fa fa-check"></i><b>9.4.4</b> <em>Classification with Neural Network</em></a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="classifying-landcover.-an-introduction-to-machine-learning-in-r..html"><a href="classifying-landcover.-an-introduction-to-machine-learning-in-r..html#analyzing-predictions-of-land-cover"><i class="fa fa-check"></i><b>9.5</b> Analyzing predictions of land cover</a></li>
+<li class="chapter" data-level="9.6" data-path="classifying-landcover.-an-introduction-to-machine-learning-in-r..html"><a href="classifying-landcover.-an-introduction-to-machine-learning-in-r..html#conclusions-4"><i class="fa fa-check"></i><b>9.6</b> Conclusions</a></li>
 </ul></li>
 </ul>
 
@@ -472,16 +526,6 @@ W = 0.98232, p-value = 0.2817</code></pre>
 <span id="cb19-7"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb19-7" tabindex="-1"></a></span>
 <span id="cb19-8"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb19-8" tabindex="-1"></a><span class="co"># make a correlation matrix </span></span>
 <span id="cb19-9"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb19-9" tabindex="-1"></a><span class="fu">chart.Correlation</span>(reg.data, <span class="at">histogram=</span><span class="cn">TRUE</span>, <span class="at">pch=</span><span class="dv">19</span>)</span></code></pre></div>
-<pre><code>Warning in par(usr): argument 1 does not name a graphical parameter
-Warning in par(usr): argument 1 does not name a graphical parameter
-Warning in par(usr): argument 1 does not name a graphical parameter
-Warning in par(usr): argument 1 does not name a graphical parameter
-Warning in par(usr): argument 1 does not name a graphical parameter
-Warning in par(usr): argument 1 does not name a graphical parameter
-Warning in par(usr): argument 1 does not name a graphical parameter
-Warning in par(usr): argument 1 does not name a graphical parameter
-Warning in par(usr): argument 1 does not name a graphical parameter
-Warning in par(usr): argument 1 does not name a graphical parameter</code></pre>
 <p><img src="EnvDataSci_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>A correlation coefficient varies from 0-1 with 1 indicated a perfect correlation. There is no established threshold for multicollinearity, but some studies indicate that correlation coefficients greater than 0.7-0.8 indicate that both variables are too correlated to include. The solution to this is to choose just one variable knowing that it may represent other underlying variables and processes (include this in your interpretation). The other solution is to create an index that represents both variables.</p>
 <p>Here, there are a few variables that have a fair amount of correlation, but there is not a severe enough correlation to cause concern here.</p>
@@ -492,10 +536,10 @@ Warning in par(usr): argument 1 does not name a graphical parameter</code></pre>
 <p>Model selection is one of the most challenging parts of designing an analysis. My selection of initial variables related to my biophysical understanding of microbial respiration, aquatic ecosystems, and microclimate. However, you can see that some variables are simply not significant and indicate no relationship. This outcome would be useful to report for <strong>inference</strong>. Understanding which variables influence methane emission and by how much provides more information about when and why reservoirs may be significant sources of methane. However, if I am interested in <strong>prediction</strong>, I will only want to include significant variables that greatly describe the variability in methane to reduce data collection and issues with over-fitting. <strong>Model selection</strong> is the process of eliminating variables and parameters that are not critical to the objective of the analysis and the outcomes of the model.</p>
 <p>There are various ways of assessing model performance. The <span class="math inline">\(R^2\)</span> gives information on the amount of variability in y explained by the model. The adjusted <span class="math inline">\(R^2\)</span> penalizes the addition of extra independent variables. The <strong>Akaike information criterion (AIC)</strong> is a measure of model fit. The smaller the value, the better the model fit. Comparing these measures between <strong>candidate models</strong>, a series of possible models to compare. Model selection can help with statistically selecting variables that best describe the independent variable without adding unnecessary variables.</p>
 <p>You can assess the importance of your variables in a multiple regression using <strong>stepwise selection</strong>. Stepwise selection iteratively adds (forward) or removes (backward) variables to calculate their impact on the model. Let’s look at forward stepwise selection using the function <code>ols_step_forward_aic</code> function from the <code>olsrr</code> package. The only argument needed is your full model.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb21-1" tabindex="-1"></a><span class="co"># run stepwise</span></span>
-<span id="cb21-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb21-2" tabindex="-1"></a>full.step <span class="ot">&lt;-</span> <span class="fu">ols_step_forward_aic</span>(mod.full)</span>
-<span id="cb21-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb21-3" tabindex="-1"></a><span class="co"># view table</span></span>
-<span id="cb21-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb21-4" tabindex="-1"></a>full.step </span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb20-1" tabindex="-1"></a><span class="co"># run stepwise</span></span>
+<span id="cb20-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb20-2" tabindex="-1"></a>full.step <span class="ot">&lt;-</span> <span class="fu">ols_step_forward_aic</span>(mod.full)</span>
+<span id="cb20-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb20-3" tabindex="-1"></a><span class="co"># view table</span></span>
+<span id="cb20-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb20-4" tabindex="-1"></a>full.step </span></code></pre></div>
 <pre class="colout"><code>
                              Stepwise Summary                              
 -------------------------------------------------------------------------
@@ -515,7 +559,7 @@ Final Model Output
                          Model Summary                          
 ---------------------------------------------------------------
 R                       0.706       RMSE                 1.269 
-R-Squared               0.498       MSE                  1.731 
+R-Squared               0.498       MSE                  1.611 
 Adj. R-Squared          0.467       Coef. Var           52.761 
 Pred R-Squared          0.393       AIC                302.392 
 MAE                     0.963       SBC                319.653 
@@ -547,8 +591,8 @@ Total         279.271        86
     log.DIP     0.399         0.140        0.283     2.845    0.006     0.120     0.679 
  mean.depth    -0.010         0.005       -0.174    -2.190    0.031    -0.019    -0.001 
 ----------------------------------------------------------------------------------------</code></pre>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb23-1" tabindex="-1"></a><span class="co"># check full model</span></span>
-<span id="cb23-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb23-2" tabindex="-1"></a>full.step<span class="sc">$</span>model</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb22-1" tabindex="-1"></a><span class="co"># check full model</span></span>
+<span id="cb22-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb22-2" tabindex="-1"></a>full.step<span class="sc">$</span>model</span></code></pre></div>
 <pre class="colout"><code>
 Call:
 lm(formula = paste(response, &quot;~&quot;, paste(preds, collapse = &quot; + &quot;)), 
@@ -557,27 +601,27 @@ lm(formula = paste(response, &quot;~&quot;, paste(preds, collapse = &quot; + &qu
 Coefficients:
 (Intercept)      airTemp      BorealV   log.precip      log.DIP   mean.depth  
    7.840642     0.141549     2.065391    -1.157859     0.399330    -0.009994  </code></pre>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb25-1" tabindex="-1"></a><span class="co"># plot AIC over time</span></span>
-<span id="cb25-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb25-2" tabindex="-1"></a><span class="fu">plot</span>(full.step )</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb24-1" tabindex="-1"></a><span class="co"># plot AIC over time</span></span>
+<span id="cb24-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb24-2" tabindex="-1"></a><span class="fu">plot</span>(full.step )</span></code></pre></div>
 <p><img src="EnvDataSci_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>THe main thing that you want to interpret here is how much the AIC and adjusted <span class="math inline">\(R^2\)</span> change with each added variable. You can see here that the log(DIP+1) had almost no influence on the model despite being statistically significant. This information is helpful for both inference and prediction. Adding the air temperature variable increased the adjusted <span class="math inline">\(R^2\)</span> and decreased the AIC by the greatest magnitude.</p>
 </div>
 <div id="predictions" class="section level2 hasAnchor" number="6.6">
 <h2><span class="header-section-number">6.6</span> Predictions<a href="linear-regression-model-selection-and-prediction-in-r.html#predictions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Regression lines can be used to make predict for missing data. In R, the <code>predict.lm</code> function can be used to predict the value from the regression model for given input data values. Here, you need to specify the input model, input independent variables, and the interval to return. <code>confidence</code> returns the 95% confidence interval whereas <code>prediction</code> returns the interval for a single point of data. The prediction variable accounts for the extra variability of each regression point around the line (think about that error term in the regression equation).</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb26-1" tabindex="-1"></a><span class="co"># prediction with interval for predicting a point</span></span>
-<span id="cb26-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb26-2" tabindex="-1"></a><span class="fu">predict.lm</span>(mod.full, <span class="fu">data.frame</span>(<span class="at">airTemp=</span><span class="dv">20</span>,<span class="at">log.age=</span><span class="fu">log</span>(<span class="dv">2</span>),</span>
-<span id="cb26-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb26-3" tabindex="-1"></a>                             <span class="at">mean.depth=</span><span class="dv">15</span>,<span class="at">log.DIP=</span><span class="dv">3</span>,</span>
-<span id="cb26-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb26-4" tabindex="-1"></a>                             <span class="at">log.precip=</span><span class="dv">6</span>, <span class="at">BorealV=</span><span class="dv">0</span>),</span>
-<span id="cb26-5"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb26-5" tabindex="-1"></a>           <span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb25-1" tabindex="-1"></a><span class="co"># prediction with interval for predicting a point</span></span>
+<span id="cb25-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb25-2" tabindex="-1"></a><span class="fu">predict.lm</span>(mod.full, <span class="fu">data.frame</span>(<span class="at">airTemp=</span><span class="dv">20</span>,<span class="at">log.age=</span><span class="fu">log</span>(<span class="dv">2</span>),</span>
+<span id="cb25-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb25-3" tabindex="-1"></a>                             <span class="at">mean.depth=</span><span class="dv">15</span>,<span class="at">log.DIP=</span><span class="dv">3</span>,</span>
+<span id="cb25-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb25-4" tabindex="-1"></a>                             <span class="at">log.precip=</span><span class="dv">6</span>, <span class="at">BorealV=</span><span class="dv">0</span>),</span>
+<span id="cb25-5"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb25-5" tabindex="-1"></a>           <span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>)</span></code></pre></div>
 <pre class="colout"><code>       fit      lwr      upr
 1 5.174622 2.347429 8.001815</code></pre>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb28-1" tabindex="-1"></a><span class="co"># look at prediction with 95% confidence interval of the mean</span></span>
-<span id="cb28-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb28-2" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb28-3" tabindex="-1"></a><span class="fu">predict.lm</span>(mod.full, <span class="fu">data.frame</span>(<span class="at">airTemp=</span><span class="dv">20</span>,<span class="at">log.age=</span><span class="fu">log</span>(<span class="dv">2</span>),</span>
-<span id="cb28-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb28-4" tabindex="-1"></a>                                <span class="at">mean.depth=</span><span class="dv">15</span>,<span class="at">log.DIP=</span><span class="dv">3</span>,</span>
-<span id="cb28-5"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb28-5" tabindex="-1"></a>                                <span class="at">log.precip=</span><span class="dv">6</span>, <span class="at">BorealV=</span><span class="dv">0</span>),</span>
-<span id="cb28-6"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb28-6" tabindex="-1"></a>           <span class="at">interval=</span><span class="st">&quot;confidence&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb27-1" tabindex="-1"></a><span class="co"># look at prediction with 95% confidence interval of the mean</span></span>
+<span id="cb27-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb27-2" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb27-3" tabindex="-1"></a><span class="fu">predict.lm</span>(mod.full, <span class="fu">data.frame</span>(<span class="at">airTemp=</span><span class="dv">20</span>,<span class="at">log.age=</span><span class="fu">log</span>(<span class="dv">2</span>),</span>
+<span id="cb27-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb27-4" tabindex="-1"></a>                                <span class="at">mean.depth=</span><span class="dv">15</span>,<span class="at">log.DIP=</span><span class="dv">3</span>,</span>
+<span id="cb27-5"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb27-5" tabindex="-1"></a>                                <span class="at">log.precip=</span><span class="dv">6</span>, <span class="at">BorealV=</span><span class="dv">0</span>),</span>
+<span id="cb27-6"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb27-6" tabindex="-1"></a>           <span class="at">interval=</span><span class="st">&quot;confidence&quot;</span>)</span></code></pre></div>
 <pre class="colout"><code>       fit      lwr     upr
 1 5.174622 4.081764 6.26748</code></pre>
 </div>
@@ -596,8 +640,8 @@ Coefficients:
           </div>
         </div>
       </div>
-<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="thirsty-crops-and-water-scarcity.-an-introduction-to-time-series.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -611,42 +655,42 @@ Coefficients:
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": null,
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>

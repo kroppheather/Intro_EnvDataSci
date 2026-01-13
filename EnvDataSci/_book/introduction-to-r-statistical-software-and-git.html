@@ -375,6 +375,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <img src="photos/tutorial01/git_new.png" />
 </center>
 <p>You can name it <em>ENVST325_activity1</em> or anything that you want. You should avoid spaces in repository names. Make it public and make sure the README box is checked as shown below. Should you wish your repository to be kept private, please talk to me about setting it up for grading.</p>
+<center>
+<img src="photos/tutorial01/git_repo_setup.png" />
+</center>
 </div>
 <div id="create-a-personal-token-for-rstudio-cloud" class="section level3 hasAnchor" number="2.4.2">
 <h3><span class="header-section-number">2.4.2</span> <em>Create a personal token for Rstudio Cloud</em><a href="introduction-to-r-statistical-software-and-git.html#create-a-personal-token-for-rstudio-cloud" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -563,18 +566,21 @@ You will want to make sure that you set up your user credentials so that they ma
 <span id="cb21-3"><a href="introduction-to-r-statistical-software-and-git.html#cb21-3" tabindex="-1"></a><span class="co"># separating multiple columns with commas</span></span>
 <span id="cb21-4"><a href="introduction-to-r-statistical-software-and-git.html#cb21-4" tabindex="-1"></a>highPeaks <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">elev =</span> peaks,</span>
 <span id="cb21-5"><a href="introduction-to-r-statistical-software-and-git.html#cb21-5" tabindex="-1"></a>                        <span class="at">prom =</span> prom,</span>
-<span id="cb21-6"><a href="introduction-to-r-statistical-software-and-git.html#cb21-6" tabindex="-1"></a>                        <span class="at">name =</span> peakNames)</span></code></pre></div>
+<span id="cb21-6"><a href="introduction-to-r-statistical-software-and-git.html#cb21-6" tabindex="-1"></a>                        <span class="at">name =</span> peakNames)</span>
+<span id="cb21-7"><a href="introduction-to-r-statistical-software-and-git.html#cb21-7" tabindex="-1"></a><span class="co"># print a single column</span></span>
+<span id="cb21-8"><a href="introduction-to-r-statistical-software-and-git.html#cb21-8" tabindex="-1"></a>highPeaks<span class="sc">$</span>elev</span></code></pre></div>
+<pre class="colout"><code>[1] 5344 5114 4960</code></pre>
 <p>A helpful way to check that your code ran as expected is to track the objects in your global environment. Vectors show up under <em>values</em> and data frames are shown under <em>data</em>. If you click the blue arrow button you will get a preview of the data frame.</p>
 <p>You can subset a data frame using the <code>[]</code> syntax, but you need to account for the two dimensional nature of data frames. The two dimensional format of a data frame is references rows and columns in the following order: <code>[rows,columns]</code></p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="introduction-to-r-statistical-software-and-git.html#cb22-1" tabindex="-1"></a><span class="co"># subset 2 row in highPeaks</span></span>
-<span id="cb22-2"><a href="introduction-to-r-statistical-software-and-git.html#cb22-2" tabindex="-1"></a>highPeaks[<span class="dv">2</span>,]</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="introduction-to-r-statistical-software-and-git.html#cb23-1" tabindex="-1"></a><span class="co"># subset 2 row in highPeaks</span></span>
+<span id="cb23-2"><a href="introduction-to-r-statistical-software-and-git.html#cb23-2" tabindex="-1"></a>highPeaks[<span class="dv">2</span>,]</span></code></pre></div>
 <pre class="colout"><code>  elev prom           name
 2 5114 2100 Algonquin Peak</code></pre>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="introduction-to-r-statistical-software-and-git.html#cb24-1" tabindex="-1"></a><span class="co"># view only the names column</span></span>
-<span id="cb24-2"><a href="introduction-to-r-statistical-software-and-git.html#cb24-2" tabindex="-1"></a>highPeaks[,<span class="dv">3</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="introduction-to-r-statistical-software-and-git.html#cb25-1" tabindex="-1"></a><span class="co"># view only the names column</span></span>
+<span id="cb25-2"><a href="introduction-to-r-statistical-software-and-git.html#cb25-2" tabindex="-1"></a>highPeaks[,<span class="dv">3</span>]</span></code></pre></div>
 <pre class="colout"><code>[1] &quot;Mount Marcy&quot;    &quot;Algonquin Peak&quot; &quot;Mount Haystack&quot;</code></pre>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="introduction-to-r-statistical-software-and-git.html#cb26-1" tabindex="-1"></a><span class="co"># look at elevation for 3rd highest mountain</span></span>
-<span id="cb26-2"><a href="introduction-to-r-statistical-software-and-git.html#cb26-2" tabindex="-1"></a>highPeaks[<span class="dv">1</span>,<span class="dv">3</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="introduction-to-r-statistical-software-and-git.html#cb27-1" tabindex="-1"></a><span class="co"># look at elevation for 3rd highest mountain</span></span>
+<span id="cb27-2"><a href="introduction-to-r-statistical-software-and-git.html#cb27-2" tabindex="-1"></a>highPeaks[<span class="dv">1</span>,<span class="dv">3</span>]</span></code></pre></div>
 <pre class="colout"><code>[1] &quot;Mount Marcy&quot;</code></pre>
 <center>
 <p><img src="photos/tutorial01/peaks2.png" style="width:40.0%" /></p>
