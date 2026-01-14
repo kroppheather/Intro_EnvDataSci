@@ -257,7 +257,7 @@ ggplot() +
 
 
 ## Conclusions
-Time series analysis helped us better understand ET in almond orchards. We observed strong, consistent seasonal patterns. The overall trend showed that there was an initial increase in ET from 2016-2017, but ET stabilized in recent years. We found that current ET was influenced by ET in previous 4 months, and were able to forecast data for missing months at the end of our time series. These forecasts indicate that if conditions are similar to previous years, we can expect to see similar values of ET as previous years. This can help with short term planning in addition to understanding the historical consumption of water. In your homework, you will examine trends in other types of agricultural fields.
+Time series analysis helped us better understand trends in ET in almond orchards. We observed strong, consistent seasonal patterns. We found that current ET was influenced by ET in previous 4 months, and were able to forecast data for missing months at the end of our time series. This can help with short term planning in addition to understanding the historical consumption of water. In your homework, you will examine trends in other types of agricultural fields.
 
 
 ## Citations
