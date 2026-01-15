@@ -1,0 +1,10 @@
+name: EnvDataSci
+title:
+username: kroppheather
+account: kroppheather
+server: connect.posit.cloud
+hostUrl: https://api.connect.posit.cloud/v1
+appId: 019bc2e5-3444-fc7c-b32f-c16e2921f26e
+bundleId:
+url: https://connect.posit.cloud/kroppheather/content/019bc2e5-3444-fc7c-b32f-c16e2921f26e
+version: 1

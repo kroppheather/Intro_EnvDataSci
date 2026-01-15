@@ -86,42 +86,42 @@ library(terra)
 In the activity folder, you will find four tif files, each named with the date of the flight, and a shapefile of points that contain an identified land cover for each location and a label that was randomly selected to act as training or validation data. Let's look at one of the drone flights that was taken in October:  
 
 ```{r eval=FALSE}
-oct <- rast("/cloud/project/activity08/Oct_12.tif")
+oct <- terra::rast("/cloud/project/activity08/Oct_12.tif")
 
 ```
 
-```{r echo=FALSE}
-oct <- rast("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter08/Oct_12.tif")
+```{r readO, echo=FALSE}
+oct <- terra::rast("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter08/Oct_12.tif")
 
 ```
 
 When you plot out all of the images, you will see the values are on a scale from 0-1 and are the actual reflectance for each band. 
 
 
-```{r echo=TRUE}
-plot(oct)
+```{r plotOc, echo=TRUE}
+terra::plot(oct)
 
 ```
 
 You can also make a true color plot of the image. Note that R automatically rescales the resolution of each plot to only show 500,000 pixels on your plot. This is a little lower resolution than the actual data. Changing this setting would unnecessarily use computational resources and slow down your work.
 
 
-```{r echo=TRUE}
-plotRGB(oct, r=3,g=2,b=1,  stretch="lin")
+```{r RGBoct, echo=TRUE}
+terra::plotRGB(oct, r=3,g=2,b=1,  stretch="lin")
 
 ```
 
 We will want to use all four maps to make inferences about landcover. Let's read all four images into one stack for a total of 20 bands:
 
 ```{r eval=FALSE}
-drStack <- rast(c("/cloud/project/activity08/May_19.tif",
+drStack <- terra::rast(c("/cloud/project/activity08/May_19.tif",
                  "/cloud/project/activity08/June_10.tif",
                  "/cloud/project/activity08/June_18.tif",
                  "/cloud/project/activity08/Oct_12.tif"))
 ```
 
-```{r echo=FALSE}
-drStack <- rast(c("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter08/May_19.tif",
+```{r readR, echo=FALSE}
+drStack <- terra::rast(c("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter08/May_19.tif",
                  "/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter08/June_10.tif",
                  "/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter08/June_18.tif",
                  "/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter08/Oct_12.tif"))
@@ -129,38 +129,38 @@ drStack <- rast(c("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/da
 
 You can preview up to 16 of the images by running the plot function:
 
-```{r echo=TRUE}
-plot(drStack)
+```{r plotstack1, echo=TRUE}
+terra::plot(drStack)
 
 ```
 
 You can also subset specific bands
 
-```{r echo=TRUE}
-plot(drStack[[16:20]])
+```{r plotstack, echo=TRUE}
+terra::plot(drStack[[16:20]])
 ```
 
 Finally, you will want to read in the points with known landcover classes. 
 
 ```{r eval=FALSE}
-lc <- vect("/cloud/project/activity08/land_pts.shp")
+lc <- terra::vect("/cloud/project/activity08/land_pts.shp")
 ```
 
-```{r echo=FALSE}
-lc <- vect("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter08/land_pts.shp")
+```{r dat, echo=FALSE}
+lc <- terra::vect("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter08/land_pts.shp")
 ```
-```{r echo=TRUE}
+```{r lcView, echo=TRUE}
 head(values(lc))
 ```
 You can see that each point comes with a data table that gives a land cover class name `landcover`, a numerical id for land cover class `LCID`, and an indication if it is for training or validation (`train` = train or valid).
 
 You can also view a map of both the points and the images:
 
-```{r echo=TRUE}
+```{r poinsPlot, points, echo=TRUE}
 # plot the main reforestation field and surrounding areas:
-plotRGB(oct, r=3,g=2,b=1, stretch="lin")
+terra::plotRGB(oct, r=3,g=2,b=1, stretch="lin")
 # add the known land cover points to the RGB plot
-plot(lc,"LCID", add=TRUE, legend=FALSE,
+terra::plot(lc,"LCID", add=TRUE, legend=FALSE,
      pch=19,cex=0.5, # make small filled in points
     col= hcl.colors(3, palette = "Harmonic")) # colors from a color palette
 # make a legend
@@ -175,7 +175,7 @@ legend("bottomright",
 There are over 700,000 pixels in this small area and classifying the landcover by hand drawing it would be tedious. You can check by looking at the rows and columns in the raster stack: 
 
 
-```{r echo=TRUE}
+```{r view, echo=TRUE}
 drStack
 ```
 
@@ -189,7 +189,7 @@ We will use two common types of machine learning approaches used for remote sens
 
 Now that you have the data read in, it is time to classify every pixel. You will need to pull out the reflectance data from every image for each point of known land cover:
 
-```{r echo=TRUE}
+```{r trainPts, echo=TRUE}
 # subset to only focus on training pts (60 in each class)
 trainPts <- subset(lc, lc$train=="train", drop=FALSE)
 
@@ -197,9 +197,9 @@ trainPts <- subset(lc, lc$train=="train", drop=FALSE)
 
 Then we need to extract the pixel values from our stack:
 
-```{r echo=TRUE}
+```{r trainData, echo=TRUE}
 # extract pixel data
-train <- extract(drStack, trainPts)
+train <- terra::extract(drStack, trainPts)
 # get attribute table from points
 trainTable <- values(trainPts)
 # combine into one table that has a y column
@@ -215,7 +215,7 @@ You will start with classification using the random forest method. There is a ch
 
 For both methods (random forests and neural networks) today, we will use the caret package to help tune the parameters. The data folder also contains an overview of *caret* and parameter tuning in the _caret.pdf_ file. For many machine learning methods, there are often parameters that need to be set to help configure the models and you can often choose from a range of values for parameters depending on the method you are using. Finding the parameter values that will work best for predictions can involve a lot of trial and error and setting arbitrary values. The *Caret* pacakge helps streamline this part of the model training process by finding the optimal parameter settings within a range of values. We will use caret to find the optimal parameter setting for our random forest predictions. Here we will use a repeated ** cross-validation** approach discussed in class. This will allow us to quickly assess the optimal parameter settings to increase the accuracy of the algorithm. 
 
-```{r echo=TRUE}
+```{r kfold, echo=TRUE}
 #Kfold cross validation
 tc <- trainControl(method = "repeatedcv", # repeated cross-validation of the training data
                    number = 10, # number 10 fold
@@ -241,7 +241,7 @@ For random forests, there is one parameter that can be tuned in caret: _mtry_. T
 
 Anytime you are working data that involves the random generation of numbers, it is good to set a *random seed*. This allows for reproducibility in your script and will generate random numbers in the same way everytime you run your script. You can set your seed to be any number you like. Note that this only works if you run your script in the same order every time and don't rerun a random number function over and over again in your console within the same session. If you want to ensure that any vector of random numbers is exactly the same every time, it is always good to set the seed before each individual vector. Here, we'll set the seed at the beginning and if you always run these vectors in exactly this order the samples will be the same every time.
 
-```{r echo=TRUE}
+```{r rfTrain, echo=TRUE}
 # set random seed for algorithm so you can get the same results when
 # running multiple times
 set.seed(43)
@@ -259,7 +259,7 @@ rf_model <- caret::train(x = trainDF[,3:22], #digital number data
 
 You can view the final model configuration and the training by typing in the name or the model or plotting it:
 
-```{r echo=TRUE}
+```{r rf, echo=TRUE}
 rf_model
 ```
 
@@ -273,23 +273,23 @@ This process might take a minute to run on your computer. Once it finishes you c
 Now that you have trained the model, you can make predictions for the entire raster of observations.
 
 
-```{r echo=TRUE}
+```{r plotRFp, echo=TRUE}
 #use the model to predict land cover class for the entire raster stack
 rf_prediction <- terra::predict(drStack, model=rf_model, na.rm=TRUE )
 # plot the land cover class (uses LCID number)
-plot(rf_prediction, col= hcl.colors(3, palette = "Harmonic"))
+terra::plot(rf_prediction, col= hcl.colors(3, palette = "Harmonic"), legend=FALSE)
 ```
 
 You can see the prediction looks good initially. There might be some field marked as path or trees, but let's look at the validation points to assess this more formally:
 
-```{r echo=TRUE}
+```{r rfOut, echo=TRUE}
 # subset land cover points for validation
 validPts <- subset(lc, lc$train=="valid", drop=FALSE)
 # convert to data frame
 valid_Table <- values(validPts)
 
 # extract predicted land cover for each point
-valid_rf <- extract(rf_prediction, validPts)
+valid_rf <- terra::extract(rf_prediction, validPts)
 # turn into table
 validDF_rf <- data.frame(y=valid_Table$LCID, rf=valid_rf)
 
@@ -297,7 +297,7 @@ validDF_rf <- data.frame(y=valid_Table$LCID, rf=valid_rf)
 
 You are ready to compare the predictions to the observed data. You will set up a **confusion matrix** to compare the observations to the predictions. The `confusionMatrix` function in the `caret` package simply needs a vector of predictions and a vector of known data.
 
-```{r echo=TRUE}
+```{r rfMat, echo=TRUE}
 # make a confusion matrix
 # LCID 1 = field
 # LCID 2 =  tree
@@ -314,7 +314,7 @@ rf_errorM
 
 Now you will compare your random forest predictions to another common approach, _neural networks_. Neural networks can be used for classification or numerical predictions. Neural networks are often successful at classifications without needing to make a lot of assumptions about the data and capable of detecting complex patterns. However, this method can also be computationally intensive and prone to overfitting. Small training data sets may also cause issues in training and prediciton. First you'll set up the parameter tuning in caret. You will fit the _nnet_ function. This requires parameters _size_ (number of nodes) of the hidden layer in your network topology. You will also need to specify the _decay_ parameter will be used to prevent over-fitting in the model training. I've set up some initial parameter values that have give a good range of accuracy to start with. Running the training over a large range of values would be too time consuming and computationally intensive for this class:
 
-```{r echo=TRUE}
+```{r grid, echo=TRUE}
 # starting parameters for neural net
 nnet.grid <- expand.grid(size = seq(from = 1, to = 10, by = 1), # number of neurons units in the hidden layer 
                          decay = seq(from = 0.001, to = 0.01, by = 0.001)) # regularization parameter to avoid over-fitting 
@@ -324,7 +324,7 @@ nnet.grid <- expand.grid(size = seq(from = 1, to = 10, by = 1), # number of neur
 
 Now you are ready to train the model:
 
-```{r echo=TRUE}
+```{r nnModel, echo=TRUE}
 # train nnet
 set.seed(18)
 nnet_model <- caret::train(x = trainDF[,c(3:22)], y = as.factor(trainDF[,1]),
@@ -337,11 +337,11 @@ nnet_model
 A note: you will see a lot of print out if _trace=TRUE_ is specified as the parameter tuning is done throughout the grid. This can be used to identify that you are running enough iterations and provide you with more information. You can find out more by printing out the results by changing this argument to FALSE. 
 
 Make predictions for the entire image and view:
-```{r echo=TRUE}
+```{r nnPlot, echo=TRUE}
 # predictions
 nn_prediction <- terra::predict(drStack, nnet_model)
 # map
-plot(nn_prediction, col= hcl.colors(3, palette = "Harmonic"))
+terra::plot(nn_prediction, col= hcl.colors(3, palette = "Harmonic"), legend=FALSE)
 
 ```
 
@@ -350,7 +350,7 @@ plot(nn_prediction, col= hcl.colors(3, palette = "Harmonic"))
 You set out to do this analysis to see if you could classify the area of fields, paths, and forests. Now let's assess the conclusions and potential bias in interpreting these classifications. Let's start by comparing the area of land predicted to be an algal bloom. You can check the number of cells in each class using the *freq* function in the raster package
 
 
-```{r echo=TRUE}
+```{r freq, echo=TRUE}
 #cell count neural net
 freq(nn_prediction)
 #cell count random forest
@@ -363,14 +363,14 @@ freq(rf_prediction)
 ```
 
 You can also view the predictions side by side:
-```{r echo=TRUE, fig.width=10}
+```{r predictPlot, echo=TRUE, fig.width=10}
 par(mfrow=c(1,2))
-plot(nn_prediction, col= hcl.colors(3, palette = "Harmonic"),
+terra::plot(nn_prediction, col= hcl.colors(3, palette = "Harmonic"),
      legend=FALSE, axes=FALSE, main="Neural network", box=FALSE)
 legend("bottomleft", c("field","tree","path"),
        fill=hcl.colors(3, palette = "Harmonic") ,bty="n")
 
-plot(rf_prediction, col= hcl.colors(3, palette = "Harmonic"),
+terra::plot(rf_prediction, col= hcl.colors(3, palette = "Harmonic"),
      legend=FALSE, axes=FALSE, main="Random forest", box=FALSE)
 legend("bottomleft", c("field","tree","path"),
        fill=hcl.colors(3, palette = "Harmonic") ,bty="n")

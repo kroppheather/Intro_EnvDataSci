@@ -373,36 +373,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="photos/tutorial05/Deemer_map.png" style="width:66.0%" /></p>
 </center>
 <p>The <code>Deemer_GHG_Data.csv</code> file contains the greenhouse gas and reservoir characterstic data from sites shown in the map above.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb1-1" tabindex="-1"></a><span class="co"># read in greenhouse gas data from reservoirs</span></span>
-<span id="cb1-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb1-2" tabindex="-1"></a>ghg <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;/cloud/project/activity05/Deemer_GHG_Data.csv&quot;</span>)</span></code></pre></div>
-<pre class="colout"><code>           System Latitude Longitude Amazon    Region       Country Alpine
-1 Acton Reservoir    39.57    -84.73     no Temperate United States       
-2       Al-Wihdeh    32.73     35.87     no Temperate  Jordan/Syria       
-3      Alamo Lake    34.25   -113.50     no Temperate United States       
-4       Allatoona    34.14    -84.64     no Temperate United States       
-5   Alouette Lake    49.32   -122.43     no Temperate        Canada       
-6        Angerman    63.19     17.23     no    Boreal        Sweden       
-  hydropower           Use   ch4     co2 age chlorophyll.a mean.depth
-1         no    Recreation    NA   31.80  50         59.00        3.9
-2    unknown                  NA 1445.45   3            NA         NA
-3         no Flood Control    NA -199.22  35          3.58         NA
-4        yes               22.12  446.38  63          4.40        9.2
-5        yes                  NA -111.00  74            NA         NA
-6        yes                  NA   30.80  70            NA         NA
-  surface.area volume Residence.Time..days.    DIP precipitation runoff airTemp
-1         2.50     NA                   292  21.64          1039    459   10.61
-2         0.82   0.01                   247 138.71           349    124   19.60
-3         4.22     NA                    NA   0.07           208      0   20.09
-4        49.00   0.45                    36  43.84          1339    468   15.37
-5        16.00     NA                    NA  40.14          1769   1198    8.24
-6       854.00     NA                    NA   1.95           592    279    3.07</code></pre>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb122-1" tabindex="-1"></a><span class="co"># read in greenhouse gas data from reservoirs</span></span>
+<span id="cb122-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb122-2" tabindex="-1"></a>ghg <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;/cloud/project/activity05/Deemer_GHG_Data.csv&quot;</span>)</span></code></pre></div>
+<pre class="colout"><code>           System Latitude Longitude Amazon    Region       Country Alpine hydropower           Use   ch4
+1 Acton Reservoir    39.57    -84.73     no Temperate United States                no    Recreation    NA
+2       Al-Wihdeh    32.73     35.87     no Temperate  Jordan/Syria           unknown                  NA
+3      Alamo Lake    34.25   -113.50     no Temperate United States                no Flood Control    NA
+4       Allatoona    34.14    -84.64     no Temperate United States               yes               22.12
+5   Alouette Lake    49.32   -122.43     no Temperate        Canada               yes                  NA
+6        Angerman    63.19     17.23     no    Boreal        Sweden               yes                  NA
+      co2 age chlorophyll.a mean.depth surface.area volume Residence.Time..days.    DIP precipitation runoff
+1   31.80  50         59.00        3.9         2.50     NA                   292  21.64          1039    459
+2 1445.45   3            NA         NA         0.82   0.01                   247 138.71           349    124
+3 -199.22  35          3.58         NA         4.22     NA                    NA   0.07           208      0
+4  446.38  63          4.40        9.2        49.00   0.45                    36  43.84          1339    468
+5 -111.00  74            NA         NA        16.00     NA                    NA  40.14          1769   1198
+6   30.80  70            NA         NA       854.00     NA                    NA   1.95           592    279
+  airTemp
+1   10.61
+2   19.60
+3   20.09
+4   15.37
+5    8.24
+6    3.07</code></pre>
 <p>There are a few main columns of data to focus on here. <code>ch4</code> describes the methane flux (<span class="math inline">\(mg CH_4-C\)</span> <span class="math inline">\(m^{-2}\)</span> <span class="math inline">\(day^{-1}\)</span>) in carbon equivalents emitted from the reservoir. The <code>co2</code> column gives the carbon dioxide flux (<span class="math inline">\(mg CO_2-C\)</span> <span class="math inline">\(m^{-2}\)</span> <span class="math inline">\(day^{-1}\)</span>) in carbon equivalents. If a carbon dioxide flux is negative, that means that the lake takes in more carbon dioxide than it emits. There are explanatory variables that also can influence the release of greenhouse gases. The depth of the reservoir (<code>mean.depth</code>, meters) can affect the exchange of oxygen, water chemistry, and microclimate. The age of the reservoir (<code>age</code>, years) can influence the availability of carbon and oxygen newly flooded vegetation and soils for microbes. The chlorophyll A measurements indicate how much photosynthesizing organisms are living in the water (<code>chlorophyll.a</code> in <span class="math inline">\(\mu g L^{-1}\)</span>). The surface area (<code>surface.area</code> in <span class="math inline">\(km^2\)</span>) and volume (<code>volume</code> in <span class="math inline">\(km^3\)</span>) can influence water conditions. The following are all variables modeled from global data that were used by the authors: dissolved inorganic phosphorous (<code>DIP</code> <span class="math inline">\(kg ~km^{-2}~ yr^{-1}\)</span>) influences the growth of microbes and photosynthetic organisms. Precipitation influences the flow of new water into the reservoir (<code>precipitation</code>, <span class="math inline">\(mm~ yr^{-1}\)</span>),
 runoff is the total amount of water from precipitation that flows into a drainage basin (<code>runoff</code>, <span class="math inline">\(mm~ yr^{-1}\)</span>), and the air temperature influences the conditions for microbial and aquatic organisms as well as water chemistry (<code>airTemp</code>, <span class="math inline">\(^\circ C\)</span>).</p>
 <p>You will also find it helpful to install and load the following packages:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb3-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb3-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb3-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb3-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb3-3" tabindex="-1"></a><span class="fu">library</span>(olsrr)</span>
-<span id="cb3-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb3-4" tabindex="-1"></a><span class="fu">library</span>(PerformanceAnalytics)</span></code></pre></div>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb124-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb124-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb124-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb124-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb124-3" tabindex="-1"></a><span class="fu">library</span>(olsrr)</span>
+<span id="cb124-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb124-4" tabindex="-1"></a><span class="fu">library</span>(PerformanceAnalytics)</span></code></pre></div>
 </div>
 </div>
 <div id="the-approach-linear-regression-in-r" class="section level2 hasAnchor" number="6.4">
@@ -410,45 +410,45 @@ runoff is the total amount of water from precipitation that flows into a drainag
 <div id="transforming-variables" class="section level3 hasAnchor" number="6.4.1">
 <h3><span class="header-section-number">6.4.1</span> <em>Transforming variables</em><a href="linear-regression-model-selection-and-prediction-in-r.html#transforming-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Methane emissions around bodies of water are a type of observation that tends to have many observations at low values with occasional very high value. The histogram of the methane data below confirms this.</p>
-<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-111-1.png" width="672" /></p>
 <p>Keep in mind that the linear assumption for the ordinary least squares regression is: <strong>the parameters are linear, describing a linear relationship between two variables</strong>. This assumption simply gives the structure for <span class="math display">\[y = \beta_0 + \beta_1 * x\]</span>. However, either y or x does not have to be on a linear scale. In fact, y or x can be <strong>transformed</strong> to allow the data to be described on a linear scale. The most common type of transformation is a <strong>log-scale</strong> transformation. In R, the function <code>log</code> takes the natural log of data. The natural log often explains more relationships in environmental data than log base 10. Let’s transform the methane data before working with it. For the methane data, values of zero exist and there is no natural log of zero. However, including adding a value of one will shift all the data by a value, and any value that was zero on the linear scale will be zero on the log scale <code>log(1) = 0</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb4-1" tabindex="-1"></a><span class="co"># log transform methane fluxes</span></span>
-<span id="cb4-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb4-2" tabindex="-1"></a>ghg<span class="sc">$</span>log.ch4 <span class="ot">&lt;-</span> <span class="fu">log</span>(ghg<span class="sc">$</span>ch4<span class="sc">+</span><span class="dv">1</span>)</span></code></pre></div>
-<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb125-1" tabindex="-1"></a><span class="co"># log transform methane fluxes</span></span>
+<span id="cb125-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb125-2" tabindex="-1"></a>ghg<span class="sc">$</span>log.ch4 <span class="ot">&lt;-</span> <span class="fu">log</span>(ghg<span class="sc">$</span>ch4<span class="sc">+</span><span class="dv">1</span>)</span></code></pre></div>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-113-1.png" width="672" /></p>
 <p>You can see that the log scale results in a linear relationship between temperature and methane. Now the interpretation of the data in that linear relationship changes. As air temperature increases by one value, we are now looking at the increase in methane by one value on the log(ch4+1) scale.</p>
 <p>Variables like total annual precipitation, age of the reservoir, and dissolved inorganic phosphorous would also be good values to transform due to their distribution and wide range of values.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb5-1" tabindex="-1"></a>ghg<span class="sc">$</span>log.age <span class="ot">&lt;-</span> <span class="fu">log</span>(ghg<span class="sc">$</span>age)</span>
-<span id="cb5-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb5-2" tabindex="-1"></a>ghg<span class="sc">$</span>log.DIP <span class="ot">&lt;-</span> <span class="fu">log</span>(ghg<span class="sc">$</span>DIP<span class="sc">+</span><span class="dv">1</span>)</span>
-<span id="cb5-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb5-3" tabindex="-1"></a>ghg<span class="sc">$</span>log.precip <span class="ot">&lt;-</span> <span class="fu">log</span>(ghg<span class="sc">$</span>precipitation)</span></code></pre></div>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb126-1" tabindex="-1"></a>ghg<span class="sc">$</span>log.age <span class="ot">&lt;-</span> <span class="fu">log</span>(ghg<span class="sc">$</span>age)</span>
+<span id="cb126-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb126-2" tabindex="-1"></a>ghg<span class="sc">$</span>log.DIP <span class="ot">&lt;-</span> <span class="fu">log</span>(ghg<span class="sc">$</span>DIP<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb126-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb126-3" tabindex="-1"></a>ghg<span class="sc">$</span>log.precip <span class="ot">&lt;-</span> <span class="fu">log</span>(ghg<span class="sc">$</span>precipitation)</span></code></pre></div>
 </div>
 <div id="binary-variables" class="section level3 hasAnchor" number="6.4.2">
 <h3><span class="header-section-number">6.4.2</span> <em>Binary variables</em><a href="linear-regression-model-selection-and-prediction-in-r.html#binary-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>It can be useful to control for categorical binary variables in a regression. A slope coefficient for these variables represents an addition or subtraction (if negative) to the intercept. This can account for an expectation for values of data being shifted higher or lower within this group category. There are a few variables where this might be helpful. Let’s use the <code>unique</code> function to look at all of the regions. Unique will print out each unique object in a vector with no duplicates.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb6-1" tabindex="-1"></a><span class="fu">unique</span>(ghg<span class="sc">$</span>Region)</span></code></pre></div>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb127-1" tabindex="-1"></a><span class="fu">unique</span>(ghg<span class="sc">$</span>Region)</span></code></pre></div>
 <pre class="colout"><code>[1] &quot;Temperate&quot;   &quot;Boreal&quot;      &quot;Subtropical&quot; &quot;Tropical&quot;   </code></pre>
 <p><code>ifelse</code> will be helpful here to make a binary variable (just like making a flag in the last tutorial). It will be helpful to isolate two regions. Boreal regions are known for their methane producing wetlands with organic rich soils and vegetation adapted to flooding, and thus we might expect that the flooded regions and the vegetation around a reservoir may be more prone to producing methane. We will also isolate tropical regions. There are studies that indicate that tropical lakes emit more methane so we might also expect emissions to differ from subtropical and temperature regions.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb8-1" tabindex="-1"></a><span class="co"># binary variable for boreal region</span></span>
-<span id="cb8-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb8-2" tabindex="-1"></a>ghg<span class="sc">$</span>BorealV <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(ghg<span class="sc">$</span>Region <span class="sc">==</span> <span class="st">&quot;Boreal&quot;</span>,<span class="dv">1</span>,<span class="dv">0</span>)</span>
-<span id="cb8-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb8-3" tabindex="-1"></a><span class="co"># binary variable for tropical region</span></span>
-<span id="cb8-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb8-4" tabindex="-1"></a>ghg<span class="sc">$</span>TropicalV <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(ghg<span class="sc">$</span>Region <span class="sc">==</span> <span class="st">&quot;Tropical&quot;</span>,<span class="dv">1</span>,<span class="dv">0</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb129-1" tabindex="-1"></a><span class="co"># binary variable for boreal region</span></span>
+<span id="cb129-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb129-2" tabindex="-1"></a>ghg<span class="sc">$</span>BorealV <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(ghg<span class="sc">$</span>Region <span class="sc">==</span> <span class="st">&quot;Boreal&quot;</span>,<span class="dv">1</span>,<span class="dv">0</span>)</span>
+<span id="cb129-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb129-3" tabindex="-1"></a><span class="co"># binary variable for tropical region</span></span>
+<span id="cb129-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb129-4" tabindex="-1"></a>ghg<span class="sc">$</span>TropicalV <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(ghg<span class="sc">$</span>Region <span class="sc">==</span> <span class="st">&quot;Tropical&quot;</span>,<span class="dv">1</span>,<span class="dv">0</span>)</span></code></pre></div>
 <p>We will also want to create a variable for alpine regions (high elevation). Alpine regions are known for long term snow cover and glaciers that bring high amounts of cold, nutrient depleted melt water.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb9-1" tabindex="-1"></a><span class="co"># binary variable for alpine region</span></span>
-<span id="cb9-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb9-2" tabindex="-1"></a>ghg<span class="sc">$</span>AlpineV <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(ghg<span class="sc">$</span>Alpine <span class="sc">==</span> <span class="st">&quot;yes&quot;</span>,<span class="dv">1</span>,<span class="dv">0</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb130-1" tabindex="-1"></a><span class="co"># binary variable for alpine region</span></span>
+<span id="cb130-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb130-2" tabindex="-1"></a>ghg<span class="sc">$</span>AlpineV <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(ghg<span class="sc">$</span>Alpine <span class="sc">==</span> <span class="st">&quot;yes&quot;</span>,<span class="dv">1</span>,<span class="dv">0</span>)</span></code></pre></div>
 <p>Finally we will also add a variable that indicates that the reservoir is knowingly maintained for hydropower usage.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb10-1" tabindex="-1"></a><span class="co"># binary variable for known hydropower</span></span>
-<span id="cb10-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb10-2" tabindex="-1"></a>ghg<span class="sc">$</span>HydroV <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(ghg<span class="sc">$</span>hydropower <span class="sc">==</span> <span class="st">&quot;yes&quot;</span>,<span class="dv">1</span>,<span class="dv">0</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb131-1" tabindex="-1"></a><span class="co"># binary variable for known hydropower</span></span>
+<span id="cb131-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb131-2" tabindex="-1"></a>ghg<span class="sc">$</span>HydroV <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(ghg<span class="sc">$</span>hydropower <span class="sc">==</span> <span class="st">&quot;yes&quot;</span>,<span class="dv">1</span>,<span class="dv">0</span>)</span></code></pre></div>
 </div>
 <div id="running-a-multiple-regression" class="section level3 hasAnchor" number="6.4.3">
 <h3><span class="header-section-number">6.4.3</span> <em>Running a multiple regression</em><a href="linear-regression-model-selection-and-prediction-in-r.html#running-a-multiple-regression" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In R, the <code>lm</code> function allows you to specify a linear model and will automatically run an ordinary least squares regression. Here, we will focus on a multiple regression. The function can be easily altered to include only a single variable for a simple linear regression. The <code>lm</code> function expects a specific order of arguments where <code>y ~ x1 + x2</code> where y is the dependent variable, and x is one or more independent variables. Let’s set up a multiple regression for our methane fluxes that looks at the main variables that I predict will have the greatest impact: air temperature, reservoir age, reservoir depth, log-scale dissolved inorganic phosphorous, precipitation, and presence in a boreal region.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb11-1" tabindex="-1"></a><span class="co"># multiple regression</span></span>
-<span id="cb11-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb11-2" tabindex="-1"></a><span class="co"># creates a model object</span></span>
-<span id="cb11-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb11-3" tabindex="-1"></a>mod.full <span class="ot">&lt;-</span> <span class="fu">lm</span>(log.ch4 <span class="sc">~</span> airTemp<span class="sc">+</span></span>
-<span id="cb11-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb11-4" tabindex="-1"></a>                log.age<span class="sc">+</span>mean.depth<span class="sc">+</span></span>
-<span id="cb11-5"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb11-5" tabindex="-1"></a>                log.DIP<span class="sc">+</span></span>
-<span id="cb11-6"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb11-6" tabindex="-1"></a>                log.precip<span class="sc">+</span> BorealV, <span class="at">data=</span>ghg) <span class="co">#uses the data argument to specify dataframe</span></span></code></pre></div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb132-1" tabindex="-1"></a><span class="co"># multiple regression</span></span>
+<span id="cb132-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb132-2" tabindex="-1"></a><span class="co"># creates a model object</span></span>
+<span id="cb132-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb132-3" tabindex="-1"></a>mod.full <span class="ot">&lt;-</span> <span class="fu">lm</span>(log.ch4 <span class="sc">~</span> airTemp<span class="sc">+</span></span>
+<span id="cb132-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb132-4" tabindex="-1"></a>                log.age<span class="sc">+</span>mean.depth<span class="sc">+</span></span>
+<span id="cb132-5"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb132-5" tabindex="-1"></a>                log.DIP<span class="sc">+</span></span>
+<span id="cb132-6"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb132-6" tabindex="-1"></a>                log.precip<span class="sc">+</span> BorealV, <span class="at">data=</span>ghg) <span class="co">#uses the data argument to specify dataframe</span></span></code></pre></div>
 <p>You can see the full model results using the <code>summary</code> function and referring to the model name. This will give you key information like the coefficients table and r-squared.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb12-1" tabindex="-1"></a><span class="fu">summary</span>(mod.full)</span></code></pre></div>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb133-1" tabindex="-1"></a><span class="fu">summary</span>(mod.full)</span></code></pre></div>
 <pre class="colout"><code>
 Call:
 lm(formula = log.ch4 ~ airTemp + log.age + mean.depth + log.DIP + 
@@ -488,17 +488,17 @@ F-statistic: 13.78 on 6 and 80 DF,  p-value: 1.091e-10</code></pre>
 <li>In a multiple regression, independent variables are not highly correlated (multicollinearity)</li>
 </ol>
 <p>It will be helpful to isolate standardized residuals (<code>rstandard</code>) and the fitted values from the regression line at each observation (<code>fitted.values</code>) for these tests.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb14-1" tabindex="-1"></a>res.full <span class="ot">&lt;-</span> <span class="fu">rstandard</span>(mod.full)</span>
-<span id="cb14-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb14-2" tabindex="-1"></a>fit.full <span class="ot">&lt;-</span> <span class="fu">fitted.values</span>(mod.full)</span></code></pre></div>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb135-1" tabindex="-1"></a>res.full <span class="ot">&lt;-</span> <span class="fu">rstandard</span>(mod.full)</span>
+<span id="cb135-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb135-2" tabindex="-1"></a>fit.full <span class="ot">&lt;-</span> <span class="fu">fitted.values</span>(mod.full)</span></code></pre></div>
 <div id="normality" class="section level4 hasAnchor" number="6.4.4.1">
 <h4><span class="header-section-number">6.4.4.1</span> <em>1. Normality</em><a href="linear-regression-model-selection-and-prediction-in-r.html#normality" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>You can use a qqplot to check normality of the residuals. For small data sets, the Shapiro-Wilks test (<code>shapiro.test</code>) can also be used to check normality.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb15-1" tabindex="-1"></a><span class="co"># qq plot</span></span>
-<span id="cb15-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb15-2" tabindex="-1"></a><span class="fu">qqnorm</span>(res.full, <span class="at">pch=</span><span class="dv">19</span>, <span class="at">col=</span><span class="st">&quot;grey50&quot;</span>)</span>
-<span id="cb15-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb15-3" tabindex="-1"></a><span class="fu">qqline</span>(res.full)</span></code></pre></div>
-<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb16-1" tabindex="-1"></a><span class="co"># shapiro-wilks test</span></span>
-<span id="cb16-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb16-2" tabindex="-1"></a><span class="fu">shapiro.test</span>(res.full)</span></code></pre></div>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb136-1" tabindex="-1"></a><span class="co"># qq plot</span></span>
+<span id="cb136-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb136-2" tabindex="-1"></a><span class="fu">qqnorm</span>(res.full, <span class="at">pch=</span><span class="dv">19</span>, <span class="at">col=</span><span class="st">&quot;grey50&quot;</span>)</span>
+<span id="cb136-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb136-3" tabindex="-1"></a><span class="fu">qqline</span>(res.full)</span></code></pre></div>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-121-1.png" width="672" /></p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb137-1" tabindex="-1"></a><span class="co"># shapiro-wilks test</span></span>
+<span id="cb137-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb137-2" tabindex="-1"></a><span class="fu">shapiro.test</span>(res.full)</span></code></pre></div>
 <pre class="colout"><code>
     Shapiro-Wilk normality test
 
@@ -509,25 +509,25 @@ W = 0.98232, p-value = 0.2817</code></pre>
 <div id="residuals" class="section level4 hasAnchor" number="6.4.4.2">
 <h4><span class="header-section-number">6.4.4.2</span> <em>2-4. Residuals</em><a href="linear-regression-model-selection-and-prediction-in-r.html#residuals" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Many of the issues outlined in assumptions 2-4 can be seen using a residual plot and background knowledge about the data. A residual plot simpily uses the fitted values and standard residuals. You can add a horizontal line to the plot at zero for easier comparison.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb18-1" tabindex="-1"></a><span class="fu">plot</span>(fit.full,res.full, <span class="at">pch=</span><span class="dv">19</span>, <span class="at">col=</span><span class="st">&quot;grey50&quot;</span>)</span>
-<span id="cb18-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb18-2" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>)</span></code></pre></div>
-<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb139-1" tabindex="-1"></a><span class="fu">plot</span>(fit.full,res.full, <span class="at">pch=</span><span class="dv">19</span>, <span class="at">col=</span><span class="st">&quot;grey50&quot;</span>)</span>
+<span id="cb139-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb139-2" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>)</span></code></pre></div>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-122-1.png" width="672" /></p>
 <p>Here the residuals are not in major violation of any assumptions.</p>
 </div>
 </div>
 <div id="multicollinearity" class="section level3 hasAnchor" number="6.4.5">
 <h3><span class="header-section-number">6.4.5</span> <em>5. Multicollinearity</em><a href="linear-regression-model-selection-and-prediction-in-r.html#multicollinearity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The assumption of multicollinearity applies to multiple regressions only. Reliable slope coefficients assume that each independent variable is not related to other independent variables in the model. You can check this easily using the <code>chart.Correlation</code> function in the <code>PerformanceAnalytics</code> package. You simply need a data frame of just the variables to compare.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb19-1" tabindex="-1"></a><span class="co"># isolate continuous model variables into data frame:</span></span>
-<span id="cb19-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb19-2" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb19-3" tabindex="-1"></a>reg.data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(ghg<span class="sc">$</span>airTemp,</span>
-<span id="cb19-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb19-4" tabindex="-1"></a>  ghg<span class="sc">$</span>log.age,ghg<span class="sc">$</span>mean.depth,</span>
-<span id="cb19-5"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb19-5" tabindex="-1"></a>  ghg<span class="sc">$</span>log.DIP,</span>
-<span id="cb19-6"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb19-6" tabindex="-1"></a>  ghg<span class="sc">$</span>log.precip)</span>
-<span id="cb19-7"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb19-7" tabindex="-1"></a></span>
-<span id="cb19-8"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb19-8" tabindex="-1"></a><span class="co"># make a correlation matrix </span></span>
-<span id="cb19-9"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb19-9" tabindex="-1"></a><span class="fu">chart.Correlation</span>(reg.data, <span class="at">histogram=</span><span class="cn">TRUE</span>, <span class="at">pch=</span><span class="dv">19</span>)</span></code></pre></div>
-<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb140-1" tabindex="-1"></a><span class="co"># isolate continuous model variables into data frame:</span></span>
+<span id="cb140-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb140-2" tabindex="-1"></a></span>
+<span id="cb140-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb140-3" tabindex="-1"></a>reg.data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(ghg<span class="sc">$</span>airTemp,</span>
+<span id="cb140-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb140-4" tabindex="-1"></a>  ghg<span class="sc">$</span>log.age,ghg<span class="sc">$</span>mean.depth,</span>
+<span id="cb140-5"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb140-5" tabindex="-1"></a>  ghg<span class="sc">$</span>log.DIP,</span>
+<span id="cb140-6"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb140-6" tabindex="-1"></a>  ghg<span class="sc">$</span>log.precip)</span>
+<span id="cb140-7"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb140-7" tabindex="-1"></a></span>
+<span id="cb140-8"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb140-8" tabindex="-1"></a><span class="co"># make a correlation matrix </span></span>
+<span id="cb140-9"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb140-9" tabindex="-1"></a><span class="fu">chart.Correlation</span>(reg.data, <span class="at">histogram=</span><span class="cn">TRUE</span>, <span class="at">pch=</span><span class="dv">19</span>)</span></code></pre></div>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-123-1.png" width="672" /></p>
 <p>A correlation coefficient varies from 0-1 with 1 indicated a perfect correlation. There is no established threshold for multicollinearity, but some studies indicate that correlation coefficients greater than 0.7-0.8 indicate that both variables are too correlated to include. The solution to this is to choose just one variable knowing that it may represent other underlying variables and processes (include this in your interpretation). The other solution is to create an index that represents both variables.</p>
 <p>Here, there are a few variables that have a fair amount of correlation, but there is not a severe enough correlation to cause concern here.</p>
 </div>
@@ -537,10 +537,10 @@ W = 0.98232, p-value = 0.2817</code></pre>
 <p>Model selection is one of the most challenging parts of designing an analysis. My selection of initial variables related to my biophysical understanding of microbial respiration, aquatic ecosystems, and microclimate. However, you can see that some variables are simply not significant and indicate no relationship. This outcome would be useful to report for <strong>inference</strong>. Understanding which variables influence methane emission and by how much provides more information about when and why reservoirs may be significant sources of methane. However, if I am interested in <strong>prediction</strong>, I will only want to include significant variables that greatly describe the variability in methane to reduce data collection and issues with over-fitting. <strong>Model selection</strong> is the process of eliminating variables and parameters that are not critical to the objective of the analysis and the outcomes of the model.</p>
 <p>There are various ways of assessing model performance. The <span class="math inline">\(R^2\)</span> gives information on the amount of variability in y explained by the model. The adjusted <span class="math inline">\(R^2\)</span> penalizes the addition of extra independent variables. The <strong>Akaike information criterion (AIC)</strong> is a measure of model fit. The smaller the value, the better the model fit. Comparing these measures between <strong>candidate models</strong>, a series of possible models to compare. Model selection can help with statistically selecting variables that best describe the independent variable without adding unnecessary variables.</p>
 <p>You can assess the importance of your variables in a multiple regression using <strong>stepwise selection</strong>. Stepwise selection iteratively adds (forward) or removes (backward) variables to calculate their impact on the model. Let’s look at forward stepwise selection using the function <code>ols_step_forward_aic</code> function from the <code>olsrr</code> package. The only argument needed is your full model.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb20-1" tabindex="-1"></a><span class="co"># run stepwise</span></span>
-<span id="cb20-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb20-2" tabindex="-1"></a>full.step <span class="ot">&lt;-</span> <span class="fu">ols_step_forward_aic</span>(mod.full)</span>
-<span id="cb20-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb20-3" tabindex="-1"></a><span class="co"># view table</span></span>
-<span id="cb20-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb20-4" tabindex="-1"></a>full.step </span></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb141-1" tabindex="-1"></a><span class="co"># run stepwise</span></span>
+<span id="cb141-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb141-2" tabindex="-1"></a>full.step <span class="ot">&lt;-</span> <span class="fu">ols_step_forward_aic</span>(mod.full)</span>
+<span id="cb141-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb141-3" tabindex="-1"></a><span class="co"># view table</span></span>
+<span id="cb141-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb141-4" tabindex="-1"></a>full.step </span></code></pre></div>
 <pre class="colout"><code>
                              Stepwise Summary                              
 -------------------------------------------------------------------------
@@ -592,8 +592,8 @@ Total         279.271        86
     log.DIP     0.399         0.140        0.283     2.845    0.006     0.120     0.679 
  mean.depth    -0.010         0.005       -0.174    -2.190    0.031    -0.019    -0.001 
 ----------------------------------------------------------------------------------------</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb22-1" tabindex="-1"></a><span class="co"># check full model</span></span>
-<span id="cb22-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb22-2" tabindex="-1"></a>full.step<span class="sc">$</span>model</span></code></pre></div>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb143-1" tabindex="-1"></a><span class="co"># check full model</span></span>
+<span id="cb143-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb143-2" tabindex="-1"></a>full.step<span class="sc">$</span>model</span></code></pre></div>
 <pre class="colout"><code>
 Call:
 lm(formula = paste(response, &quot;~&quot;, paste(preds, collapse = &quot; + &quot;)), 
@@ -602,27 +602,27 @@ lm(formula = paste(response, &quot;~&quot;, paste(preds, collapse = &quot; + &qu
 Coefficients:
 (Intercept)      airTemp      BorealV   log.precip      log.DIP   mean.depth  
    7.840642     0.141549     2.065391    -1.157859     0.399330    -0.009994  </code></pre>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb24-1" tabindex="-1"></a><span class="co"># plot AIC over time</span></span>
-<span id="cb24-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb24-2" tabindex="-1"></a><span class="fu">plot</span>(full.step )</span></code></pre></div>
-<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb145-1" tabindex="-1"></a><span class="co"># plot AIC over time</span></span>
+<span id="cb145-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb145-2" tabindex="-1"></a><span class="fu">plot</span>(full.step )</span></code></pre></div>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-124-1.png" width="672" /></p>
 <p>THe main thing that you want to interpret here is how much the AIC and adjusted <span class="math inline">\(R^2\)</span> change with each added variable. You can see here that the log(DIP+1) had almost no influence on the model despite being statistically significant. This information is helpful for both inference and prediction. Adding the air temperature variable increased the adjusted <span class="math inline">\(R^2\)</span> and decreased the AIC by the greatest magnitude.</p>
 </div>
 <div id="predictions" class="section level2 hasAnchor" number="6.6">
 <h2><span class="header-section-number">6.6</span> Predictions<a href="linear-regression-model-selection-and-prediction-in-r.html#predictions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Regression lines can be used to make predict for missing data. In R, the <code>predict.lm</code> function can be used to predict the value from the regression model for given input data values. Here, you need to specify the input model, input independent variables, and the interval to return. <code>confidence</code> returns the 95% confidence interval whereas <code>prediction</code> returns the interval for a single point of data. The prediction variable accounts for the extra variability of each regression point around the line (think about that error term in the regression equation).</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb25-1" tabindex="-1"></a><span class="co"># prediction with interval for predicting a point</span></span>
-<span id="cb25-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb25-2" tabindex="-1"></a><span class="fu">predict.lm</span>(mod.full, <span class="fu">data.frame</span>(<span class="at">airTemp=</span><span class="dv">20</span>,<span class="at">log.age=</span><span class="fu">log</span>(<span class="dv">2</span>),</span>
-<span id="cb25-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb25-3" tabindex="-1"></a>                             <span class="at">mean.depth=</span><span class="dv">15</span>,<span class="at">log.DIP=</span><span class="dv">3</span>,</span>
-<span id="cb25-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb25-4" tabindex="-1"></a>                             <span class="at">log.precip=</span><span class="dv">6</span>, <span class="at">BorealV=</span><span class="dv">0</span>),</span>
-<span id="cb25-5"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb25-5" tabindex="-1"></a>           <span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb146-1" tabindex="-1"></a><span class="co"># prediction with interval for predicting a point</span></span>
+<span id="cb146-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb146-2" tabindex="-1"></a><span class="fu">predict.lm</span>(mod.full, <span class="fu">data.frame</span>(<span class="at">airTemp=</span><span class="dv">20</span>,<span class="at">log.age=</span><span class="fu">log</span>(<span class="dv">2</span>),</span>
+<span id="cb146-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb146-3" tabindex="-1"></a>                             <span class="at">mean.depth=</span><span class="dv">15</span>,<span class="at">log.DIP=</span><span class="dv">3</span>,</span>
+<span id="cb146-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb146-4" tabindex="-1"></a>                             <span class="at">log.precip=</span><span class="dv">6</span>, <span class="at">BorealV=</span><span class="dv">0</span>),</span>
+<span id="cb146-5"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb146-5" tabindex="-1"></a>           <span class="at">interval=</span><span class="st">&quot;prediction&quot;</span>)</span></code></pre></div>
 <pre class="colout"><code>       fit      lwr      upr
 1 5.174622 2.347429 8.001815</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb27-1" tabindex="-1"></a><span class="co"># look at prediction with 95% confidence interval of the mean</span></span>
-<span id="cb27-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb27-2" tabindex="-1"></a></span>
-<span id="cb27-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb27-3" tabindex="-1"></a><span class="fu">predict.lm</span>(mod.full, <span class="fu">data.frame</span>(<span class="at">airTemp=</span><span class="dv">20</span>,<span class="at">log.age=</span><span class="fu">log</span>(<span class="dv">2</span>),</span>
-<span id="cb27-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb27-4" tabindex="-1"></a>                                <span class="at">mean.depth=</span><span class="dv">15</span>,<span class="at">log.DIP=</span><span class="dv">3</span>,</span>
-<span id="cb27-5"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb27-5" tabindex="-1"></a>                                <span class="at">log.precip=</span><span class="dv">6</span>, <span class="at">BorealV=</span><span class="dv">0</span>),</span>
-<span id="cb27-6"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb27-6" tabindex="-1"></a>           <span class="at">interval=</span><span class="st">&quot;confidence&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb148-1" tabindex="-1"></a><span class="co"># look at prediction with 95% confidence interval of the mean</span></span>
+<span id="cb148-2"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb148-2" tabindex="-1"></a></span>
+<span id="cb148-3"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb148-3" tabindex="-1"></a><span class="fu">predict.lm</span>(mod.full, <span class="fu">data.frame</span>(<span class="at">airTemp=</span><span class="dv">20</span>,<span class="at">log.age=</span><span class="fu">log</span>(<span class="dv">2</span>),</span>
+<span id="cb148-4"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb148-4" tabindex="-1"></a>                                <span class="at">mean.depth=</span><span class="dv">15</span>,<span class="at">log.DIP=</span><span class="dv">3</span>,</span>
+<span id="cb148-5"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb148-5" tabindex="-1"></a>                                <span class="at">log.precip=</span><span class="dv">6</span>, <span class="at">BorealV=</span><span class="dv">0</span>),</span>
+<span id="cb148-6"><a href="linear-regression-model-selection-and-prediction-in-r.html#cb148-6" tabindex="-1"></a>           <span class="at">interval=</span><span class="st">&quot;confidence&quot;</span>)</span></code></pre></div>
 <pre class="colout"><code>       fit      lwr     upr
 1 5.174622 4.081764 6.26748</code></pre>
 </div>

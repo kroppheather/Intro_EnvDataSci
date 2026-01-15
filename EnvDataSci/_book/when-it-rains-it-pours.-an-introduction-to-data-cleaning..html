@@ -385,32 +385,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="the-data-1" class="section level3 hasAnchor" number="5.3.3">
 <h3><span class="header-section-number">5.3.3</span> <em>The data</em><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#the-data-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You will work with the data collected from the reforestation weather station at Hamilton College. The all-in-one station (ATMOS 41 made by Meter Environment) is an affordable, easy to maintain system. A full manual can be found for the <a href="http://library.metergroup.com/Manuals/20635_ATMOS41_Manual_Web.pdf">ATMOS 41</a>. Note that there are some quality control measures built into the data logger described by the manual. There are 3 data files: <code>campus_weather.csv</code> contains the data observations. The METER data logger will automatically flag missing or problematic observations filtered by the data logger with a <code>#N/A</code>. It is not uncommon for data loggers to have their own form of <code>NA</code>. You can use the <code>na.strings</code> argument to specify how NAs are formatted in the data and R will automatically convert them to a <code>NA</code>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb1-1" tabindex="-1"></a>weather <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;/cloud/project/activity04/campus_weather.csv&quot;</span>,</span>
-<span id="cb1-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb1-2" tabindex="-1"></a>                    <span class="at">na.strings =</span> <span class="st">&quot;#N/A&quot;</span>)</span></code></pre></div>
-<pre class="colout"><code>            Date SolRad Precip LightningAct LightningDist WindDir WindSpeed
-1 12/11/20 14:30   98.2      0            0             0      88      1.07
-2 12/11/20 14:45  106.9      0            0             0     131      0.86
-3 12/11/20 15:00  109.4      0            0             0     110      0.77
-4 12/11/20 15:15   77.3      0            0             0      15      1.24
-5 12/11/20 15:30   55.0      0            0             0       8      1.28
-6 12/11/20 15:45   47.2      0            0             0       2      0.92
-  GustSpeed AirTemp VaporPr AtmosPr XLevel YLevel MaxPrecip RHSensorTemp  VPD
-1      3.39    10.5   0.626   98.31   -1.2    0.8         0         12.0 0.64
-2      2.65    10.3   0.641   98.32   -1.3    0.7         0         11.3 0.61
-3      2.64    10.4   0.654   98.33   -1.4    0.8         0         10.9 0.61
-4      3.76    10.5   0.663   98.35   -1.4    0.7         0         10.8 0.60
-5      3.15    10.1   0.660   98.38   -1.3    0.8         0         10.4 0.57
-6      2.24     9.6   0.661   98.39   -1.3    0.8         0          9.9 0.53
-  BatPct BatVolt RefPr LogTemp
-1     99    7798 98.27    14.6
-2     99    7797 98.26    12.6
-3     99    7797 98.26    11.7
-4    100    7801 98.27    11.2
-5     99    7798 98.30    10.4
-6     99    7798 98.31     9.6</code></pre>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb93-1" tabindex="-1"></a>weather <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;/cloud/project/activity04/campus_weather.csv&quot;</span>,</span>
+<span id="cb93-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb93-2" tabindex="-1"></a>                    <span class="at">na.strings =</span> <span class="st">&quot;#N/A&quot;</span>)</span></code></pre></div>
+<pre class="colout"><code>            Date SolRad Precip LightningAct LightningDist WindDir WindSpeed GustSpeed AirTemp VaporPr AtmosPr
+1 12/11/20 14:30   98.2      0            0             0      88      1.07      3.39    10.5   0.626   98.31
+2 12/11/20 14:45  106.9      0            0             0     131      0.86      2.65    10.3   0.641   98.32
+3 12/11/20 15:00  109.4      0            0             0     110      0.77      2.64    10.4   0.654   98.33
+4 12/11/20 15:15   77.3      0            0             0      15      1.24      3.76    10.5   0.663   98.35
+5 12/11/20 15:30   55.0      0            0             0       8      1.28      3.15    10.1   0.660   98.38
+6 12/11/20 15:45   47.2      0            0             0       2      0.92      2.24     9.6   0.661   98.39
+  XLevel YLevel MaxPrecip RHSensorTemp  VPD BatPct BatVolt RefPr LogTemp
+1   -1.2    0.8         0         12.0 0.64     99    7798 98.27    14.6
+2   -1.3    0.7         0         11.3 0.61     99    7797 98.26    12.6
+3   -1.4    0.8         0         10.9 0.61     99    7797 98.26    11.7
+4   -1.4    0.7         0         10.8 0.60    100    7801 98.27    11.2
+5   -1.3    0.8         0         10.4 0.57     99    7798 98.30    10.4
+6   -1.3    0.8         0          9.9 0.53     99    7798 98.31     9.6</code></pre>
 <p>The <code>meter_weather_metadata.csv</code> file has units and description for each column name in <code>weather_station</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb3-1" tabindex="-1"></a>metaDat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;/cloud/project/activity04/meter_weather_metadata.csv&quot;</span>,</span>
-<span id="cb3-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb3-2" tabindex="-1"></a>                    <span class="at">na.strings =</span> <span class="st">&quot;#N/A&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb95-1" tabindex="-1"></a>metaDat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;/cloud/project/activity04/meter_weather_metadata.csv&quot;</span>,</span>
+<span id="cb95-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb95-2" tabindex="-1"></a>                    <span class="at">na.strings =</span> <span class="st">&quot;#N/A&quot;</span>)</span></code></pre></div>
 <pre class="colout"><code>           name        description            units
 1          Date          date/time MM/DD/YYYY HH:MM
 2        SolRad    solar radiation            W/m^2
@@ -419,8 +412,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 5 LightningDist lightning distance               km
 6       WindDir     wind direction           degree</code></pre>
 <p>The <code>Sensor log.csv</code> file has notable issues around the installation and maintenance of the weather station. A long gap occurred during a time when a student worker regularly checked on the station from Feb-May, but had no issues to note.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb5-1" tabindex="-1"></a>sensorLog <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;/cloud/project/activity04/Sensor log.csv&quot;</span>,</span>
-<span id="cb5-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb5-2" tabindex="-1"></a>                    <span class="at">na.strings =</span> <span class="st">&quot;#N/A&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb97-1" tabindex="-1"></a>sensorLog <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;/cloud/project/activity04/Sensor log.csv&quot;</span>,</span>
+<span id="cb97-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb97-2" tabindex="-1"></a>                    <span class="at">na.strings =</span> <span class="st">&quot;#N/A&quot;</span>)</span></code></pre></div>
 <pre class="colout"><code>      Date
 1 12/11/20
 2 12/12/20
@@ -432,10 +425,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 3                                                                                                                                    Realized station was unplugged. Fixed.
 4 It has become clear that the delay in bird spike shipping has resulted in accumulation of excrement in the bucket of the rain sensor. Sensor was taken down for cleaning.</code></pre>
 <p>You will also want to load <code>dplyr</code>, <code>lubridate</code>, and <code>ggplot2</code> to your project:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb7-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;dplyr&quot;</span>,<span class="st">&quot;ggplot2&quot;</span>,<span class="st">&quot;lubridate&quot;</span>))</span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb8-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb8-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb8-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb8-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb8-3" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb99-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;dplyr&quot;</span>,<span class="st">&quot;ggplot2&quot;</span>,<span class="st">&quot;lubridate&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb100-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb100-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb100-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb100-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb100-3" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span></code></pre></div>
 <p>There are a few downsides to the current system that can affect the data:</p>
 <ol style="list-style-type: decimal">
 <li><p>There is no heated precipitation sensor. This means that frozen precipitation will not be accurately measured and accumulation can prevent liquid precipitation from being measured until melt.</p></li>
@@ -452,101 +445,88 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">5.4.1</span> <em>Removing unreliable data</em><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#removing-unreliable-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Some data may be considered so unreliable that it cannot be used. The best option for this type of situation is to convert the data to a NA.</p>
 <p>Let’s look at an example with the clogging of the precipitation sensor by bird excrement. It would be best to use another nearby weather station to verify that rainfall was not accurately measured. Unfortunately the closest weather station is in Rome NY which can get slightly different weather systems. A simple visual check can verify if the data looks abnormal. Let’s parse the date create a day of year column (<code>doy</code>) so that you can make a plot of just the warm season around this issue:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-1" tabindex="-1"></a><span class="co"># parse date</span></span>
-<span id="cb9-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-2" tabindex="-1"></a>weather<span class="sc">$</span>dateF <span class="ot">&lt;-</span> <span class="fu">mdy_hm</span>(weather<span class="sc">$</span>Date)</span>
-<span id="cb9-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-3" tabindex="-1"></a><span class="co"># create a month column</span></span>
-<span id="cb9-4"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-4" tabindex="-1"></a>weather<span class="sc">$</span>doy <span class="ot">&lt;-</span> <span class="fu">yday</span>(weather<span class="sc">$</span>dateF)</span>
-<span id="cb9-5"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-5" tabindex="-1"></a><span class="co"># create a year column</span></span>
-<span id="cb9-6"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-6" tabindex="-1"></a>weather<span class="sc">$</span>year <span class="ot">&lt;-</span> <span class="fu">year</span>(weather<span class="sc">$</span>dateF)</span>
-<span id="cb9-7"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-7" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-8" tabindex="-1"></a><span class="co"># examine precipitation using a bar plot</span></span>
-<span id="cb9-9"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-9" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>weather[weather<span class="sc">$</span>doy <span class="sc">&gt;</span> <span class="dv">121</span> <span class="sc">&amp;</span> weather<span class="sc">$</span>doy <span class="sc">&lt;</span> <span class="dv">274</span> ,],</span>
-<span id="cb9-10"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-10" tabindex="-1"></a>                       <span class="fu">aes</span>(<span class="at">x=</span>dateF,</span>
-<span id="cb9-11"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-11" tabindex="-1"></a>                         <span class="at">y=</span>Precip))<span class="sc">+</span></span>
-<span id="cb9-12"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-12" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">color=</span><span class="st">&quot;royalblue4&quot;</span>)<span class="sc">+</span></span>
-<span id="cb9-13"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb9-13" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
-<pre><code>Warning: Removed 479 rows containing missing values or values outside the scale range
-(`geom_col()`).</code></pre>
-<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb101-1" tabindex="-1"></a><span class="co"># parse date</span></span>
+<span id="cb101-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb101-2" tabindex="-1"></a>weather<span class="sc">$</span>dateF <span class="ot">&lt;-</span> <span class="fu">mdy_hm</span>(weather<span class="sc">$</span>Date)</span>
+<span id="cb101-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb101-3" tabindex="-1"></a><span class="co"># create a month column</span></span>
+<span id="cb101-4"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb101-4" tabindex="-1"></a>weather<span class="sc">$</span>doy <span class="ot">&lt;-</span> <span class="fu">yday</span>(weather<span class="sc">$</span>dateF)</span>
+<span id="cb101-5"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb101-5" tabindex="-1"></a><span class="co"># create a year column</span></span>
+<span id="cb101-6"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb101-6" tabindex="-1"></a>weather<span class="sc">$</span>year <span class="ot">&lt;-</span> <span class="fu">year</span>(weather<span class="sc">$</span>dateF)</span>
+<span id="cb101-7"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb101-7" tabindex="-1"></a></span>
+<span id="cb101-8"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb101-8" tabindex="-1"></a><span class="co"># examine precipitation using a bar plot</span></span>
+<span id="cb101-9"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb101-9" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>weather[weather<span class="sc">$</span>doy <span class="sc">&gt;</span> <span class="dv">121</span> <span class="sc">&amp;</span> weather<span class="sc">$</span>doy <span class="sc">&lt;</span> <span class="dv">274</span> ,],</span>
+<span id="cb101-10"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb101-10" tabindex="-1"></a>                       <span class="fu">aes</span>(<span class="at">x=</span>dateF,</span>
+<span id="cb101-11"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb101-11" tabindex="-1"></a>                         <span class="at">y=</span>Precip))<span class="sc">+</span></span>
+<span id="cb101-12"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb101-12" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">color=</span><span class="st">&quot;royalblue4&quot;</span>)<span class="sc">+</span></span>
+<span id="cb101-13"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb101-13" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
+<pre><code>Warning: Removed 479 rows containing missing values or values outside the scale range (`geom_col()`).</code></pre>
+<p><img src="EnvDataSci_files/figure-html/unnamed-chunk-92-1.png" width="672" /></p>
 <p>This doesn’t look reassuring. Between the visual assessment of the sensor (I will spare you the picture) and the fact that we don’t see very large (&gt; 3 mm) or trace events in the graph, there is compelling information that the precipitation data was not reliable throughout May and June.</p>
 <p>Let’s look at converting the data to an NA with <code>ifelse</code>. function. There are 3 main arguments: the first is the statement to evaluate, the second is the value if true, and the third is the value if the statement false.</p>
 <p>Let’s convert the precipitation in May and June to NA. May 1st may be going further back before the problem, but it was also the last time that a student checked on the weather station and verified everything was running properly.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb11-1" tabindex="-1"></a><span class="co"># add a column to weather:</span></span>
-<span id="cb11-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb11-2" tabindex="-1"></a>weather<span class="sc">$</span>precip.QC <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(weather<span class="sc">$</span>doy <span class="sc">&gt;=</span> <span class="dv">121</span> <span class="sc">&amp;</span> weather<span class="sc">$</span>doy <span class="sc">&lt;=</span> <span class="dv">188</span> <span class="sc">&amp;</span> weather<span class="sc">$</span>year <span class="sc">==</span> <span class="dv">2021</span>, </span>
-<span id="cb11-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb11-3" tabindex="-1"></a>                            <span class="co"># evaluate if the doy is between May 1 and July 7 2021</span></span>
-<span id="cb11-4"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb11-4" tabindex="-1"></a>                            <span class="cn">NA</span>, <span class="co"># value if true</span></span>
-<span id="cb11-5"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb11-5" tabindex="-1"></a>                            weather<span class="sc">$</span>Precip) <span class="co"># value if false: uses original precipitation observation</span></span></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb103-1" tabindex="-1"></a><span class="co"># add a column to weather:</span></span>
+<span id="cb103-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb103-2" tabindex="-1"></a>weather<span class="sc">$</span>precip.QC <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(weather<span class="sc">$</span>doy <span class="sc">&gt;=</span> <span class="dv">121</span> <span class="sc">&amp;</span> weather<span class="sc">$</span>doy <span class="sc">&lt;=</span> <span class="dv">188</span> <span class="sc">&amp;</span> weather<span class="sc">$</span>year <span class="sc">==</span> <span class="dv">2021</span>, </span>
+<span id="cb103-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb103-3" tabindex="-1"></a>                            <span class="co"># evaluate if the doy is between May 1 and July 7 2021</span></span>
+<span id="cb103-4"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb103-4" tabindex="-1"></a>                            <span class="cn">NA</span>, <span class="co"># value if true</span></span>
+<span id="cb103-5"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb103-5" tabindex="-1"></a>                            weather<span class="sc">$</span>Precip) <span class="co"># value if false: uses original precipitation observation</span></span></code></pre></div>
 </div>
 <div id="creating-flags" class="section level3 hasAnchor" number="5.4.2">
 <h3><span class="header-section-number">5.4.2</span> <em>Creating flags</em><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#creating-flags" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Flags provide additional clauses or information about the quality of an observations without removing it. They often indicate to a user that caution should be used in comparison with other data or the user should do additional checks for issues. They are often specific character or number codes that the user can find in metadata.</p>
 <p>Let’s look at creating a flag for frozen precipitation using <code>ifelse</code>. A numerical flag would be a good option with 0 indicating no issue and 1 indicating the potential for freezing precipitation. Let’s flag all observations where the air temperature is at freezing for a start:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb12-1" tabindex="-1"></a>weather<span class="sc">$</span>FreezeFlag <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(weather<span class="sc">$</span>AirTemp <span class="sc">&lt;=</span> <span class="dv">0</span>, <span class="co"># check if at or below zero</span></span>
-<span id="cb12-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb12-2" tabindex="-1"></a>                             <span class="dv">1</span>, <span class="co"># if true: set flag to 1</span></span>
-<span id="cb12-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb12-3" tabindex="-1"></a>                             <span class="dv">0</span>) <span class="co"># if false: set flag to zero</span></span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb104-1" tabindex="-1"></a>weather<span class="sc">$</span>FreezeFlag <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(weather<span class="sc">$</span>AirTemp <span class="sc">&lt;=</span> <span class="dv">0</span>, <span class="co"># check if at or below zero</span></span>
+<span id="cb104-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb104-2" tabindex="-1"></a>                             <span class="dv">1</span>, <span class="co"># if true: set flag to 1</span></span>
+<span id="cb104-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb104-3" tabindex="-1"></a>                             <span class="dv">0</span>) <span class="co"># if false: set flag to zero</span></span></code></pre></div>
 </div>
 <div id="creating-functions-to-check-data" class="section level3 hasAnchor" number="5.4.3">
 <h3><span class="header-section-number">5.4.3</span> <em>Creating functions to check data</em><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#creating-functions-to-check-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Whether you are a data producer or user, it is always a good idea to have proper data protocols for checking that the data is as you expect. It is often helpful to develop your own functions for checking data. You can then refer back to these functions without having to rewrite code. We’ll learn to make a function by doing a routine check of date/time intervals.</p>
 <p>One of the fundamental indicators of issues with data can be seen in the regular intervals of date/time data. The campus weather station records data every 15 minutes. An irregularity in the interval can indicate many problems: daylight savings issues, battery power issues, drift in the data logger clock. A good first test of data is to check for regularity in intervals. You can set up a type of data called a <strong>time interval</strong> using the lubridate syntax <code>%--%</code>. The <code>int_length</code> function then uses an interval data format to calculate the interval length in seconds.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb13-1" tabindex="-1"></a><span class="co">#interval data: look at first 2 observations as interval</span></span>
-<span id="cb13-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb13-2" tabindex="-1"></a><span class="co"># Time 1 %--% Time 2</span></span>
-<span id="cb13-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb13-3" tabindex="-1"></a>weather<span class="sc">$</span>dateF[<span class="dv">1</span>] <span class="sc">%--%</span> weather<span class="sc">$</span>dateF[<span class="dv">2</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb105-1" tabindex="-1"></a><span class="co">#interval data: look at first 2 observations as interval</span></span>
+<span id="cb105-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb105-2" tabindex="-1"></a><span class="co"># Time 1 %--% Time 2</span></span>
+<span id="cb105-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb105-3" tabindex="-1"></a>weather<span class="sc">$</span>dateF[<span class="dv">1</span>] <span class="sc">%--%</span> weather<span class="sc">$</span>dateF[<span class="dv">2</span>]</span></code></pre></div>
 <pre class="colout"><code>[1] 2020-12-11 14:30:00 UTC--2020-12-11 14:45:00 UTC</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb15-1" tabindex="-1"></a><span class="co"># look at the interval length from the first to the second observation:</span></span>
-<span id="cb15-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb15-2" tabindex="-1"></a><span class="fu">int_length</span>(weather<span class="sc">$</span>dateF[<span class="dv">1</span>] <span class="sc">%--%</span> weather<span class="sc">$</span>dateF[<span class="dv">2</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb107-1" tabindex="-1"></a><span class="co"># look at the interval length from the first to the second observation:</span></span>
+<span id="cb107-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb107-2" tabindex="-1"></a><span class="fu">int_length</span>(weather<span class="sc">$</span>dateF[<span class="dv">1</span>] <span class="sc">%--%</span> weather<span class="sc">$</span>dateF[<span class="dv">2</span>])</span></code></pre></div>
 <pre class="colout"><code>[1] 900</code></pre>
 <p>You can see the length is 900 seconds (15 mins * 60 seconds).</p>
 <p>However, you will want to check that this is consistent for the entire data. We know that an interval compares 2 time periods so we can only have a total of number of rows minus one intervals. In R, you can remove specific rows by using the - sign and the usual bracket notation. For this comparison, the ending observation in the date column can’t be compared to a second later date and the starting row has no prior date. The <code>length</code> function is useful because it gives you the total number of observations in a vector. We will want to remove them in setting up the intervals:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb17-1" tabindex="-1"></a><span class="co"># set up intervals</span></span>
-<span id="cb17-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb17-2" tabindex="-1"></a>intervals <span class="ot">&lt;-</span> weather<span class="sc">$</span>dateF[<span class="sc">-</span><span class="fu">length</span>(weather<span class="sc">$</span>dateF)] <span class="sc">%--%</span> weather<span class="sc">$</span>dateF[<span class="sc">-</span><span class="dv">1</span>] <span class="co"># start date %--% end date</span></span>
-<span id="cb17-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb17-3" tabindex="-1"></a><span class="co"># interval starts with row 1, and row 2</span></span>
-<span id="cb17-4"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb17-4" tabindex="-1"></a><span class="co"># and ends on second to last row and final row</span></span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb109-1" tabindex="-1"></a><span class="co"># set up intervals</span></span>
+<span id="cb109-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb109-2" tabindex="-1"></a>intervals <span class="ot">&lt;-</span> weather<span class="sc">$</span>dateF[<span class="sc">-</span><span class="fu">length</span>(weather<span class="sc">$</span>dateF)] <span class="sc">%--%</span> weather<span class="sc">$</span>dateF[<span class="sc">-</span><span class="dv">1</span>] <span class="co"># start date %--% end date</span></span>
+<span id="cb109-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb109-3" tabindex="-1"></a><span class="co"># interval starts with row 1, and row 2</span></span>
+<span id="cb109-4"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb109-4" tabindex="-1"></a><span class="co"># and ends on second to last row and final row</span></span></code></pre></div>
 <p>You can then check all interval lengths that aren’t equal to 900:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb18-1" tabindex="-1"></a><span class="co"># calculate interval times</span></span>
-<span id="cb18-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb18-2" tabindex="-1"></a>interval_times <span class="ot">&lt;-</span> <span class="fu">int_length</span>(intervals)</span>
-<span id="cb18-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb18-3" tabindex="-1"></a><span class="co"># check interval times</span></span>
-<span id="cb18-4"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb18-4" tabindex="-1"></a>intervals[interval_times <span class="sc">!=</span> <span class="dv">900</span>]</span></code></pre></div>
-<pre class="colout"><code> [1] 2021-03-14 05:15:00 UTC--2021-03-14 06:30:00 UTC
- [2] 2021-07-06 14:15:00 UTC--2021-07-06 14:45:00 UTC
- [3] 2021-07-15 00:15:00 UTC--2021-07-15 00:15:00 UTC
- [4] 2021-08-19 00:15:00 UTC--2021-08-19 00:15:00 UTC
- [5] 2021-09-22 09:15:00 UTC--2021-09-22 10:15:00 UTC
- [6] 2021-10-23 00:00:00 UTC--2021-10-23 05:15:00 UTC
- [7] 2021-10-23 09:15:00 UTC--2021-10-23 10:30:00 UTC
- [8] 2021-10-23 12:15:00 UTC--2021-10-23 13:15:00 UTC
- [9] 2021-10-23 16:15:00 UTC--2021-10-24 08:15:00 UTC
-[10] 2021-10-24 09:30:00 UTC--2021-10-24 10:45:00 UTC
-[11] 2021-10-24 11:00:00 UTC--2021-10-24 11:30:00 UTC
-[12] 2021-10-24 11:30:00 UTC--2021-11-02 15:45:00 UTC
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb110-1" tabindex="-1"></a><span class="co"># calculate interval times</span></span>
+<span id="cb110-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb110-2" tabindex="-1"></a>interval_times <span class="ot">&lt;-</span> <span class="fu">int_length</span>(intervals)</span>
+<span id="cb110-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb110-3" tabindex="-1"></a><span class="co"># check interval times</span></span>
+<span id="cb110-4"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb110-4" tabindex="-1"></a>intervals[interval_times <span class="sc">!=</span> <span class="dv">900</span>]</span></code></pre></div>
+<pre class="colout"><code> [1] 2021-03-14 05:15:00 UTC--2021-03-14 06:30:00 UTC 2021-07-06 14:15:00 UTC--2021-07-06 14:45:00 UTC
+ [3] 2021-07-15 00:15:00 UTC--2021-07-15 00:15:00 UTC 2021-08-19 00:15:00 UTC--2021-08-19 00:15:00 UTC
+ [5] 2021-09-22 09:15:00 UTC--2021-09-22 10:15:00 UTC 2021-10-23 00:00:00 UTC--2021-10-23 05:15:00 UTC
+ [7] 2021-10-23 09:15:00 UTC--2021-10-23 10:30:00 UTC 2021-10-23 12:15:00 UTC--2021-10-23 13:15:00 UTC
+ [9] 2021-10-23 16:15:00 UTC--2021-10-24 08:15:00 UTC 2021-10-24 09:30:00 UTC--2021-10-24 10:45:00 UTC
+[11] 2021-10-24 11:00:00 UTC--2021-10-24 11:30:00 UTC 2021-10-24 11:30:00 UTC--2021-11-02 15:45:00 UTC
 [13] 2021-11-07 03:30:00 UTC--2021-11-07 02:45:00 UTC</code></pre>
 <p><strong>!! There are a few issues here!!</strong> It looks like something happens on daylight savings. There are also some large gaps in areas of maintainence or battery voltage issues. We also didn’t specify that the timezone and it is assuming that the data is in the UTC timezone. This is not accurate for this sensor and we will explore these issues further in class and homework.</p>
 <p>You would like to automate this function so you can use it for other data and when you get new weather station data. <code>function</code> allows you to create your new function. Anything on the left of the arrow is the name of your function. Arguments that will be specified by the user are given in paranthesis. Anything in the curly brackets <code>{}</code> is calculated in the function. The arguements need to used as written in the paranthesis.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-1" tabindex="-1"></a><span class="co">#create function for checking for irregular intervals that</span></span>
-<span id="cb20-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-2" tabindex="-1"></a><span class="co"># deviate from 900 seconds</span></span>
-<span id="cb20-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-3" tabindex="-1"></a><span class="co"># only argument is x, a vector of POSIXct formatted dates to be checked</span></span>
-<span id="cb20-4"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-4" tabindex="-1"></a><span class="co"># with an expected interval of 900 seconds</span></span>
-<span id="cb20-5"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-5" tabindex="-1"></a><span class="co"># the output is all observations that deviate from 900 seconds</span></span>
-<span id="cb20-6"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-6" tabindex="-1"></a>timeCheck900 <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb20-7"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-7" tabindex="-1"></a>  intervals <span class="ot">&lt;-</span> x[<span class="sc">-</span><span class="fu">length</span>(x)] <span class="sc">%--%</span> x[<span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb20-8"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-8" tabindex="-1"></a>  interval_times <span class="ot">&lt;-</span> <span class="fu">int_length</span>(intervals)</span>
-<span id="cb20-9"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-9" tabindex="-1"></a>  intervals[interval_times <span class="sc">!=</span> <span class="dv">900</span>]</span>
-<span id="cb20-10"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-10" tabindex="-1"></a>  </span>
-<span id="cb20-11"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-11" tabindex="-1"></a>}</span>
-<span id="cb20-12"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-12" tabindex="-1"></a><span class="co"># run on weather data</span></span>
-<span id="cb20-13"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb20-13" tabindex="-1"></a><span class="fu">timeCheck900</span>(weather<span class="sc">$</span>dateF)</span></code></pre></div>
-<pre class="colout"><code> [1] 2021-03-14 05:15:00 UTC--2021-03-14 06:30:00 UTC
- [2] 2021-07-06 14:15:00 UTC--2021-07-06 14:45:00 UTC
- [3] 2021-07-15 00:15:00 UTC--2021-07-15 00:15:00 UTC
- [4] 2021-08-19 00:15:00 UTC--2021-08-19 00:15:00 UTC
- [5] 2021-09-22 09:15:00 UTC--2021-09-22 10:15:00 UTC
- [6] 2021-10-23 00:00:00 UTC--2021-10-23 05:15:00 UTC
- [7] 2021-10-23 09:15:00 UTC--2021-10-23 10:30:00 UTC
- [8] 2021-10-23 12:15:00 UTC--2021-10-23 13:15:00 UTC
- [9] 2021-10-23 16:15:00 UTC--2021-10-24 08:15:00 UTC
-[10] 2021-10-24 09:30:00 UTC--2021-10-24 10:45:00 UTC
-[11] 2021-10-24 11:00:00 UTC--2021-10-24 11:30:00 UTC
-[12] 2021-10-24 11:30:00 UTC--2021-11-02 15:45:00 UTC
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb112-1" tabindex="-1"></a><span class="co">#create function for checking for irregular intervals that</span></span>
+<span id="cb112-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb112-2" tabindex="-1"></a><span class="co"># deviate from 900 seconds</span></span>
+<span id="cb112-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb112-3" tabindex="-1"></a><span class="co"># only argument is x, a vector of POSIXct formatted dates to be checked</span></span>
+<span id="cb112-4"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb112-4" tabindex="-1"></a><span class="co"># with an expected interval of 900 seconds</span></span>
+<span id="cb112-5"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb112-5" tabindex="-1"></a><span class="co"># the output is all observations that deviate from 900 seconds</span></span>
+<span id="cb112-6"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb112-6" tabindex="-1"></a>timeCheck900 <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb112-7"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb112-7" tabindex="-1"></a>  intervals <span class="ot">&lt;-</span> x[<span class="sc">-</span><span class="fu">length</span>(x)] <span class="sc">%--%</span> x[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb112-8"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb112-8" tabindex="-1"></a>  interval_times <span class="ot">&lt;-</span> <span class="fu">int_length</span>(intervals)</span>
+<span id="cb112-9"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb112-9" tabindex="-1"></a>  intervals[interval_times <span class="sc">!=</span> <span class="dv">900</span>]</span>
+<span id="cb112-10"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb112-10" tabindex="-1"></a>  </span>
+<span id="cb112-11"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb112-11" tabindex="-1"></a>}</span>
+<span id="cb112-12"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb112-12" tabindex="-1"></a><span class="co"># run on weather data</span></span>
+<span id="cb112-13"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb112-13" tabindex="-1"></a><span class="fu">timeCheck900</span>(weather<span class="sc">$</span>dateF)</span></code></pre></div>
+<pre class="colout"><code> [1] 2021-03-14 05:15:00 UTC--2021-03-14 06:30:00 UTC 2021-07-06 14:15:00 UTC--2021-07-06 14:45:00 UTC
+ [3] 2021-07-15 00:15:00 UTC--2021-07-15 00:15:00 UTC 2021-08-19 00:15:00 UTC--2021-08-19 00:15:00 UTC
+ [5] 2021-09-22 09:15:00 UTC--2021-09-22 10:15:00 UTC 2021-10-23 00:00:00 UTC--2021-10-23 05:15:00 UTC
+ [7] 2021-10-23 09:15:00 UTC--2021-10-23 10:30:00 UTC 2021-10-23 12:15:00 UTC--2021-10-23 13:15:00 UTC
+ [9] 2021-10-23 16:15:00 UTC--2021-10-24 08:15:00 UTC 2021-10-24 09:30:00 UTC--2021-10-24 10:45:00 UTC
+[11] 2021-10-24 11:00:00 UTC--2021-10-24 11:30:00 UTC 2021-10-24 11:30:00 UTC--2021-11-02 15:45:00 UTC
 [13] 2021-11-07 03:30:00 UTC--2021-11-07 02:45:00 UTC</code></pre>
 </div>
 </div>
@@ -555,24 +535,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>There are some workflows in R that are not readily vectorized and require repeating the same operation or function. For these cases, <code>for</code> loops are helpful for implementing redundant activities. For example, some data sets may be organized in repositories into separate files for each years and you may want to read in all data files in an automated manner. For loops are also helpful when you need to make redundant calculations that index through different ranges of data.</p>
 <p>Let’s read in some soil and surface temperatures that were collected near the reforestation site. The data must be downloaded manually from the sensors and each file contains data from the time that is was last downloaded until the most recent measurement. In the <code>soil</code> folder, you will see there are 7 files from the different times that student researchers went out to collect the data.</p>
 <p>You can use the <code>list.files</code> function to list out all the files in a folder. Let’s create a variable that references these file names in a folder:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb22-1" tabindex="-1"></a>soilFiles <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">&quot;/cloud/project/activity04/soil&quot;</span>)</span></code></pre></div>
-<pre class="colout"><code>[1] &quot;soil_data_2021_03.csv&quot; &quot;soil_data_2021_06.csv&quot; &quot;soil_data_2021_11.csv&quot;
-[4] &quot;soil_data_2022_03.csv&quot; &quot;soil_data_2022_07.csv&quot; &quot;soil_data_2022_10.csv&quot;
-[7] &quot;soil_data_2023_09.csv&quot;</code></pre>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb114-1" tabindex="-1"></a>soilFiles <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">&quot;/cloud/project/activity04/soil&quot;</span>)</span></code></pre></div>
+<pre class="colout"><code>[1] &quot;soil_data_2021_03.csv&quot; &quot;soil_data_2021_06.csv&quot; &quot;soil_data_2021_11.csv&quot; &quot;soil_data_2022_03.csv&quot;
+[5] &quot;soil_data_2022_07.csv&quot; &quot;soil_data_2022_10.csv&quot; &quot;soil_data_2023_09.csv&quot;</code></pre>
 <p>If you inspect files, you will notice they are all formatted with the exact same columns and data types. If they were formatted differently, you would have to do some work to select and match up columns. We will want to read in each csv. A helpful way to do this is to read each csv in as an element in a <code>list</code>. A <code>list</code> is a data type in R that can contain many different types of data objects in an ordered collection. It may have a number of elements in it. The output from many statistical functions in R is often stored as a list. You can subset an element in a list using <code>[[]]</code>.</p>
 <p>Before the for <code>loop</code>, you must set up variable names and declare their data type. R will not let you create new variables for the first time in a for loop.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb24-1" tabindex="-1"></a><span class="co"># start an empty list</span></span>
-<span id="cb24-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb24-2" tabindex="-1"></a>soilList <span class="ot">&lt;-</span> <span class="fu">list</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb116-1" tabindex="-1"></a><span class="co"># start an empty list</span></span>
+<span id="cb116-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb116-2" tabindex="-1"></a>soilList <span class="ot">&lt;-</span> <span class="fu">list</span>()</span></code></pre></div>
 <p>A <code>for</code> loop will use an index (usually designated with a letter like i or j) as a placeholder that indicates what parts of the code will be looped over. You declare a sequence of numbers in your for loop to iterate over. The <code>for</code> function will declare the looping variable and the sequence and all code to be run iterative is contained in <code>{}</code>. The <code>paste0</code> function will also be used to paste the file path text string with the files name. In this case, we will want to loop through reading in each file and putting each file into the list:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb25-1" tabindex="-1"></a><span class="co"># start an empty list</span></span>
-<span id="cb25-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb25-2" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(soilFiles)){</span>
-<span id="cb25-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb25-3" tabindex="-1"></a>  soilList[[i]] <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste0</span>(<span class="st">&quot;/cloud/project/activity04/soil/&quot;</span>, soilFiles[i]))</span>
-<span id="cb25-4"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb25-4" tabindex="-1"></a>  </span>
-<span id="cb25-5"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb25-5" tabindex="-1"></a>}</span>
-<span id="cb25-6"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb25-6" tabindex="-1"></a><span class="co"># inspect the begining of the first file</span></span>
-<span id="cb25-7"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb25-7" tabindex="-1"></a><span class="fu">head</span>(soilList[[<span class="dv">1</span>]])</span>
-<span id="cb25-8"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb25-8" tabindex="-1"></a><span class="co"># get info about your list</span></span>
-<span id="cb25-9"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb25-9" tabindex="-1"></a><span class="fu">str</span>(soilList)</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb117-1" tabindex="-1"></a><span class="co"># start an empty list</span></span>
+<span id="cb117-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb117-2" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(soilFiles)){</span>
+<span id="cb117-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb117-3" tabindex="-1"></a>  soilList[[i]] <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste0</span>(<span class="st">&quot;/cloud/project/activity04/soil/&quot;</span>, soilFiles[i]))</span>
+<span id="cb117-4"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb117-4" tabindex="-1"></a>  </span>
+<span id="cb117-5"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb117-5" tabindex="-1"></a>}</span>
+<span id="cb117-6"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb117-6" tabindex="-1"></a><span class="co"># inspect the begining of the first file</span></span>
+<span id="cb117-7"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb117-7" tabindex="-1"></a><span class="fu">head</span>(soilList[[<span class="dv">1</span>]])</span>
+<span id="cb117-8"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb117-8" tabindex="-1"></a><span class="co"># get info about your list</span></span>
+<span id="cb117-9"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb117-9" tabindex="-1"></a><span class="fu">str</span>(soilList)</span></code></pre></div>
 <pre class="colout"><code>        Timestamp   Tsoil6    Tsurf15       SWC
 1 2020-12-12 0:00 3.625000  0.1458333 0.3891333
 2 2020-12-12 1:00 3.625000 -1.2500000 0.3893869
@@ -618,8 +597,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   ..$ SWC      : num [1:5362] 0.321 0.321 0.32 0.32 0.319 ...</code></pre>
 <p>The <code>str</code> function will always give you quick summary information about any data object. This is very helpful for lists.</p>
 <p>Now that each file is read in, you can apply a function to all of the objects in the list using the <code>do.call</code> function. The <code>rbind</code> function binds the rows of two data frames (with the same columns) togther.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb28-1" tabindex="-1"></a>soilData <span class="ot">&lt;-</span> <span class="fu">do.call</span>(<span class="st">&quot;rbind&quot;</span>, soilList)</span>
-<span id="cb28-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb28-2" tabindex="-1"></a><span class="fu">str</span>(soilData)</span></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb120-1" tabindex="-1"></a>soilData <span class="ot">&lt;-</span> <span class="fu">do.call</span>(<span class="st">&quot;rbind&quot;</span>, soilList)</span>
+<span id="cb120-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb120-2" tabindex="-1"></a><span class="fu">str</span>(soilData)</span></code></pre></div>
 <pre class="colout"><code>&#39;data.frame&#39;:   21286 obs. of  4 variables:
  $ Timestamp: chr  &quot;2020-12-12 0:00&quot; &quot;2020-12-12 1:00&quot; &quot;2020-12-12 2:00&quot; &quot;2020-12-12 3:00&quot; ...
  $ Tsoil6   : num  3.62 3.62 3.62 3.56 3.5 ...
@@ -693,6 +672,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

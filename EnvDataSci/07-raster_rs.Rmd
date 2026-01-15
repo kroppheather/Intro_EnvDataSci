@@ -101,14 +101,14 @@ plotRGB(postR, r=3,g=2,b=1, stretch="lin")
 
 You can view the components of the stack using the `plot` function and set a greyscale using `col` and `grey`. You can see each band plotted:
 
-```{r echo=TRUE, fig.width=12}
+```{r prePlo, eval=FALSE}
 plot(pre, col=grey(1:100/100) )
 
 ```
 
 Sentinel 2 data is represented as a **digital number** where the actual reflectance is multiplied by 10,000 for each band. Since we are only working with sentinel data, we don't need to convert to an actual reflectance value (0-1 scale). Let's convert the values to reflectance:
 
-```{r echo=TRUE, fig.width=12}
+```{r rasterCalc, echo=TRUE, fig.width=12}
 # mathematical operations can be applied to a raster
 preR <- pre/10000
 postR <- post/10000
@@ -119,7 +119,7 @@ postR <- post/10000
 
 You can also make a **color composite** using the plotRGB function. By changing the bands, you can make the **false color composites**. The `plotRGB` function uses three bands to make a composite of red, green, blue color in an image. The `scale` argument specifies the maximum data value (255 will be assumed by default because that is a common value for image data). Color contrast can also be added using the `stretch` argument. 
 
-```{r echo=TRUE, fig.width=10}
+```{r plotRGB, echo=TRUE}
 
 par(mfrow=c(1,2))
 
@@ -154,10 +154,10 @@ midBoundv <- terra::vect("/cloud/project/activity07/mid_bound.shp")
 
 ```
 
-```{r echo=FALSE}
-northBoundv <- vect("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter07/northBound.shp")
+```{r vectorRead, echo=FALSE}
+northBoundv <- terra::vect("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter07/northBound.shp")
 
-midBoundv <- vect("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter07/midBound.shp")
+midBoundv <- terra::vect("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter07/midBound.shp")
 ```
 
 Let's examine the characteristics of the data:
@@ -166,25 +166,25 @@ northBoundv
 ```
 
 There is a glaring issue with this data. The coordinate system is different from our raster. Plotting the two together means that we don't see the polygon on our map:
-```{r echo=TRUE}
+```{r plotBound, echo=TRUE}
 plotRGB(postR, r=3,g=2,b=1, stretch="lin")
-plot(northBoundv, border="tomato3", fill=NA, lwd=3, add=TRUE)
+terra::plot(northBoundv, border="tomato3", fill=NA, lwd=3, add=TRUE)
 ```
 
 The coordinate system will need to be **projected** to match that of the raster. When we are working with spatial analysis that is focused on analysis of area or distance, a projected coordinate system will be important. Projecting rasters is computationally intensive and we just want to conduct a pixel-wise analysis of the two rasters so we will reproject the two polygons. You can use the epsg code from the raster to do the projection:
-```{r echo=TRUE}
-northBound <- project(northBoundv, "epsg:4326")
-midBound <- project(midBoundv, "epsg:4326")
+```{r project, echo=TRUE}
+northBound <- terra::project(northBoundv, "epsg:4326")
+midBound <- terra::project(midBoundv, "epsg:4326")
 ```
 
 
 
 You can add these polygons to your plot by specifically referring the the `geometry` column and using the `add=TRUE` argument. Here the plot function defaluts to an sf plot. You can also find more arguments like `fill` for working with polygons:
 
-```{r echo=TRUE}
+```{r plotbounds, echo=TRUE}
 plotRGB(postR, r=3,g=2,b=1, stretch="lin")
-plot(northBound, border="tomato3", fill=NA, lwd=3, add=TRUE)
-plot(midBound, border="royalblue4",fill=NA, lwd=3, add=TRUE)
+terra::plot(northBound, border="tomato3", fill=NA, lwd=3, add=TRUE)
+terra::plot(midBound, border="royalblue4",fill=NA, lwd=3, add=TRUE)
 ```
 
 
@@ -196,23 +196,23 @@ Calculations on rasters will be very familar in R. You can directly apply functi
 
 You can calculate the NDVI for each raster:
 
-```{r echo=TRUE}
+```{r ndviCalc, echo=TRUE}
 #calculate NDVI pre from NIR (4th band) and Red (3rd band)
 ndvi_pre <- (pre[[4]]-pre[[3]])/(pre[[4]]+pre[[3]])
 #calculate NDVI post
 ndvi_post <- (post[[4]]-post[[3]])/(post[[4]]+post[[3]])
 
 par(mfrow=c(1,2))
-plot(ndvi_pre)
-plot(ndvi_post)
+terra::plot(ndvi_pre)
+terra::plot(ndvi_post)
 ```
 
 You can see the drop in NDVI after the outbreak. We can specifically calculate the difference:
 
-```{r echo=TRUE}
+```{r plotNDVIDiff, echo=TRUE}
 # difference between post and pre ndvi
 ndviDiff <- ndvi_post - ndvi_pre
-plot(ndviDiff)
+terra::plot(ndviDiff)
 
 ```
 
@@ -220,16 +220,16 @@ plot(ndviDiff)
 
 You can **extract** the raster values that fall within a vector geometry. The value of every pixel that overlaps with the geometry will be returned. Let's extract the NDVI values pre and post for the two polygons. The `extract` function will pull data from out all raster cells that overlaps. When data is extracted from points, you will get a data frame. When data is extracted from lines or polygons, you get a vector stored in a **list** for each feature. A list is a very flexible type of object and it can store multiple items that are different R objects (for example, both a vector and data frame). Here we only have one polygon in our data frame so we can directly refer to the vector using the `[[1]]` syntax. 
 
-```{r echo=TRUE}
+```{r ndviExtract, echo=TRUE}
 # return a vector of cell values from the first polygon
-ndvi_North <- extract(ndviDiff,northBound)
+ndvi_North <- terra::extract(ndviDiff,northBound)
 # return a vector of cell values from the first polygon
-ndvi_Mid <- extract(ndviDiff,midBound)
+ndvi_Mid <- terra::extract(ndviDiff,midBound)
 ```
 
 Let's use ggplot to visualize the data. Let's make a data frame for the two vectors that will integrate with ggplot. You can use the `rep` function to repeat a value. Here it would be helpful to repeat the name of the boundary. The first argument is the data you want to repeat and the second argument is the number of times to repeat it: 
 
-```{r echo=TRUE}
+```{r dataframe, echo=TRUE}
 
 ndviDataframe <- data.frame(location=c(rep("North", length(ndvi_North[,2])),
                                        rep("Mid", length(ndvi_Mid[,2]))),
@@ -239,7 +239,7 @@ ndviDataframe <- data.frame(location=c(rep("North", length(ndvi_North[,2])),
 
 Let's look at the change in the ndvi. We will ignore outliers here since there are occasionally numerical artifacts from calculating ndvi differences over water or the build environment:
 
-```{r echo=TRUE}
+```{r ggplot, echo=TRUE}
 ggplot(data=ndviDataframe,
         aes(x=location,ndvi.diff))+
   geom_boxplot(outlier.shape = NA)+
