@@ -25,7 +25,7 @@ _Hamilton College_
 
 
 ## New functions & syntax
-`ifelse`, `function`, `%--%`, `int_length`
+`ifelse`, `function`, `%--%`, `int_length`, `for`, `paste0`, `str`
 
 ```{r warning=FALSE,echo=FALSE, message=FALSE}
 library(imager)
@@ -246,6 +246,71 @@ timeCheck900 <- function(x){
 }
 # run on weather data
 timeCheck900(weather$dateF)
+
+```
+
+
+## for loops:
+
+There are some workflows in R that are not readily vectorized and require repeating the same operation or function. For these cases, `for` loops are helpful for implementing redundant activities. For example, some data sets may be organized in repositories into separate files for each years and you may want to read in all data files in an automated manner. For loops are also helpful when you need to make redundant calculations that index through different ranges of data.
+
+Let's read in some soil and surface temperatures that were collected near the reforestation site. The data must be downloaded manually from the sensors and each file contains data from the time that is was last downloaded until the most recent measurement. In the `soil` folder, you will see there are 7 files from the different times that student researchers went out to collect the data.
+
+You can use the `list.files` function to list out all the files in a folder. Let's create a variable that references these file names in a folder:
+
+
+```{r eval=FALSE}
+soilFiles <- list.files("/cloud/project/activity04/soil")
+```
+
+```{r echo = FALSE}
+
+soilFiles  <- list.files("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter04/soil")
+soilFiles
+```
+
+
+If you inspect files, you will notice they are all formatted with the exact same columns and data types. If they were formatted differently, you would have to do some work to select and match up columns. We will want to read in each csv. A helpful way to do this is to read each csv in as an element in a `list`. A `list` is a data type in R that can contain many different types of data objects in an ordered collection. It may have a number of elements in it. The output from many statistical functions in R is often stored as a list. You can subset an element in a list using `[[]]`.
+
+Before the for `loop`, you must set up variable names and declare their data type. R will not let you create new variables for the first time in a for loop. 
+
+```{r echo=TRUE}
+# start an empty list
+soilList <- list()
+
+```
+
+A `for` loop will use an index (usually designated with a letter like i or j) as a placeholder that indicates what parts of the code will be looped over. You declare a sequence of numbers in your for loop to iterate over. The `for` function will declare the looping variable and the sequence and all code to be run iterative is contained in `{}`. The `paste0` function will also be used to paste the file path text string with the files name. In this case, we will want to loop through reading in each file and putting each file into the list:
+
+```{r eval=FALSE}
+# start an empty list
+for(i in 1:length(soilFiles)){
+  soilList[[i]] <- read.csv(paste0("/cloud/project/activity04/soil/", soilFiles[i]))
+  
+}
+# inspect the begining of the first file
+head(soilList[[1]])
+# get info about your list
+str(soilList)
+```
+
+```{r echo=FALSE}
+# start an empty list
+for(i in 1:length(soilFiles)){
+  soilList[[i]] <- read.csv(paste0("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter04/soil/", soilFiles[i]))
+  
+}
+head(soilList[[1]])
+# get info about your list
+str(soilList)
+```
+The `str` function will always give you quick summary information about any data object. This is very helpful for lists. 
+
+Now that each file is read in, you can apply a function to all of the objects in the list using the `do.call` function. The `rbind` function binds the rows of two data frames (with the same columns) togther.
+
+```{r echo=TRUE}
+soilData <- do.call("rbind", soilList)
+str(soilData)
 
 ```
 

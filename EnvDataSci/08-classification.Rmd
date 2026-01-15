@@ -107,7 +107,7 @@ You can also make a true color plot of the image. Note that R automatically resc
 
 
 ```{r echo=TRUE}
-plotRGB(oct, r=3,g=2,b=1, scale=0.7, stretch="lin")
+plotRGB(oct, r=3,g=2,b=1,  stretch="lin")
 
 ```
 
@@ -158,7 +158,7 @@ You can also view a map of both the points and the images:
 
 ```{r echo=TRUE}
 # plot the main reforestation field and surrounding areas:
-plotRGB(oct, r=3,g=2,b=1, scale=0.7, stretch="lin")
+plotRGB(oct, r=3,g=2,b=1, stretch="lin")
 # add the known land cover points to the RGB plot
 plot(lc,"LCID", add=TRUE, legend=FALSE,
      pch=19,cex=0.5, # make small filled in points
@@ -206,6 +206,7 @@ trainTable <- values(trainPts)
 # for land cover and all other data are predictions
 trainDF <- na.omit(cbind(y=as.factor(trainTable$LCID), train))
 
+
 ```
 
 ### _Training random forest_
@@ -246,7 +247,7 @@ Anytime you are working data that involves the random generation of numbers, it 
 set.seed(43)
 
 #note that caret:: will make sure we use train from the caret package
-rf_model <- caret::train(x = trainDF[,2:21], #digital number data
+rf_model <- caret::train(x = trainDF[,3:22], #digital number data
                          y = as.factor(trainDF[,1]), #land class we want to predict
                          method = "rf", #use random forest
                          metric="Accuracy", #assess by accuracy
@@ -265,6 +266,8 @@ rf_model
 
 This process might take a minute to run on your computer. Once it finishes you can see the model checked accuracy and Kappa. Kappa is similar to accuracy but accounts for the level of accuracy that we might see just by random chance. 
 
+
+
 ### _Predictions and validation_
 
 Now that you have trained the model, you can make predictions for the entire raster of observations.
@@ -272,7 +275,7 @@ Now that you have trained the model, you can make predictions for the entire ras
 
 ```{r echo=TRUE}
 #use the model to predict land cover class for the entire raster stack
-rf_prediction <- terra::predict(drStack, rf_model )
+rf_prediction <- terra::predict(drStack, model=rf_model, na.rm=TRUE )
 # plot the land cover class (uses LCID number)
 plot(rf_prediction, col= hcl.colors(3, palette = "Harmonic"))
 ```
@@ -300,7 +303,7 @@ You are ready to compare the predictions to the observed data. You will set up a
 # LCID 2 =  tree
 # LCID 3 = path
 # confusion Matrix, first argument is prediction second is data
-rf_errorM = confusionMatrix(as.factor(validDF_rf$rf),as.factor(validDF_rf$y))
+rf_errorM = confusionMatrix(as.factor(validDF_rf$rf.class),as.factor(validDF_rf$y))
 # make LCID easier to interpret
 colnames(rf_errorM$table) <- c("field","tree","path")
 rownames(rf_errorM$table) <- c("field","tree","path")
@@ -324,7 +327,7 @@ Now you are ready to train the model:
 ```{r echo=TRUE}
 # train nnet
 set.seed(18)
-nnet_model <- caret::train(x = trainDF[,c(2:21)], y = as.factor(trainDF[,1]),
+nnet_model <- caret::train(x = trainDF[,c(3:22)], y = as.factor(trainDF[,1]),
                            method = "nnet", metric="Accuracy", 
                            trainControl = tc, tuneGrid = nnet.grid,
                            trace=FALSE)
@@ -353,16 +356,14 @@ freq(nn_prediction)
 #cell count random forest
 freq(rf_prediction)
 
-# field RF area calculation
-0.4*0.4*71019
 
 # field NN area calculation
-0.4*0.4*71047
+0.4*0.4*freq(nn_prediction)[1,3]
 
 ```
 
 You can also view the predictions side by side:
-```{r echo=TRUE}
+```{r echo=TRUE, fig.width=10}
 par(mfrow=c(1,2))
 plot(nn_prediction, col= hcl.colors(3, palette = "Harmonic"),
      legend=FALSE, axes=FALSE, main="Neural network", box=FALSE)

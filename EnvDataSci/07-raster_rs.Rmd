@@ -26,7 +26,7 @@ _Hamilton College_
 
 
 ## New functions & syntax
-`rast`, `stack`, `st_read`, `plotRGB`,`extract`
+`rast`,`vect`, `project`, `plotRGB`,`extract`, _raster math_
 
 ```{r warning=FALSE,echo=FALSE, message=FALSE}
 library(imager)
@@ -74,10 +74,13 @@ Each image can actually contain multiple images organized in a **rast**. Here, e
 pre <- rast("/cloud/project/activity07/ldd_pre.tif")
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, results='hide'}
 
 pre <- terra::rast("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter07/ldd_pre.tif")
 preR <- pre/10000
+```
+
+```{r echo=FALSE}
 terra::plotRGB(preR, r=3,g=2,b=1, stretch="lin")
 ```
 
@@ -86,10 +89,13 @@ terra::plotRGB(preR, r=3,g=2,b=1, stretch="lin")
 post <- rast("/cloud/project/activity07/ldd_post.tif")
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, results='hide'}
 
 post <- rast("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter07/ldd_post.tif")
 postR <- post/10000
+```
+
+```{r echo=FALSE}
 plotRGB(postR, r=3,g=2,b=1, stretch="lin")
 ```
 
@@ -100,7 +106,16 @@ plot(pre, col=grey(1:100/100) )
 
 ```
 
-Sentinel 2 data is represented as a **digital number** where the actual reflectance is multiplied by 10,000 for each band. Since we are only working with sentinel data, we don't need to convert to an actual reflectance value (0-1 scale).
+Sentinel 2 data is represented as a **digital number** where the actual reflectance is multiplied by 10,000 for each band. Since we are only working with sentinel data, we don't need to convert to an actual reflectance value (0-1 scale). Let's convert the values to reflectance:
+
+```{r echo=TRUE, fig.width=12}
+# mathematical operations can be applied to a raster
+preR <- pre/10000
+postR <- post/10000
+
+```
+
+
 
 You can also make a **color composite** using the plotRGB function. By changing the bands, you can make the **false color composites**. The `plotRGB` function uses three bands to make a composite of red, green, blue color in an image. The `scale` argument specifies the maximum data value (255 will be assumed by default because that is a common value for image data). Color contrast can also be added using the `stretch` argument. 
 
@@ -108,17 +123,21 @@ You can also make a **color composite** using the plotRGB function. By changing 
 
 par(mfrow=c(1,2))
 
-plotRGB(post, r=3,g=2,b=1, # image and bands
-        scale=13000, # note high scale due to clouds
+plotRGB(postR, r=3,g=2,b=1, # image and bands
         stretch="lin", # contrast stretch
         main="True color",
         axes=TRUE)
-plotRGB(post, r=4,g=3,b=2, # image and bands
-        scale=13000,# max data value
+plotRGB(postR, r=4,g=3,b=2, # image and bands
         stretch="lin", # contrast stretch
         main="False color",
         axes=TRUE)
 ```
+
+At any time you get get information about your raster by running the raster name in the console:
+```{r echo=TRUE}
+preR
+```
+There are key characteristics: coordinate reference system, extent, value ranges
 
 
 ### _Vector data:_ 
@@ -129,17 +148,36 @@ The `terra` package also works with vector data. This includes points, polygons,
 
 ```{r eval=FALSE}
 
-northBound <- vect("/cloud/project/activity07/north_bound.shp")
+northBoundv <- terra::vect("/cloud/project/activity07/north_bound.shp")
 
-midBound <- vect("/cloud/project/activity07/mid_bound.shp")
+midBoundv <- terra::vect("/cloud/project/activity07/mid_bound.shp")
 
 ```
 
 ```{r echo=FALSE}
-northBound <- vect("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter07/north_bound.shp")
+northBoundv <- vect("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter07/northBound.shp")
 
-midBound <- vect("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter07/mid_bound.shp")
+midBoundv <- vect("/Users/hkropp/Documents/GitHub/Intro_EnvDataSci/EnvDataSci/data/chapter07/midBound.shp")
 ```
+
+Let's examine the characteristics of the data:
+```{r echo=TRUE}
+northBoundv
+```
+
+There is a glaring issue with this data. The coordinate system is different from our raster. Plotting the two together means that we don't see the polygon on our map:
+```{r echo=TRUE}
+plotRGB(postR, r=3,g=2,b=1, stretch="lin")
+plot(northBoundv, border="tomato3", fill=NA, lwd=3, add=TRUE)
+```
+
+The coordinate system will need to be **projected** to match that of the raster. When we are working with spatial analysis that is focused on analysis of area or distance, a projected coordinate system will be important. Projecting rasters is computationally intensive and we just want to conduct a pixel-wise analysis of the two rasters so we will reproject the two polygons. You can use the epsg code from the raster to do the projection:
+```{r echo=TRUE}
+northBound <- project(northBoundv, "epsg:4326")
+midBound <- project(midBoundv, "epsg:4326")
+```
+
+
 
 You can add these polygons to your plot by specifically referring the the `geometry` column and using the `add=TRUE` argument. Here the plot function defaluts to an sf plot. You can also find more arguments like `fill` for working with polygons:
 

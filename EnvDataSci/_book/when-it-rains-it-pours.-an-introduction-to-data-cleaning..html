@@ -239,7 +239,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.4.2" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#creating-flags"><i class="fa fa-check"></i><b>5.4.2</b> <em>Creating flags</em></a></li>
 <li class="chapter" data-level="5.4.3" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#creating-functions-to-check-data"><i class="fa fa-check"></i><b>5.4.3</b> <em>Creating functions to check data</em></a></li>
 </ul></li>
-<li class="chapter" data-level="5.5" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#conclusion"><i class="fa fa-check"></i><b>5.5</b> Conclusion</a></li>
+<li class="chapter" data-level="5.5" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#for-loops"><i class="fa fa-check"></i><b>5.5</b> for loops:</a></li>
+<li class="chapter" data-level="5.6" data-path="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#conclusion"><i class="fa fa-check"></i><b>5.6</b> Conclusion</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="linear-regression-model-selection-and-prediction-in-r.html"><a href="linear-regression-model-selection-and-prediction-in-r.html"><i class="fa fa-check"></i><b>6</b> Linear regression, model selection, and prediction in R</a>
 <ul>
@@ -354,7 +355,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="new-functions-syntax-3" class="section level2 hasAnchor" number="5.2">
 <h2><span class="header-section-number">5.2</span> New functions &amp; syntax<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#new-functions-syntax-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><code>ifelse</code>, <code>function</code>, <code>%--%</code>, <code>int_length</code></p>
+<p><code>ifelse</code>, <code>function</code>, <code>%--%</code>, <code>int_length</code>, <code>for</code>, <code>paste0</code>, <code>str</code></p>
 </div>
 <div id="the-problem-ensuring-reliable-data" class="section level2 hasAnchor" number="5.3">
 <h2><span class="header-section-number">5.3</span> The problem: ensuring reliable data<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#the-problem-ensuring-reliable-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -549,8 +550,84 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [13] 2021-11-07 03:30:00 UTC--2021-11-07 02:45:00 UTC</code></pre>
 </div>
 </div>
-<div id="conclusion" class="section level2 hasAnchor" number="5.5">
-<h2><span class="header-section-number">5.5</span> Conclusion<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#conclusion" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="for-loops" class="section level2 hasAnchor" number="5.5">
+<h2><span class="header-section-number">5.5</span> for loops:<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#for-loops" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>There are some workflows in R that are not readily vectorized and require repeating the same operation or function. For these cases, <code>for</code> loops are helpful for implementing redundant activities. For example, some data sets may be organized in repositories into separate files for each years and you may want to read in all data files in an automated manner. For loops are also helpful when you need to make redundant calculations that index through different ranges of data.</p>
+<p>Let’s read in some soil and surface temperatures that were collected near the reforestation site. The data must be downloaded manually from the sensors and each file contains data from the time that is was last downloaded until the most recent measurement. In the <code>soil</code> folder, you will see there are 7 files from the different times that student researchers went out to collect the data.</p>
+<p>You can use the <code>list.files</code> function to list out all the files in a folder. Let’s create a variable that references these file names in a folder:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb22-1" tabindex="-1"></a>soilFiles <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">&quot;/cloud/project/activity04/soil&quot;</span>)</span></code></pre></div>
+<pre class="colout"><code>[1] &quot;soil_data_2021_03.csv&quot; &quot;soil_data_2021_06.csv&quot; &quot;soil_data_2021_11.csv&quot;
+[4] &quot;soil_data_2022_03.csv&quot; &quot;soil_data_2022_07.csv&quot; &quot;soil_data_2022_10.csv&quot;
+[7] &quot;soil_data_2023_09.csv&quot;</code></pre>
+<p>If you inspect files, you will notice they are all formatted with the exact same columns and data types. If they were formatted differently, you would have to do some work to select and match up columns. We will want to read in each csv. A helpful way to do this is to read each csv in as an element in a <code>list</code>. A <code>list</code> is a data type in R that can contain many different types of data objects in an ordered collection. It may have a number of elements in it. The output from many statistical functions in R is often stored as a list. You can subset an element in a list using <code>[[]]</code>.</p>
+<p>Before the for <code>loop</code>, you must set up variable names and declare their data type. R will not let you create new variables for the first time in a for loop.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb24-1" tabindex="-1"></a><span class="co"># start an empty list</span></span>
+<span id="cb24-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb24-2" tabindex="-1"></a>soilList <span class="ot">&lt;-</span> <span class="fu">list</span>()</span></code></pre></div>
+<p>A <code>for</code> loop will use an index (usually designated with a letter like i or j) as a placeholder that indicates what parts of the code will be looped over. You declare a sequence of numbers in your for loop to iterate over. The <code>for</code> function will declare the looping variable and the sequence and all code to be run iterative is contained in <code>{}</code>. The <code>paste0</code> function will also be used to paste the file path text string with the files name. In this case, we will want to loop through reading in each file and putting each file into the list:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb25-1" tabindex="-1"></a><span class="co"># start an empty list</span></span>
+<span id="cb25-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb25-2" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(soilFiles)){</span>
+<span id="cb25-3"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb25-3" tabindex="-1"></a>  soilList[[i]] <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste0</span>(<span class="st">&quot;/cloud/project/activity04/soil/&quot;</span>, soilFiles[i]))</span>
+<span id="cb25-4"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb25-4" tabindex="-1"></a>  </span>
+<span id="cb25-5"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb25-5" tabindex="-1"></a>}</span>
+<span id="cb25-6"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb25-6" tabindex="-1"></a><span class="co"># inspect the begining of the first file</span></span>
+<span id="cb25-7"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb25-7" tabindex="-1"></a><span class="fu">head</span>(soilList[[<span class="dv">1</span>]])</span>
+<span id="cb25-8"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb25-8" tabindex="-1"></a><span class="co"># get info about your list</span></span>
+<span id="cb25-9"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb25-9" tabindex="-1"></a><span class="fu">str</span>(soilList)</span></code></pre></div>
+<pre class="colout"><code>        Timestamp   Tsoil6    Tsurf15       SWC
+1 2020-12-12 0:00 3.625000  0.1458333 0.3891333
+2 2020-12-12 1:00 3.625000 -1.2500000 0.3893869
+3 2020-12-12 2:00 3.625000 -0.8281250 0.3897131
+4 2020-12-12 3:00 3.562500 -2.7031250 0.3898762
+5 2020-12-12 4:00 3.500000 -3.5468750 0.3899850
+6 2020-12-12 5:00 3.484375 -2.2343750 0.3903113</code></pre>
+<pre class="colout"><code>List of 7
+ $ :&#39;data.frame&#39;:   2536 obs. of  4 variables:
+  ..$ Timestamp: chr [1:2536] &quot;2020-12-12 0:00&quot; &quot;2020-12-12 1:00&quot; &quot;2020-12-12 2:00&quot; &quot;2020-12-12 3:00&quot; ...
+  ..$ Tsoil6   : num [1:2536] 3.62 3.62 3.62 3.56 3.5 ...
+  ..$ Tsurf15  : num [1:2536] 0.146 -1.25 -0.828 -2.703 -3.547 ...
+  ..$ SWC      : num [1:2536] 0.389 0.389 0.39 0.39 0.39 ...
+ $ :&#39;data.frame&#39;:   2211 obs. of  4 variables:
+  ..$ Timestamp: chr [1:2211] &quot;2021-03-27 17:00&quot; &quot;2021-03-27 18:00&quot; &quot;2021-03-27 19:00&quot; &quot;2021-03-27 20:00&quot; ...
+  ..$ Tsoil6   : num [1:2211] 7 7 6.95 6.77 6.55 ...
+  ..$ Tsurf15  : num [1:2211] 9.93 9.92 6.16 3.52 3.9 ...
+  ..$ SWC      : num [1:2211] 0.432 0.431 0.431 0.43 0.43 ...
+ $ :&#39;data.frame&#39;:   3741 obs. of  4 variables:
+  ..$ Timestamp: chr [1:3741] &quot;2021-06-27 20:00&quot; &quot;2021-06-27 21:00&quot; &quot;2021-06-27 22:00&quot; &quot;2021-06-27 23:00&quot; ...
+  ..$ Tsoil6   : num [1:3741] 20.1 19.8 19.6 19.4 19.2 ...
+  ..$ Tsurf15  : num [1:3741] 22 20.8 21.3 21.1 20.6 ...
+  ..$ SWC      : num [1:3741] 0.197 0.196 0.196 0.196 0.196 ...
+ $ :&#39;data.frame&#39;:   2182 obs. of  4 variables:
+  ..$ Timestamp: chr [1:2182] &quot;2021-11-30 17:00&quot; &quot;2021-11-30 18:00&quot; &quot;2021-11-30 19:00&quot; &quot;2021-11-30 20:00&quot; ...
+  ..$ Tsoil6   : num [1:2182] 3.38 3.38 3.38 3.4 3.43 ...
+  ..$ Tsurf15  : num [1:2182] -0.36 -0.762 -0.979 -0.265 -0.173 ...
+  ..$ SWC      : num [1:2182] 0.423 0.423 0.423 0.423 0.423 ...
+ $ :&#39;data.frame&#39;:   3219 obs. of  4 variables:
+  ..$ Timestamp: chr [1:3219] &quot;2022-03-01 15:00&quot; &quot;2022-03-01 16:00&quot; &quot;2022-03-01 17:00&quot; &quot;2022-03-01 18:00&quot; ...
+  ..$ Tsoil6   : num [1:3219] -0.01771 -0.00833 -0.00521 -0.00104 0 ...
+  ..$ Tsurf15  : num [1:3219] 3.71 2.63 2.24 2 1.23 ...
+  ..$ SWC      : num [1:3219] 0.317 0.32 0.32 0.321 0.323 ...
+ $ :&#39;data.frame&#39;:   2035 obs. of  4 variables:
+  ..$ Timestamp: chr [1:2035] &quot;2022-07-13 19:00&quot; &quot;2022-07-13 20:00&quot; &quot;2022-07-13 21:00&quot; &quot;2022-07-13 22:00&quot; ...
+  ..$ Tsoil6   : num [1:2035] 20.5 20.1 19.7 19.4 19.1 ...
+  ..$ Tsurf15  : num [1:2035] 17.8 14.8 15.6 15.4 15 ...
+  ..$ SWC      : num [1:2035] 0.122 0.129 0.123 0.12 0.118 ...
+ $ :&#39;data.frame&#39;:   5362 obs. of  4 variables:
+  ..$ Timestamp: chr [1:5362] &quot;2022-10-06 14:00&quot; &quot;2022-10-06 15:00&quot; &quot;2022-10-06 16:00&quot; &quot;2022-10-06 17:00&quot; ...
+  ..$ Tsoil6   : num [1:5362] 12.6 12.9 13 13.1 13.1 ...
+  ..$ Tsurf15  : num [1:5362] 23.7 20.6 18 16.6 13.1 ...
+  ..$ SWC      : num [1:5362] 0.321 0.321 0.32 0.32 0.319 ...</code></pre>
+<p>The <code>str</code> function will always give you quick summary information about any data object. This is very helpful for lists.</p>
+<p>Now that each file is read in, you can apply a function to all of the objects in the list using the <code>do.call</code> function. The <code>rbind</code> function binds the rows of two data frames (with the same columns) togther.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb28-1" tabindex="-1"></a>soilData <span class="ot">&lt;-</span> <span class="fu">do.call</span>(<span class="st">&quot;rbind&quot;</span>, soilList)</span>
+<span id="cb28-2"><a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#cb28-2" tabindex="-1"></a><span class="fu">str</span>(soilData)</span></code></pre></div>
+<pre class="colout"><code>&#39;data.frame&#39;:   21286 obs. of  4 variables:
+ $ Timestamp: chr  &quot;2020-12-12 0:00&quot; &quot;2020-12-12 1:00&quot; &quot;2020-12-12 2:00&quot; &quot;2020-12-12 3:00&quot; ...
+ $ Tsoil6   : num  3.62 3.62 3.62 3.56 3.5 ...
+ $ Tsurf15  : num  0.146 -1.25 -0.828 -2.703 -3.547 ...
+ $ SWC      : num  0.389 0.389 0.39 0.39 0.39 ...</code></pre>
+</div>
+<div id="conclusion" class="section level2 hasAnchor" number="5.6">
+<h2><span class="header-section-number">5.6</span> Conclusion<a href="when-it-rains-it-pours.-an-introduction-to-data-cleaning..html#conclusion" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Data cleaning is an important step for data producers and users. As a data user, it is important to check that the data meets your expectations. In addition to the functions you learned here, data cleaning often uses similar functions to data wrangling. The main difference is that you are ensuring the reliability of data for analysis and sharing not just organizing or formatting.</p>
 <p>The homework will continue to explore the data cleaning process using the Hamilton weather station. You can see from the data overview section that there are a number of quality issues to check.</p>
 
