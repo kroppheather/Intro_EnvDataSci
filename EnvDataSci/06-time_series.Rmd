@@ -152,6 +152,13 @@ almond_dec <- decompose(almond_ts)
 plot(almond_dec)
 ```
 
+You can refer to elements of your decomposition:
+```{r echo=TRUE}
+almondTrend <- almond_dec$trend
+almondSeason <- almond_dec$seasonal
+```
+This can be helpful to isolating seasonal variability in the data or examining drivers of random error that aren't explained by trends or seasonal fluctions in the data.
+
 ### _Autocorrelation_
 
 **Autocorrelation** is a measure of correlation from one observation to the observations before and after. Autocorrelation is an important consideration in both time series (an observation is related to what happend before it) and spatial data (observations closer in space will be similar to each other). Autocorrelation is an important consideration because it violates a lot of frequentist statistical assumptions: that observations are independent and random. If autocorrelated observations are close enough together in time (or space!), this implies that there is a relationship without independence and randomness between observations. This is why time series analysis are useful, because you can inherently evaluate observations that are not independent throughout time.
@@ -163,7 +170,7 @@ acf(na.omit(almond_ts), # remove missing data
     lag.max = 24) # look at 2 years (24 months)
 ```
 
-**Stationarity** is a condition of a time series where the mean and variance remains constant over time. Data that have seasonality or a trend will not be stationary data. Our ET data do not meet this assumption.
+**Stationarity** is a condition of a time series where the mean and variance remains constant over time. Our trend and variability across seasons does not appear to fluctuate greatly across our time frame. We would want to apply caution in using some time series models and forecasting from a time series if our mean and variance was changing consistently over time.
 
 ### _Autoregressive (AR) models for time series_
 
